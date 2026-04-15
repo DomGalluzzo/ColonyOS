@@ -1,37 +1,40 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
-interface WeatherForecast {
-  date: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
-}
+import { DashboardApiService } from './services/dashboard-api.service';
+import { ColonyState } from './models/colony-state.model';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+  standalone: false
 })
 export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
+  public title = 'ColonyOS';
+  public colonyState: ColonyState | null = null;
+  public isLoading = false;
+  public errorMessage: string | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly dashboardApiService: DashboardApiService) {}
 
   ngOnInit() {
-    this.getForecasts();
+    this.loadState();
   }
 
-  getForecasts() {
-    this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
-      (result) => {
-        this.forecasts = result;
+  public loadState(): void {
+    this.isLoading = true;
+    this.errorMessage = null;
+
+    this.dashboardApiService.getColonyState().subscribe({
+      next: (state: ColonyState) => {
+        this.colonyState = state;
+        this.isLoading = false;
       },
-      (error) => {
-        console.error(error);
+      error: () => {
+        this.errorMessage = 'Failed to load colony state';
+        this.isLoading = false;
       }
-    );
+    })
   }
-
-  title = 'colonyos.client';
 }

@@ -1,0 +1,28 @@
+﻿using ColonyOS.Contracts.Models;
+using ColonyOS.Gateway.Constants;
+
+namespace ColonyOS.Gateway.Services
+{
+    public class ColonyStateGatewayClient : IColonyStateGatewayClient
+    {
+        private readonly HttpClient _httpClient;
+
+        public ColonyStateGatewayClient(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
+
+        public async Task<ColonyStateDto> GetCurrentStateAsync(CancellationToken cancellationToken)
+        {
+            var response = await _httpClient.GetAsync(MicroserviceConstants.Endpoints.ColonyState, cancellationToken);
+            response.EnsureSuccessStatusCode();
+
+            var state = await response.Content.ReadFromJsonAsync<ColonyStateDto>(cancellationToken);
+
+            if (state is null)
+                throw new InvalidOperationException("Colony state response was empty.");
+
+            return state;
+        }
+    }
+}

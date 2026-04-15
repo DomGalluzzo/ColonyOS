@@ -1,24 +1,36 @@
-﻿<h1 id="tableLabel">Weather forecast</h1>
+﻿<div class="dashboard">
+    <h1>ColonyOS Mission Control</h1>
+    
+    <p *ngIf="isLoading">Loading colony state...</p>
+    <p *ngIf="errorMessage">{{ errorMessage }}</p>
 
-<p>This component demonstrates fetching data from the server.</p>
-
-<p *ngIf="!forecasts"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
-
-<table *ngIf="forecasts">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let forecast of forecasts">
-            <td>{{ forecast.date }}</td>
-            <td>{{ forecast.temperatureC }}</td>
-            <td>{{ forecast.temperatureF }}</td>
-            <td>{{ forecast.summary }}</td>
-        </tr>
-    </tbody>
-</table>
+    <ng-container *ngIf="colonyState">
+        <div class="resource-grid">
+            <div class="card">
+                <h2>Oxygen</h2>
+                <p>{{ colonyState.oxygenPercentage }}%</p>
+            </div>
+            <div class="card">
+                <h2>Water</h2>
+                <p>{{ colonyState.waterPercentage }}%</p>
+            </div>
+            <div class="card">
+                <h2>Power</h2>
+                <p>{{ colonyState.powerPercentage }}%</p>
+            </div>
+            <div class="card">
+                <h2>Food</h2>
+                <p>{{ colonyState.foodPercentage }}%</p>
+            </div>
+            <div class="card">
+                <h2>Morale</h2>
+                <p>{{ colonyState.moralePercentage }}%</p>
+            </div>
+            <div class="card">
+                <h2>Structural Integrity</h2>
+                <p>{{ colonyState.structuralIntegrityPercentage }}%</p>
+            </div>
+            <p>Last updated: {{ colonyState.lastUpdatedUtc }}</p>
+        </div>
+    </ng-container>
+</div>
