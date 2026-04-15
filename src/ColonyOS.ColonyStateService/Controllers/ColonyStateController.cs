@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ColonyOS.ColonyStateService.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/colony-state")]
     public class ColonyStateController : ControllerBase
     {
 

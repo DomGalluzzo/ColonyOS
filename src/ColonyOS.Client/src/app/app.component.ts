@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
-import { DashboardApiService } from './services/dashboard-api.service';
-import { ColonyState } from './models/colony-state.model';
+import { DashboardApiService } from './core/services/dashboard-api.service';
+import { ColonyState } from './shared/models/colony-state.model';
 
 @Component({
   selector: 'app-root',

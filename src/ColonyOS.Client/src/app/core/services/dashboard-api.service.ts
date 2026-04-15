@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ColonyState } from '../models/colony-state.model';
+import { ColonyState } from '../../shared/models/colony-state.model';
 
 @Injectable({
     providedIn: 'root'

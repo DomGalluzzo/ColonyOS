@@ -1,10 +1,15 @@
 ﻿namespace ColonyOS.Gateway.Constants
 {
-    public class MicroserviceConstants
+    public static class MicroserviceConstants
     {
-        public class Endpoints
+        public static class Services
         {
             public const string ColonyState = "ColonyState";
+        }
+
+        public static class Routes
+        {
+            public const string ColonyState = "/api/colony-state";
         }
     }
 }

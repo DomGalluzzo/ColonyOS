@@ -15,7 +15,7 @@ namespace ColonyOS.Gateway.Controllers
             _colonyStateGatewayClient = colonyStateGatewayClient;
         }
 
-        [HttpGet("State")]
+        [HttpGet("state")]
         [ProducesResponseType(typeof(ColonyStateDto), StatusCodes.Status200OK)]
         public async Task<ActionResult<ColonyStateDto>> GetStateAsync(CancellationToken cancellationToken)
         {

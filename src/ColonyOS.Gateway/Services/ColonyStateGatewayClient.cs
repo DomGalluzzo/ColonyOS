@@ -14,7 +14,7 @@ namespace ColonyOS.Gateway.Services
 
         public async Task<ColonyStateDto> GetCurrentStateAsync(CancellationToken cancellationToken)
         {
-            var response = await _httpClient.GetAsync(MicroserviceConstants.Endpoints.ColonyState, cancellationToken);
+            var response = await _httpClient.GetAsync(MicroserviceConstants.Routes.ColonyState, cancellationToken);
             response.EnsureSuccessStatusCode();
 
             var state = await response.Content.ReadFromJsonAsync<ColonyStateDto>(cancellationToken);

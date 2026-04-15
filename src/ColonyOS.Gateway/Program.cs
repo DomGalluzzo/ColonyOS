@@ -9,9 +9,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var colonyStateBaseUrl =
-    builder.Configuration[$"Services:{MicroserviceConstants.Endpoints.ColonyState}:BaseUrl"]
+    builder.Configuration[$"Services:{MicroserviceConstants.Services.ColonyState}:BaseUrl"]
     ?? throw new InvalidOperationException(
-        $"Configuration value Services:{MicroserviceConstants.Endpoints.ColonyState}:BaseUrl is required.");
+        $"Configuration value Services:{MicroserviceConstants.Services.ColonyState}:BaseUrl is required.");
 
 builder.Services.AddHttpClient<IColonyStateGatewayClient, ColonyStateGatewayClient>(client =>
 {
