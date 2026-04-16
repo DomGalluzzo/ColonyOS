@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using ColonyOS.Gateway.Configuration;
 using ColonyOS.Gateway.Constants;
 using ColonyOS.Gateway.Services;
@@ -17,6 +18,12 @@ builder.Services.AddHttpClient<IColonyStateGatewayClient, ColonyStateGatewayClie
 {
     client.BaseAddress = new Uri(colonyStateBaseUrl);
 });
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 var app = builder.Build();
 

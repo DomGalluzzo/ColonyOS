@@ -4,6 +4,6 @@ namespace ColonyOS.Gateway.Services
 {
     public interface IColonyStateGatewayClient
     {
-        Task<ColonyStateDto> GetCurrentStateAsync(CancellationToken cancellationToken = default);
+        Task<ColonyState> GetCurrentStateAsync(CancellationToken cancellationToken = default);
     }
 }

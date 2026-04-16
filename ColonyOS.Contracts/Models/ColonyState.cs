@@ -1,6 +1,6 @@
 ﻿namespace ColonyOS.Contracts.Models
 {
-    public class ColonyStateDto
+    public class ColonyState
     {
         public double OxygenPercentage { get; init; }
         public double WaterPercentage { get; init; }

@@ -4,6 +4,6 @@ namespace ColonyOS.ColonyStateService.Services
 {
     public interface IColonyStateService
     {
-        Task<ColonyStateDto> GetCurrentStateAsync(CancellationToken cancellationToken =  default);
+        Task<ColonyState> GetCurrentStateAsync(CancellationToken cancellationToken =  default);
     }
 }

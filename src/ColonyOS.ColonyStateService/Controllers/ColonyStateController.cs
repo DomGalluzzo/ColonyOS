@@ -17,8 +17,8 @@ namespace ColonyOS.ColonyStateService.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(ColonyStateDto), StatusCodes.Status200OK)]
-        public async Task<ActionResult<ColonyStateDto>> GetCurrentStateAsync(CancellationToken cancellationToken)
+        [ProducesResponseType(typeof(ColonyState), StatusCodes.Status200OK)]
+        public async Task<ActionResult<ColonyState>> GetCurrentStateAsync(CancellationToken cancellationToken)
         {
             var state = await _colonyStateService.GetCurrentStateAsync(cancellationToken);
             return Ok(state);

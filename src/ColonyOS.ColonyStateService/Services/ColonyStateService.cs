@@ -4,12 +4,12 @@ namespace ColonyOS.ColonyStateService.Services
 {
     public class ColonyStateService : IColonyStateService
     {
-        public async Task<ColonyStateDto> GetCurrentStateAsync(CancellationToken cancellationToken = default)
+        public async Task<ColonyState> GetCurrentStateAsync(CancellationToken cancellationToken = default)
         {
             // Temp artificial delay
             await Task.Delay(25, cancellationToken);
 
-            return new ColonyStateDto()
+            return new ColonyState()
             {
                 OxygenPercentage = 97,
                 WaterPercentage = 82,
