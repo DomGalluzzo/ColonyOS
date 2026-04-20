@@ -1,5 +1,5 @@
-﻿using ColonyOS.ColonyStateService.Services;
-using ColonyOS.Contracts.Models;
+﻿using ColonyOS.ColonyStateService.Services.Interfaces;
+using ColonyOS.ColonyStateService.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ColonyOS.ColonyStateService.Controllers

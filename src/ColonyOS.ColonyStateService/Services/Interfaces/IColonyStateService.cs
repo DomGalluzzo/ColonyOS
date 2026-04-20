@@ -1,6 +1,6 @@
-﻿using ColonyOS.Contracts.Models;
+﻿using ColonyOS.ColonyStateService.Models;
 
-namespace ColonyOS.ColonyStateService.Services
+namespace ColonyOS.ColonyStateService.Services.Interfaces
 {
     public interface IColonyStateService
     {

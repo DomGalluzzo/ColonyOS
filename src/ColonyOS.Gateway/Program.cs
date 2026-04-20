@@ -5,9 +5,18 @@ using ColonyOS.Gateway.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:64030")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 var colonyStateBaseUrl =
     builder.Configuration[$"Services:{MicroserviceConstants.Services.ColonyState}:BaseUrl"]
@@ -37,6 +46,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseCors("AllowAngular");
 app.MapControllers();
 
 app.Run();

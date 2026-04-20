@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using ColonyOS.ColonyStateService.Services;
+using ColonyOS.ColonyStateService.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +8,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IColonyStateService, ColonyStateService>();
+builder.Services.AddSingleton<IAlertsService, AlertsService>();
+builder.Services.AddSingleton<IColonyStateService, ColonyStateService>();
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {

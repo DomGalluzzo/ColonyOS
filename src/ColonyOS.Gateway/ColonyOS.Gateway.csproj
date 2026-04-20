@@ -24,6 +24,7 @@
     <ProjectReference Include="..\ColonyOS.Client\ColonyOS.Client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\ColonyOS.ColonyStateService\ColonyOS.ColonyStateService.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using ColonyOS.Contracts.Models;
+﻿using ColonyOS.ColonyStateService.Models;
+using ColonyOS.Contracts.Models.Alerts;
 using ColonyOS.Gateway.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,27 @@ namespace ColonyOS.Gateway.Controllers
         {
             var state = await _colonyStateGatewayClient.GetCurrentStateAsync(cancellationToken);
             return Ok(state);
+        }
+
+        [HttpGet("alerts")]
+        [ProducesResponseType(typeof(List<Alert>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<Alert>>> GetAlertsAsync(CancellationToken cancellationToken)
+        {
+            var alerts = await _colonyStateGatewayClient.GetAlertsAsync(cancellationToken);
+            return Ok(alerts.ToList());
+        }
+
+        [HttpPost("alerts/{alertId:guid}/acknowledge")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> AcknowledgeAlertAsync(Guid alertId, CancellationToken cancellationToken)
+        {
+            var acknowledged = await _colonyStateGatewayClient.AcknowledgeAlertAsync(alertId, cancellationToken);
+
+            if (!acknowledged)
+                return NotFound();
+
+            return NoContent();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ColonyOS.Contracts.Models
+﻿namespace ColonyOS.ColonyStateService.Models
 {
     public class ColonyState
     {
