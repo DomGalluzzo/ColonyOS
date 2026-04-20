@@ -1,7 +1,9 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using ColonyOS.ColonyStateService.Models;
+using ColonyOS.ColonyStateService.Models.Requests;
 using ColonyOS.Contracts.Models.Alerts;
+using ColonyOS.Contracts.Models.Tasks;
 using ColonyOS.Gateway.Constants;
 
 namespace ColonyOS.Gateway.Services
@@ -53,6 +55,25 @@ namespace ColonyOS.Gateway.Services
 
             response.EnsureSuccessStatusCode();
             return true;
+        }
+
+        public async Task<TaskItem> CreateTaskAsync(TaskItem taskItem, CancellationToken cancellationToken)
+        {
+            var taskRequest = new CreateTaskRequest()
+            {
+                Title = taskItem.Title,
+                Description = taskItem.Description,
+                Priority = taskItem.TaskPriority,
+                TargetSubsystem = taskItem.TargetSystem,
+                TaskType = taskItem.TaskType,
+                EstimatedDurationMinutes = taskItem.EstimatedDurationMinutes,
+                SourceAlertId = taskItem.SourceAlertId
+            };
+            var response = await _httpClient.PostAsJsonAsync($"{MicroserviceConstants.Routes.Tasks}", taskRequest, cancellationToken);
+
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadFromJsonAsync<TaskItem>(cancellationToken);
+            return content;
         }
     }
 }

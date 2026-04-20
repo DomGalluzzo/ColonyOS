@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ColonyOS.ColonyStateService.Controllers
 {
+    [ApiController]
+    [Route("api/tasks")]
     public class TasksController : ControllerBase
     {
         private readonly ITaskService _taskService;

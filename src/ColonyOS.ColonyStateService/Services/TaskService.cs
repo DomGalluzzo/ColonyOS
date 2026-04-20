@@ -30,7 +30,7 @@ namespace ColonyOS.ColonyStateService.Services
                 TargetSystem = request.TargetSubsystem,
                 TaskPriority = request.Priority,
                 TaskType = request.TaskType,
-                EsitmatedDurationMinutes = request.EstimatedDurationMinutes,
+                EstimatedDurationMinutes = request.EstimatedDurationMinutes,
                 CreatedAtUtc = DateTime.UtcNow
             };
 

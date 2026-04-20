@@ -5,8 +5,8 @@ export interface TaskFormModel {
   title: FormControl<string>;
   description: FormControl<string>;
   taskType: FormControl<TaskType>;
-  targetSubsystem: FormControl<TargetSystem | null>;
+  targetSubsystem: FormControl<TargetSystem>;
   priority: FormControl<TaskPriority>;
-  estimatedDurationMinutes: FormControl<number | null>;
+  estimatedDurationMinutes: FormControl<number>;
   sourceAlertId: FormControl<string | null>;
 }

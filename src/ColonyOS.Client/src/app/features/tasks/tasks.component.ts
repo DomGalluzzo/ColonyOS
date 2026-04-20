@@ -11,6 +11,7 @@ import {
 import { TaskFormModel } from '../../shared/models/task-form.model';
 import { TargetSystem, TaskModel, TaskPriority, TaskType } from '../../shared/models/task-item.model';
 import { Alert } from '../../shared/models/alert.model';
+import { TasksService } from '../../shared/services/tasks.service';
 
 @Component({
   selector: 'app-tasks',
@@ -20,6 +21,7 @@ import { Alert } from '../../shared/models/alert.model';
 export class TasksComponent implements OnInit {
   @Input() alert: Alert | null = null;
   public form!: FormGroup<TaskFormModel>;
+  public tasks: TaskModel[] = [];
 
   readonly taskTypeOptions = [
     { label: 'Maintenance', value: TaskType.Maintenance },
@@ -43,7 +45,9 @@ export class TasksComponent implements OnInit {
     { label: 'Communications', value: TargetSystem.Communications }
   ];
 
-  constructor(private readonly fb: FormBuilder) {};
+  constructor(private readonly fb: FormBuilder,
+    private readonly taskService: TasksService
+  ) {};
 
   ngOnInit(): void {
     this.initializeForm();
@@ -62,7 +66,7 @@ export class TasksComponent implements OnInit {
     return this.form.controls.taskType;
   }
 
-  get targetSubsystem(): FormControl<TargetSystem | null> {
+  get targetSubsystem(): FormControl<TargetSystem> {
     return this.form.controls.targetSubsystem;
   }
 
@@ -70,7 +74,7 @@ export class TasksComponent implements OnInit {
     return this.form.controls.priority;
   }
 
-  get estimatedDurationMinutes(): FormControl<number | null> {
+  get estimatedDurationMinutes(): FormControl<number> {
     return this.form.controls.estimatedDurationMinutes;
   }
 
@@ -89,13 +93,21 @@ export class TasksComponent implements OnInit {
       title: this.title.value,
       description: this.description.value,
       taskType: this.taskType.value,
-      targetSubsystem: this.targetSubsystem.value,
+      targetSystem: this.targetSubsystem.value,
       priority: this.priority.value,
       estimatedDurationMinutes: this.estimatedDurationMinutes.value,
       sourceAlertId: this.sourceAlertId.value
     };
 
-    console.log('Create task request:', request);
+    this.taskService.createTask(request).subscribe({
+      next: createdTask => {
+        this.tasks.push(createdTask);
+        this.form.reset();
+      },
+      error: error => {
+        console.error('Failed to create task', error);
+      }
+    });
   }
 
   private initializeForm(): void {
@@ -103,9 +115,9 @@ export class TasksComponent implements OnInit {
       title: this.fb.nonNullable.control('', [Validators.required, Validators.maxLength(120)]),
       description: this.fb.nonNullable.control('', [Validators.maxLength(1000)]),
       taskType: this.fb.nonNullable.control(TaskType.Maintenance, [Validators.required]),
-      targetSubsystem: this.fb.control<TargetSystem | null>(null),
+      targetSubsystem: this.fb.nonNullable.control<TargetSystem>(TargetSystem.Communications),
       priority: this.fb.nonNullable.control(TaskPriority.Medium, [Validators.required]),
-      estimatedDurationMinutes: this.fb.control<number | null>(30, [Validators.required, Validators.min(1)]),
+      estimatedDurationMinutes: this.fb.nonNullable.control<number>(30, [Validators.required, Validators.min(1)]),
       sourceAlertId: this.fb.control<string | null>(null)
     },
     {
@@ -120,7 +132,7 @@ export class TasksComponent implements OnInit {
       }
 
       if (taskTypeValue !== TaskType.Maintenance) {
-        this.targetSubsystem.setValue(null);
+        this.targetSubsystem.setValue(TargetSystem.Communications);
       }
 
       this.form.updateValueAndValidity();

@@ -1,3 +1,15 @@
+<section class="tasks-list">
+  @if (tasks.length > 0) {
+    @for (task of tasks; track task.id) {
+      <div class="task">
+        {{ task.title }}
+      </div>
+    }
+  } @else {
+    <div class="empty-state">No active tasks yet.</div>
+  }
+</section>
+
 <form
   class="task-form"
   [formGroup]="form"

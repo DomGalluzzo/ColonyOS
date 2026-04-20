@@ -32,8 +32,8 @@ export interface TaskModel {
   title: string;
   description?: string | null;
   taskType: TaskType;
-  targetSubsystem?: TargetSystem | null;
-  priority: TaskPriority;
+  targetSystem?: TargetSystem | null;
+  taskPriority: TaskPriority;
   status: TaskStatus;
   estimatedDurationMinutes: number;
   createdAtUtc: string;
@@ -46,7 +46,7 @@ export interface CreateTaskRequest {
   title: string;
   description?: string | null;
   taskType: TaskType;
-  targetSubsystem?: TargetSystem | null;
+  targetSystem?: TargetSystem | null;
   priority: TaskPriority;
   estimatedDurationMinutes: number;
   sourceAlertId?: string | null;
