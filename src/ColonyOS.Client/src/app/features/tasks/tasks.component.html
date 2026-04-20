@@ -1,0 +1,101 @@
+<form
+  class="task-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()">
+  <div class="form-row">
+    <label for="title">Title</label>
+    <input
+      id="title"
+      type="text"
+      formControlName="title" />
+
+    @if (title.touched && title.hasError('required')) {
+      <div class="error-message">Title is required.</div>
+    }
+
+    @if (title.touched && title.hasError('maxlength')) {
+      <div class="error-message">Title cannot exceed 120 characters.</div>
+    }
+  </div>
+
+  <div class="form-row">
+    <label for="description">Description</label>
+    <textarea
+      id="description"
+      rows="4"
+      formControlName="description"></textarea>
+  </div>
+
+  <div class="form-row">
+    <label for="taskType">Task Type</label>
+    <select
+      id="taskType"
+      formControlName="taskType">
+      @for (option of taskTypeOptions; track option.value) {
+        <option [ngValue]="option.value">{{ option.label }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="targetSubsystem">Target Subsystem</label>
+    <select
+      id="targetSubsystem"
+      formControlName="targetSubsystem">
+      <option [ngValue]="null">Select subsystem</option>
+
+      @for (option of subsystemOptions; track option.value) {
+        <option [ngValue]="option.value">{{ option.label }}</option>
+      }
+    </select>
+
+    @if (form.touched && form.hasError('subsystemRequiredForMaintenance')) {
+      <div class="error-message">
+        Subsystem is required for maintenance tasks.
+      </div>
+    }
+  </div>
+
+  <div class="form-row">
+    <label for="priority">Priority</label>
+    <select
+      id="priority"
+      formControlName="priority">
+      @for (option of priorityOptions; track option.value) {
+        <option [ngValue]="option.value">{{ option.label }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="estimatedDurationMinutes">Estimated Duration (minutes)</label>
+    <input
+      id="estimatedDurationMinutes"
+      type="number"
+      formControlName="estimatedDurationMinutes" />
+
+    @if (estimatedDurationMinutes.touched && estimatedDurationMinutes.hasError('required')) {
+      <div class="error-message">Estimated duration is required.</div>
+    }
+
+    @if (estimatedDurationMinutes.touched && estimatedDurationMinutes.hasError('min')) {
+      <div class="error-message">Estimated duration must be at least 1 minute.</div>
+    }
+  </div>
+
+  <div class="form-row">
+    <label for="sourceAlertId">Source Alert Id</label>
+    <input
+      id="sourceAlertId"
+      type="text"
+      formControlName="sourceAlertId" />
+  </div>
+
+  <div class="form-actions">
+    <button
+      type="submit"
+      [disabled]="form.invalid">
+      Create Task
+    </button>
+  </div>
+</form>

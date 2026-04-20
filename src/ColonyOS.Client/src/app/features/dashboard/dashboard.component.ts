@@ -16,6 +16,7 @@ export class DashboardComponent implements OnInit {
   public isLoading = false;
   public errorMessage: string | null = null;
   public alerts: Alert[] = [];
+  public selectedAlert: Alert | null = null;
 
   constructor(
     private readonly dashboardApiService: DashboardApiService,
@@ -49,13 +50,8 @@ export class DashboardComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Failed to load alerts');
-  console.error('status:', error.status);
-  console.error('statusText:', error.statusText);
-  console.error('message:', error.message);
-  console.error('error payload:', error.error);
-  console.error('full error:', error);
-  this.isLoading = false;
+        console.error('Failed to load alerts', error);
+        this.isLoading = false;
       }
     })
   }
@@ -71,10 +67,11 @@ export class DashboardComponent implements OnInit {
     return alert.id;
   }
 
-  // public getAlertMessage(type: AlertType): string {
-  //   switch (type) {
-  //     case AlertType.OxygenCritical:
-  //       return 'Oxygen levels critically low'
-  //   }
-  // }
+  public openCreateTask(alert: Alert): void {
+    this.selectedAlert = alert;
+  }
+
+  public closeCreateTask(): void {
+    this.selectedAlert = null;
+  }
 }

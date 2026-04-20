@@ -47,7 +47,7 @@
                 [class.alert-card-warning]="alert.severity === 'Warning'">
                 <div class="alert-card-header">
                     <span class="alert-severity">{{ alert.severity }}</span>
-                    <span class="alert-time">{{ alert.createdUtc | date:'short' }}</span>
+                    <span class="alert-time">{{ alert.createdAtUtc | date:'short' }}</span>
                 </div>
 
                 <div class="alert-message">
@@ -56,7 +56,10 @@
 
                 <div class="alert-actions" *ngIf="!alert.acknowledged">
                     <button type="button" (click)="acknowledgeAlert(alert.id)">
-                    Acknowledge
+                        Acknowledge
+                    </button>
+                    <button type="button" (click)="openCreateTask(alert)">
+                        Create Task
                     </button>
                 </div>
 
@@ -64,6 +67,19 @@
                     Acknowledged
                 </div>
             </div>
+        </section>
+        <section *ngIf="selectedAlert" class="task-form-panel">
+            <div class="task-form-header">
+            <h2>Create Task</h2>
+
+            <button
+                type="button"
+                (click)="closeCreateTask()">
+                Close
+            </button>
+            </div>
+
+            <app-tasks [alert]="selectedAlert"></app-tasks>
         </section>
         <p class="dashboard-footer">Last updated: {{ colonyState.lastUpdatedUtc }}</p>
     </div>

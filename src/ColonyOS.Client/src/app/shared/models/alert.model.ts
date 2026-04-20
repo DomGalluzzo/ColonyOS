@@ -1,12 +1,17 @@
+import { TargetSystem } from "./task-item.model";
+
 export type AlertSeverity = 'Info' | 'Warning' | 'Critical';
 
 export type AlertType = | 'OxygenCritical' | 'PowerCritical' | 'StructuralIntegrityCritical';
 
 export interface Alert {
     id: string;
-    type: AlertType;
-    severity: AlertSeverity;
-    message: string;
-    createdUtc: string;
-    acknowledged: boolean;
+      title: string;
+      message: string;
+      severity: string;
+      targetSystem?: TargetSystem | null;
+      acknowledged: boolean;
+      createdAtUtc: string;
+      acknowledgedAtUtc?: string | null;
+      relatedTaskId?: string | null;
 }
