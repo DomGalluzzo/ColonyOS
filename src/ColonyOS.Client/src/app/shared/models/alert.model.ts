@@ -11,7 +11,7 @@ export interface Alert {
       severity: string;
       targetSystem?: TargetSystem | null;
       acknowledged: boolean;
-      createdAtUtc: string;
+      createdUtc: string;
       acknowledgedAtUtc?: string | null;
       relatedTaskId?: string | null;
 }

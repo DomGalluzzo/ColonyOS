@@ -1,86 +1,133 @@
-<div class="dashboard">
-    <h1 class="dashboard-header">ColonyOS Mission Control</h1>
-    
-    <p *ngIf="isLoading">Loading colony state...</p>
-    <p *ngIf="errorMessage">{{ errorMessage }}</p>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">ColonyOS Mission Control</h1>
+    </div>
+    <div *ngIf="isLoading" class="alert alert-info mb-4">
+        Loading colony state...
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger mb-4">
+        {{ errorMessage }}
+    </div>
 
-    <div  *ngIf="colonyState" class="dashboard">
-        <section class="resource-grid">
-            <div class="resource-card">
-                <h3>Oxygen</h3>
-                <p>{{ colonyState.oxygenPercentage }}%</p>
-            </div>
-            <div class="resource-card">
-                <h3>Water</h3>
-                <p>{{ colonyState.waterPercentage }}%</p>
-            </div>
-            <div class="resource-card">
-                <h3>Power</h3>
-                <p>{{ colonyState.powerPercentage }}%</p>
-            </div>
-            <div class="resource-card">
-                <h3>Food</h3>
-                <p>{{ colonyState.foodPercentage }}%</p>
-            </div>
-            <div class="resource-card">
-                <h3>Morale</h3>
-                <p>{{ colonyState.moralePercentage }}%</p>
-            </div>
-            <div class="resource-card">
-                <h3>Structural Integrity</h3>
-                <p>{{ colonyState.structuralIntegrityPercentage }}%</p>
+    <div *ngIf="colonyState" class="row g-4">
+        <p class="dashboard-footer">Last updated: {{ colonyState.lastUpdatedUtc }}</p>
+        <section class="col-12 col-xl-7">
+            <div class="row g-3">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Oxygen</h5>
+                            <p class="display-6 mb-0">{{ colonyState.oxygenPercentage }}%</p>
+                        </div>
+                    </div>
+                </div>
+               <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Water</h5>
+                            <p class="display-6 mb-0">{{ colonyState.waterPercentage}}%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Power</h5>
+                            <p class="display-6 mb-0">{{ colonyState.powerPercentage }}%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Food</h5>
+                            <p class="display-6 mb-0">{{ colonyState.foodPercentage }}%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Morale</h5>
+                            <p class="display-6 mb-0">{{ colonyState.moralePercentage }}%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Structural Integrity</h5>
+                            <p class="display-6 mb-0">{{ colonyState.structuralIntegrityPercentage }}%</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
-        <section class="alerts-panel">
-            <div class="alerts-header">
-                <h2>Active Alerts</h2>
-                <span class="alerts-count">{{ alerts.length }}</span>
+        <section class="col-12 col-xl-5">
+            <div class="card h-100 shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="h4 mb-0">Active Alerts</h2>
+                        <span class="badge rounded-pill text-bg-danger">{{ alerts.length }}</span>
+                    </div>
+                </div>
             </div>
-            <div *ngIf="!alerts.length" class="alerts-empty-state">
+            <div *ngIf="!alerts.length" class="text-muted">
                 All systems nominal
             </div>
             <div
                 *ngFor="let alert of alerts; trackBy: trackByAlertId"
-                class="alert-card"
-                [class.alert-card-acknowledged]="alert.acknowledged"
-                [class.alert-card-critical]="alert.severity === 'Critical'"
-                [class.alert-card-warning]="alert.severity === 'Warning'">
-                <div class="alert-card-header">
-                    <span class="alert-severity">{{ alert.severity }}</span>
-                    <span class="alert-time">{{ alert.createdAtUtc | date:'short' }}</span>
-                </div>
-
-                <div class="alert-message">
-                    {{ alert.message }}
-                </div>
-
-                <div class="alert-actions" *ngIf="!alert.acknowledged">
-                    <button type="button" (click)="acknowledgeAlert(alert.id)">
-                        Acknowledge
-                    </button>
-                    <button type="button" (click)="openCreateTask(alert)">
-                        Create Task
-                    </button>
-                </div>
-
-                <div class="alert-status" *ngIf="alert.acknowledged">
-                    Acknowledged
+                class="card mb-3 border-0 shadow-sm"
+                [ngClass]="{
+                    'border-start border-4 border-danger': alert.severity === 'Critical',
+                    'border-start border-4 border-warning': alert.severity === 'Warning',
+                    'opacity-75': alert.acknowledged
+                }">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <span class="badge me-2"
+                            [ngClass]="{
+                                'text-bg-danger': alert.severity === 'Critical',
+                                'text-bg-warning': alert.severity === 'Warning',
+                                'text-bg-secondary': alert.severity !== 'Critical' && alert.severity !== 'Warning'
+                            }">
+                            {{ alert.severity }}
+                        </span>
+                        <span class="text-muted">{{ alert.createdUtc | date:'short' }}</span>
+                        <div class="mb-3">
+                            {{ alert.message }}
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2" *ngIf="!alert.acknowledged">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="acknowledgeAlert(alert.id)">
+                            Acknowledge
+                        </button>
+                        <button type="button" class="btn btn-primary btm-sm" (click)="openCreateTask(alert)">
+                            Create Task
+                        </button>
+                    </div>
+                    <div class="text-success fw-semibold" *ngIf="alert.acknowledged">
+                        Acknowledged
+                    </div>
                 </div>
             </div>
         </section>
-        <section *ngIf="selectedAlert" class="task-form-panel">
-            <div class="task-form-header">
-            <h2>Create Task</h2>
-
-            <button
-                type="button"
-                (click)="closeCreateTask()">
-                Close
-            </button>
+        <section *ngIf="selectedAlert" class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="h4 mb-0">Create Task</h2>
+                        <button
+                            type="button"
+                            class="btn btn-outline-secondary btn-sm"
+                            (click)="closeCreateTask()">
+                            Close
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <app-tasks [alert]="selectedAlert"></app-tasks>
         </section>
-        <p class="dashboard-footer">Last updated: {{ colonyState.lastUpdatedUtc }}</p>
     </div>
 </div>

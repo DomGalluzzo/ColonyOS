@@ -1,13 +1,9 @@
-<section class="tasks-list">
-  @if (tasks.length > 0) {
-    @for (task of tasks; track task.id) {
-      <div class="task">
-        {{ task.title }}
-      </div>
-    }
-  } @else {
-    <div class="empty-state">No active tasks yet.</div>
-  }
+<section *ngIf="tasks" class="tasks-list">
+  <ng-container *ngFor="let task of tasks">
+    <div class="task">
+      {{ task.title }}
+    </div>
+  </ng-container>
 </section>
 
 <form
@@ -21,13 +17,8 @@
       type="text"
       formControlName="title" />
 
-    @if (title.touched && title.hasError('required')) {
-      <div class="error-message">Title is required.</div>
-    }
-
-    @if (title.touched && title.hasError('maxlength')) {
-      <div class="error-message">Title cannot exceed 120 characters.</div>
-    }
+    <div *ngIf="title.touched && title.hasError('required')" class="error-message">Title is required.</div>
+    <div *ngIf="title.touched && title.hasError('maxlength')" class="error-message">Title cannot exceed 120 characters.</div>
   </div>
 
   <div class="form-row">
@@ -43,9 +34,9 @@
     <select
       id="taskType"
       formControlName="taskType">
-      @for (option of taskTypeOptions; track option.value) {
+      <ng-container *ngFor="let option of taskTypeOptions">
         <option [ngValue]="option.value">{{ option.label }}</option>
-      }
+      </ng-container>
     </select>
   </div>
 
@@ -55,17 +46,14 @@
       id="targetSubsystem"
       formControlName="targetSubsystem">
       <option [ngValue]="null">Select subsystem</option>
-
-      @for (option of subsystemOptions; track option.value) {
+      <ng-container *ngFor="let option of subsystemOptions">
         <option [ngValue]="option.value">{{ option.label }}</option>
-      }
+      </ng-container>
     </select>
 
-    @if (form.touched && form.hasError('subsystemRequiredForMaintenance')) {
-      <div class="error-message">
-        Subsystem is required for maintenance tasks.
-      </div>
-    }
+    <div *ngIf="form.touched && form.hasError('subsystemRequiredForMaintenance')" class="error-message">
+      Subsystem is required for maintenance tasks.
+    </div>
   </div>
 
   <div class="form-row">
@@ -73,9 +61,9 @@
     <select
       id="priority"
       formControlName="priority">
-      @for (option of priorityOptions; track option.value) {
+      <ng-container *ngFor="let option of priorityOptions">
         <option [ngValue]="option.value">{{ option.label }}</option>
-      }
+      </ng-container>
     </select>
   </div>
 
@@ -86,13 +74,8 @@
       type="number"
       formControlName="estimatedDurationMinutes" />
 
-    @if (estimatedDurationMinutes.touched && estimatedDurationMinutes.hasError('required')) {
-      <div class="error-message">Estimated duration is required.</div>
-    }
-
-    @if (estimatedDurationMinutes.touched && estimatedDurationMinutes.hasError('min')) {
-      <div class="error-message">Estimated duration must be at least 1 minute.</div>
-    }
+    <div *ngIf="estimatedDurationMinutes.touched && estimatedDurationMinutes.hasError('required')" class="error-message">Estimated duration is required.</div>
+    <div *ngIf="estimatedDurationMinutes.touched && estimatedDurationMinutes.hasError('min')" class="error-message">Estimated duration must be at least 1 minute.</div>
   </div>
 
   <div class="form-row">
