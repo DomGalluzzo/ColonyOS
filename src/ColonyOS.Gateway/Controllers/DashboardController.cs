@@ -1,5 +1,6 @@
 ﻿using ColonyOS.ColonyStateService.Models;
 using ColonyOS.Contracts.Models.Alerts;
+using ColonyOS.Contracts.Models.Tasks;
 using ColonyOS.Gateway.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +44,14 @@ namespace ColonyOS.Gateway.Controllers
                 return NotFound();
 
             return NoContent();
+        }
+
+        [HttpPost("tasks")]
+        public async Task<IActionResult> CreateTaskAsync(TaskItem taskItem, CancellationToken cancellationToken)
+        {
+            var createdTask = await _colonyStateGatewayClient.CreateTaskAsync(taskItem, cancellationToken);
+
+            return Ok(createdTask);
         }
     }
 }

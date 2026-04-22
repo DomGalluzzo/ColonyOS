@@ -8,14 +8,15 @@ import { Alert } from '../../shared/models/alert.model';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   public title = 'ColonyOS';
-  public colonyState: ColonyState | null = null;
+  public colonyState: ColonyState;
   public isLoading = false;
   public errorMessage: string | null = null;
   public alerts: Alert[] = [];
+  public selectedAlert: Alert | null = null;
 
   constructor(
     private readonly dashboardApiService: DashboardApiService,
@@ -49,32 +50,16 @@ export class DashboardComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Failed to load alerts');
-  console.error('status:', error.status);
-  console.error('statusText:', error.statusText);
-  console.error('message:', error.message);
-  console.error('error payload:', error.error);
-  console.error('full error:', error);
-  this.isLoading = false;
+        console.error('Failed to load alerts', error);
+        this.isLoading = false;
       }
     })
   }
 
-  public acknowledgeAlert(id: string): void {
-    this.alertService.acknowledgeAlert(id).subscribe({
-      next: () => this.loadAlerts(),
-      error: (error) => console.error('Failed to acknowledge alert', error)
-    });
-  }
+  public acknowledgeAlertClicked(alert: Alert): void {
+    var existingAlert = this.alerts.find(a => a.id === alert.id);
+    if (!existingAlert) return;
 
-  public trackByAlertId(_: number, alert: Alert): string {
-    return alert.id;
+    existingAlert.acknowledged = true;
   }
-
-  // public getAlertMessage(type: AlertType): string {
-  //   switch (type) {
-  //     case AlertType.OxygenCritical:
-  //       return 'Oxygen levels critically low'
-  //   }
-  // }
 }

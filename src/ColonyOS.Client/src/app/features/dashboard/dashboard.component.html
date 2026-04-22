@@ -1,70 +1,23 @@
-<div class="dashboard">
-    <h1 class="dashboard-header">ColonyOS Mission Control</h1>
-    
-    <p *ngIf="isLoading">Loading colony state...</p>
-    <p *ngIf="errorMessage">{{ errorMessage }}</p>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">ColonyOS Mission Control</h1>
+    </div>
+    <div *ngIf="isLoading" class="alert alert-info mb-4">
+        Loading colony state...
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger mb-4">
+        {{ errorMessage }}
+    </div>
 
-    <div  *ngIf="colonyState" class="dashboard">
-        <section class="resource-grid">
-            <div class="resource-card">
-                <h3>Oxygen</h3>
-                <p>{{ colonyState.oxygenPercentage }}%</p>
-            </div>
-            <div class="resource-card">
-                <h3>Water</h3>
-                <p>{{ colonyState.waterPercentage }}%</p>
-            </div>
-            <div class="resource-card">
-                <h3>Power</h3>
-                <p>{{ colonyState.powerPercentage }}%</p>
-            </div>
-            <div class="resource-card">
-                <h3>Food</h3>
-                <p>{{ colonyState.foodPercentage }}%</p>
-            </div>
-            <div class="resource-card">
-                <h3>Morale</h3>
-                <p>{{ colonyState.moralePercentage }}%</p>
-            </div>
-            <div class="resource-card">
-                <h3>Structural Integrity</h3>
-                <p>{{ colonyState.structuralIntegrityPercentage }}%</p>
-            </div>
-        </section>
-        <section class="alerts-panel">
-            <div class="alerts-header">
-                <h2>Active Alerts</h2>
-                <span class="alerts-count">{{ alerts.length }}</span>
-            </div>
-            <div *ngIf="!alerts.length" class="alerts-empty-state">
-                All systems nominal
-            </div>
-            <div
-                *ngFor="let alert of alerts; trackBy: trackByAlertId"
-                class="alert-card"
-                [class.alert-card-acknowledged]="alert.acknowledged"
-                [class.alert-card-critical]="alert.severity === 'Critical'"
-                [class.alert-card-warning]="alert.severity === 'Warning'">
-                <div class="alert-card-header">
-                    <span class="alert-severity">{{ alert.severity }}</span>
-                    <span class="alert-time">{{ alert.createdUtc | date:'short' }}</span>
-                </div>
-
-                <div class="alert-message">
-                    {{ alert.message }}
-                </div>
-
-                <div class="alert-actions" *ngIf="!alert.acknowledged">
-                    <button type="button" (click)="acknowledgeAlert(alert.id)">
-                    Acknowledge
-                    </button>
-                </div>
-
-                <div class="alert-status" *ngIf="alert.acknowledged">
-                    Acknowledged
-                </div>
-            </div>
-        </section>
+    <div *ngIf="colonyState" class="row g-4">
         <p class="dashboard-footer">Last updated: {{ colonyState.lastUpdatedUtc }}</p>
+        <div class="col-12 col-xl-6">
+            <app-colony-state [colonyState]="colonyState"></app-colony-state>
+        </div>
+        <div class="col-12 col-xl-6">
+            <app-alerts
+            [alerts]="alerts"
+            (alertAcknowledged)="acknowledgeAlertClicked($event)"></app-alerts>
+        </div>
     </div>
 </div>

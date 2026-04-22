@@ -12,6 +12,7 @@
         {
             public const string ColonyState = "/api/colony-state";
             public const string Alerts = "/api/alerts";
+            public const string Tasks = "/api/tasks";
         }
     }
 }

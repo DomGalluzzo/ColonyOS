@@ -1,1 +1,71 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --bg-page: #111827;          /* slightly lighter than before */
+  --bg-panel: #1a2230;
+  --bg-card: #1f2937;
+  --bg-card-secondary: #273244;
+  --border: #3b4658;
+
+  --text-primary: #e6edf3;
+  --text-secondary: #c9d1d9;
+}
+
+body {
+  background: linear-gradient(
+    180deg,
+    #0f172a 0%,
+    #111827 100%
+  );
+  color: var(--text-primary);
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.card:hover {
+  background-color: var(--bg-card-secondary);
+  transition: background-color 0.2s ease;
+}
+
+.card-title,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary);
+}
+
+.text-muted,
+small {
+  color: var(--text-secondary) !important;
+}
+
+.alert-info,
+.alert-danger {
+  border: none;
+}
+
+.btn-outline-secondary {
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--bg-card-secondary);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.text-bg-danger {
+  background-color: #dc3545 !important;
+}
+
+.text-bg-warning {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+}

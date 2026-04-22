@@ -10,11 +10,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IAlertsService, AlertsService>();
 builder.Services.AddSingleton<IColonyStateService, ColonyStateService>();
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    });
+builder.Services.AddSingleton<ITaskService, TaskService>();
+builder.Services.AddControllers();
+    //.AddJsonOptions(options =>
+    //{
+    //    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    //});
 
 var app = builder.Build();
 
