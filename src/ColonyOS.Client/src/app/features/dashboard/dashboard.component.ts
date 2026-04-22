@@ -8,11 +8,11 @@ import { Alert } from '../../shared/models/alert.model';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   public title = 'ColonyOS';
-  public colonyState: ColonyState | null = null;
+  public colonyState: ColonyState;
   public isLoading = false;
   public errorMessage: string | null = null;
   public alerts: Alert[] = [];
@@ -56,22 +56,10 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  public acknowledgeAlert(id: string): void {
-    this.alertService.acknowledgeAlert(id).subscribe({
-      next: () => this.loadAlerts(),
-      error: (error) => console.error('Failed to acknowledge alert', error)
-    });
-  }
+  public acknowledgeAlertClicked(alert: Alert): void {
+    var existingAlert = this.alerts.find(a => a.id === alert.id);
+    if (!existingAlert) return;
 
-  public trackByAlertId(_: number, alert: Alert): string {
-    return alert.id;
-  }
-
-  public openCreateTask(alert: Alert): void {
-    this.selectedAlert = alert;
-  }
-
-  public closeCreateTask(): void {
-    this.selectedAlert = null;
+    existingAlert.acknowledged = true;
   }
 }
