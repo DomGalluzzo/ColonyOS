@@ -83,8 +83,6 @@ Single entry point for the frontend.
 - .NET 8  
 - ASP.NET Core Web API  
 - BackgroundService (simulation loops)  
-- SignalR (real-time updates)  
-- MassTransit + RabbitMQ (event-driven communication)  
 - Entity Framework Core  
 - SQL Server / PostgreSQL  
 
@@ -92,7 +90,7 @@ Single entry point for the frontend.
 - Angular  
 - Reactive Forms  
 - RxJS  
-- Angular Signals (optional)  
+- Angular Signals
 - Bootstrap / Angular Material (UI)  
 
 ---
@@ -136,7 +134,7 @@ ColonyOS uses asynchronous messaging between services.
 1. Colony State detects low oxygen  
 2. Emits `ResourceThresholdBreached` event  
 3. Alert Service creates a critical alert  
-4. Gateway pushes update via SignalR  
+4. Gateway pushes update
 5. Task Scheduler creates a repair task  
 6. Crew Service updates availability  
 
@@ -160,9 +158,7 @@ This single flow touches multiple services:
 
 ### Prerequisites
 - .NET 8 SDK  
-- Node.js (v18+)  
 - Angular CLI  
-- Docker (optional, recommended)  
 
 ---
 
