@@ -1,0 +1,20 @@
+﻿.dashboard {
+  padding: 24px;
+  color: #f5f7fa;
+  background: #0f172a;
+  min-height: 100vh;
+}
+
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 16px;
+}
