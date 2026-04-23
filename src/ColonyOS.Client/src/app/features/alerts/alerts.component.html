@@ -1,6 +1,6 @@
 <div class="card h-100 shadow-sm mb-4">
-    <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center mb-1">
             <h2 class="h4 mb-0">Active Alerts</h2>
             <span class="badge rounded-pill text-bg-danger">{{ alerts.length }}</span>
         </div>
@@ -58,7 +58,7 @@
                         (click)="closeCreateTask()"></button>
                 </div>
                 <div class="modal-body">
-                    <app-tasks *ngIf="selectedAlert" [alert]="selectedAlert" (taskCreated)="taskCreated($event)"></app-tasks>
+                    <app-tasks-form *ngIf="selectedAlert" [alert]="selectedAlert" (taskCreated)="taskCreated($event)"></app-tasks-form>
                 </div>
                 <div class="modal-footer border-secondary">
                     <button

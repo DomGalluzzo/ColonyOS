@@ -47,7 +47,7 @@ export interface CreateTaskRequest {
   description?: string | null;
   taskType: TaskType;
   targetSystem?: TargetSystem | null;
-  priority: TaskPriority;
+  taskPriority: TaskPriority;
   estimatedDurationMinutes: number;
   sourceAlertId?: string | null;
 }

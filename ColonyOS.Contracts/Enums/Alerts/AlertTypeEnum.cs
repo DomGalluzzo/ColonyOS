@@ -2,7 +2,7 @@
 {
     public enum AlertTypeEnum
     {
-        OxygenCritical,
+        OxygenCritical = 1,
         WaterCritical,
         PowerCritical,
         FoodLow,

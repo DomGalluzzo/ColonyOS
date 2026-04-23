@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Alert } from '../../shared/models/alert.model';
 import { Modal } from 'bootstrap';
+import { TaskModel } from '../../shared/models/task-item.model';
 
 @Component({
   selector: 'app-alerts',
@@ -10,6 +11,7 @@ import { Modal } from 'bootstrap';
 export class AlertsComponent implements AfterViewInit {
   @Input() alerts: Alert[];
   @Output() alertAcknowledged = new EventEmitter<Alert>();
+  @Output() newTaskCreated = new EventEmitter<boolean>();
   @ViewChild('createTaskModal') createTaskModalElement: ElementRef<HTMLDivElement>;
 
   public selectedAlert: Alert | null;
@@ -49,6 +51,8 @@ export class AlertsComponent implements AfterViewInit {
 
   public taskCreated(isSuccessful: boolean): boolean {
     if (isSuccessful) this.closeCreateTask();
+
+    this.newTaskCreated.emit(isSuccessful);
     return isSuccessful;
   }
 }

@@ -6,7 +6,7 @@
         Loading colony state...
     </div>
     <div *ngIf="errorMessage" class="alert alert-danger mb-4">
-        {{ errorMessage }}
+        {{ errorMessage.message }}
     </div>
 
     <div *ngIf="colonyState" class="row g-4">
@@ -17,7 +17,11 @@
         <div class="col-12 col-xl-6">
             <app-alerts
             [alerts]="alerts"
-            (alertAcknowledged)="acknowledgeAlertClicked($event)"></app-alerts>
+            (alertAcknowledged)="acknowledgeAlertClicked($event)"
+            (newTaskCreated)="newTaskCreated($event)"></app-alerts>
+        </div>
+        <div class="col-12 col-xl-6">
+            <app-tasks [tasks]="tasks"></app-tasks>
         </div>
     </div>
 </div>

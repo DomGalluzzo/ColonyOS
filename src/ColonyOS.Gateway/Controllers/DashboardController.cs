@@ -46,6 +46,13 @@ namespace ColonyOS.Gateway.Controllers
             return NoContent();
         }
 
+        [HttpGet("tasks")]
+        public async Task<ActionResult<List<TaskItem>>> GetActiveTasksAsync(CancellationToken cancellationToken)
+        {
+            var tasks = await _colonyStateGatewayClient.GetActiveTasksAsync(cancellationToken);
+            return Ok(tasks);
+        }
+
         [HttpPost("tasks")]
         public async Task<IActionResult> CreateTaskAsync(TaskItem taskItem, CancellationToken cancellationToken)
         {

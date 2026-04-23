@@ -28,8 +28,9 @@ namespace ColonyOS.ColonyStateService.Services
                 Title = request.Title,
                 Description = request.Description,
                 TargetSystem = request.TargetSubsystem,
-                TaskPriority = request.Priority,
+                TaskPriority = request.TaskPriority,
                 TaskType = request.TaskType,
+                Status = TaskStatusEnum.Pending,
                 EstimatedDurationMinutes = request.EstimatedDurationMinutes,
                 CreatedAtUtc = DateTime.UtcNow
             };

@@ -10,7 +10,7 @@ namespace ColonyOS.ColonyStateService.Models.Requests
         public string? Description { get; set; }
         public TaskTypeEnum TaskType { get; set; }
         public TargetSystemEnum? TargetSubsystem { get; set; }
-        public TaskPriorityEnum Priority { get; set; }
+        public TaskPriorityEnum TaskPriority { get; set; }
         public int EstimatedDurationMinutes { get; set; }
         public Guid? SourceAlertId { get; set; }
     }

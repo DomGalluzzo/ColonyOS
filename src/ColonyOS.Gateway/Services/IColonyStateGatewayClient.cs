@@ -10,5 +10,6 @@ namespace ColonyOS.Gateway.Services
         Task<IReadOnlyCollection<Alert>> GetAlertsAsync(CancellationToken cancellationToken = default);
         Task<bool> AcknowledgeAlertAsync(Guid alertId, CancellationToken cancellationToken = default);
         Task<TaskItem> CreateTaskAsync(TaskItem taskItem, CancellationToken cancellationToken = default);
+        Task<List<TaskItem>> GetActiveTasksAsync(CancellationToken cancellationToken = default);
     }
 }

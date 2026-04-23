@@ -57,13 +57,23 @@ namespace ColonyOS.Gateway.Services
             return true;
         }
 
+        public async Task<List<TaskItem>> GetActiveTasksAsync(CancellationToken cancellationToken)
+        {
+            var response = await _httpClient.GetAsync($"{MicroserviceConstants.Routes.Tasks}", cancellationToken);
+            response.EnsureSuccessStatusCode();
+
+            var tasks = await response.Content.ReadFromJsonAsync<List<TaskItem>>(_jsonSerializerOptions, cancellationToken);
+
+            return tasks ?? new List<TaskItem>();
+        }
+
         public async Task<TaskItem> CreateTaskAsync(TaskItem taskItem, CancellationToken cancellationToken)
         {
             var taskRequest = new CreateTaskRequest()
             {
                 Title = taskItem.Title,
                 Description = taskItem.Description,
-                Priority = taskItem.TaskPriority,
+                TaskPriority = taskItem.TaskPriority,
                 TargetSubsystem = taskItem.TargetSystem,
                 TaskType = taskItem.TaskType,
                 EstimatedDurationMinutes = taskItem.EstimatedDurationMinutes,

@@ -8,17 +8,17 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
-import { TaskFormModel } from '../../shared/models/task-form.model';
-import { TargetSystem, TaskModel, TaskPriority, TaskType } from '../../shared/models/task-item.model';
-import { Alert } from '../../shared/models/alert.model';
-import { TasksService } from '../../shared/services/tasks.service';
+import { TaskFormModel } from '../../../shared/models/task-form.model';
+import { TargetSystem, TaskModel, TaskPriority, TaskType } from '../../../shared/models/task-item.model';
+import { Alert } from '../../../shared/models/alert.model';
+import { TasksService } from '../../../shared/services/tasks.service';
 
 @Component({
-  selector: 'app-tasks',
-  templateUrl: './tasks.component.html',
-  styleUrl: './tasks.component.scss'
+  selector: 'app-tasks-form',
+  templateUrl: './tasks-form.component.html',
+  styleUrl: './tasks-form.component.scss'
 })
-export class TasksComponent implements OnInit {
+export class TasksFormComponent implements OnInit {
   @Input() alert: Alert | null = null;
   @Output() taskCreated = new EventEmitter<boolean>();
 
@@ -96,7 +96,7 @@ export class TasksComponent implements OnInit {
       description: this.description.value,
       taskType: this.taskType.value,
       targetSystem: this.targetSubsystem.value,
-      priority: this.priority.value,
+      taskPriority: this.priority.value,
       estimatedDurationMinutes: this.estimatedDurationMinutes.value,
       sourceAlertId: this.sourceAlertId.value
     };
