@@ -1,4 +1,4 @@
-<div class="container-fluid py-4">
+<div class="container-fluid py-4 dashboard-page">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="mb-0">ColonyOS Mission Control</h1>
     </div>
@@ -6,18 +6,23 @@
         Loading colony state...
     </div>
     <div *ngIf="errorMessage" class="alert alert-danger mb-4">
-        {{ errorMessage }}
+        {{ errorMessage.message }}
     </div>
 
-    <div *ngIf="colonyState" class="row g-4">
-        <p class="dashboard-footer">Last updated: {{ colonyState.lastUpdatedUtc }}</p>
-        <div class="col-12 col-xl-6">
-            <app-colony-state [colonyState]="colonyState"></app-colony-state>
+    <div *ngIf="colonyState" class="row g-4 dashboard-row">
+        <p>Last updated: {{ colonyState.lastUpdatedUtc | date:'short' }}</p>
+        <div class="col-12 col-xl-6 d-flex">
+            <app-colony-state class="w-100" [colonyState]="colonyState"></app-colony-state>
         </div>
-        <div class="col-12 col-xl-6">
+        <div class="col-12 col-xl-6 d-flex">
             <app-alerts
-            [alerts]="alerts"
-            (alertAcknowledged)="acknowledgeAlertClicked($event)"></app-alerts>
+                class="w-100"
+                [alerts]="alerts"
+                (alertAcknowledged)="acknowledgeAlertClicked($event)"
+                (newTaskCreated)="newTaskCreated($event)"></app-alerts>
+        </div>
+        <div class="col-12 col-xl-6 d-flex">
+            <app-tasks class="w-100" [tasks]="tasks"></app-tasks>
         </div>
     </div>
 </div>

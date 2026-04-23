@@ -1,0 +1,35 @@
+<div class="card h-100 shadow-sm mb-4">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+            <h2 class="h4 mb-0">Tasks</h2>
+        </div>
+    </div>
+    <div
+        *ngFor="let task of tasks; trackBy: trackByTaskId"
+        class="card m-2 border-1 shadow-sm"
+        [ngClass]="{
+            'bg-danger bg-opacity-25 text-danger': task.taskPriority === taskPriority.Critical,
+            'bg-warning bg-opacity-10 text-warning': task.taskPriority === taskPriority.High
+        }">
+        <div class="card-body mb-0 pb-0">
+            <div class="d-flex row">
+                <div class="col-12 d-flex justify-content-between mb-2">
+                    <span class="fs-4 fw-bold">{{ task.title }}</span>
+                    <span
+                        class="fs-6 fst-italic"
+                        [ngClass]="taskStatusMeta[task.status].class">
+                        {{ taskStatusMeta[task.status].label }}
+                    </span>
+                </div>
+            </div>
+            <div class="col-12 d-flex flex-column mb-2">
+                <span class="fs-6 fst-italic">{{ task.description }}</span>
+            </div>
+            <div class="d-flex row mb-0">
+                <div class="col-12 d-flex justify-content-end me-0 pe-1 pb-1">
+                    <span class="text-muted fs-6 fst-italic">Created: {{ task.createdAtUtc | date:'short' }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

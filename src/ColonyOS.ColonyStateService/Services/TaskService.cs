@@ -16,7 +16,7 @@ namespace ColonyOS.ColonyStateService.Services
         public async Task<IReadOnlyList<TaskItem>> GetActiveTasksAsync(CancellationToken cancellationToken = default)
         {
             return _tasks
-                .OrderBy(t => t.TaskPriority)
+                .OrderByDescending(t => t.TaskPriority)
                 .ThenBy(t => t.CompletedAtUtc)
                 .ToList();
         }
@@ -28,8 +28,9 @@ namespace ColonyOS.ColonyStateService.Services
                 Title = request.Title,
                 Description = request.Description,
                 TargetSystem = request.TargetSubsystem,
-                TaskPriority = request.Priority,
+                TaskPriority = request.TaskPriority,
                 TaskType = request.TaskType,
+                Status = TaskStatusEnum.Pending,
                 EstimatedDurationMinutes = request.EstimatedDurationMinutes,
                 CreatedAtUtc = DateTime.UtcNow
             };

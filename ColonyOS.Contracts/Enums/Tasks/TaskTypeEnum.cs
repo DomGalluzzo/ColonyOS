@@ -2,7 +2,7 @@
 {
     public enum TaskTypeEnum
     {
-        Repair,
+        Repair = 1,
         Maintenance,
         Research
     }

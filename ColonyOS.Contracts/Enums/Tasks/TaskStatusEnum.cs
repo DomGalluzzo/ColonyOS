@@ -2,7 +2,7 @@
 {
     public enum TaskStatusEnum
     {
-        Pending,
+        Pending = 1,
         InProgress,
         Completed,
         Cancelled

@@ -1,9 +1,6 @@
+import { ColonyResource } from "./colony-resource.model";
+
 export interface ColonyState {
-    oxygenPercentage: number;
-    waterPercentage: number;
-    powerPercentage: number;
-    foodPercentage: number;
-    moralePercentage: number;
-    structuralIntegrityPercentage: number;
+    resources: ColonyResource[];
     lastUpdatedUtc: string;
 }

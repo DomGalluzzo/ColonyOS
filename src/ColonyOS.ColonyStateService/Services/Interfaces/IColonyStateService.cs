@@ -1,4 +1,4 @@
-﻿using ColonyOS.ColonyStateService.Models;
+﻿using ColonyOS.ColonyStateService.Models.ColonyState;
 
 namespace ColonyOS.ColonyStateService.Services.Interfaces
 {

@@ -16,7 +16,7 @@ namespace ColonyOS.ColonyStateService.Controllers
             _taskService = taskService;
         }
 
-        [HttpGet("active")]
+        [HttpGet]
         public async Task<ActionResult<IReadOnlyList<TaskItem>>> GetActiveTasks(CancellationToken cancellationToken)
         {
             var tasks = await _taskService.GetActiveTasksAsync(cancellationToken);
