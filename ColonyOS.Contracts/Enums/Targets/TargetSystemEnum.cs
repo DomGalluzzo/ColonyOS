@@ -2,7 +2,7 @@
 {
     public enum TargetSystemEnum
     {
-        OxygenGenerator,
+        OxygenGenerator = 1,
         WaterRecycler,
         SolarArray,
         FoodProduction,

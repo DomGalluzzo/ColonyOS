@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -8,18 +8,20 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
-import { TaskFormModel } from '../../shared/models/task-form.model';
-import { TargetSystem, TaskModel, TaskPriority, TaskType } from '../../shared/models/task-item.model';
-import { Alert } from '../../shared/models/alert.model';
-import { TasksService } from '../../shared/services/tasks.service';
+import { TaskFormModel } from '../../../shared/models/task-form.model';
+import { TargetSystem, TaskModel, TaskPriority, TaskType } from '../../../shared/models/task-item.model';
+import { Alert } from '../../../shared/models/alert.model';
+import { TasksService } from '../../../shared/services/tasks.service';
 
 @Component({
-  selector: 'app-tasks',
-  templateUrl: './tasks.component.html',
-  styleUrl: './tasks.component.scss'
+  selector: 'app-tasks-form',
+  templateUrl: './tasks-form.component.html',
+  styleUrl: './tasks-form.component.scss'
 })
-export class TasksComponent implements OnInit {
+export class TasksFormComponent implements OnInit {
   @Input() alert: Alert | null = null;
+  @Output() taskCreated = new EventEmitter<boolean>();
+
   public form!: FormGroup<TaskFormModel>;
   public tasks: TaskModel[] = [];
 
@@ -94,7 +96,7 @@ export class TasksComponent implements OnInit {
       description: this.description.value,
       taskType: this.taskType.value,
       targetSystem: this.targetSubsystem.value,
-      priority: this.priority.value,
+      taskPriority: this.priority.value,
       estimatedDurationMinutes: this.estimatedDurationMinutes.value,
       sourceAlertId: this.sourceAlertId.value
     };
@@ -103,9 +105,11 @@ export class TasksComponent implements OnInit {
       next: createdTask => {
         this.tasks.push(createdTask);
         this.form.reset();
+        this.taskCreated.emit(true);
       },
       error: error => {
         console.error('Failed to create task', error);
+        this.taskCreated.emit(false);
       }
     });
   }

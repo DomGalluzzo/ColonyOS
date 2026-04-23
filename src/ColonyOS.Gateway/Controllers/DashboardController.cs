@@ -1,4 +1,4 @@
-﻿using ColonyOS.ColonyStateService.Models;
+﻿using ColonyOS.ColonyStateService.Models.ColonyState;
 using ColonyOS.Contracts.Models.Alerts;
 using ColonyOS.Contracts.Models.Tasks;
 using ColonyOS.Gateway.Services;
@@ -44,6 +44,13 @@ namespace ColonyOS.Gateway.Controllers
                 return NotFound();
 
             return NoContent();
+        }
+
+        [HttpGet("tasks")]
+        public async Task<ActionResult<List<TaskItem>>> GetActiveTasksAsync(CancellationToken cancellationToken)
+        {
+            var tasks = await _colonyStateGatewayClient.GetActiveTasksAsync(cancellationToken);
+            return Ok(tasks);
         }
 
         [HttpPost("tasks")]

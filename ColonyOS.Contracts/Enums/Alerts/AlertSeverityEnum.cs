@@ -2,7 +2,7 @@
 {
     public enum AlertSeverityEnum
     {
-        Info,
+        Info = 1,
         Warning,
         Critical
     }
