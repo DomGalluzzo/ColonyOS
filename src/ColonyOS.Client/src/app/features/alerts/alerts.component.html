@@ -5,44 +5,65 @@
             <span class="badge rounded-pill text-bg-danger">{{ alerts.length }}</span>
         </div>
     </div>
-    <div *ngIf="!alerts.length" class="text-muted">All systems nominal</div>
+
+    <div *ngIf="!alerts.length" class="card-body text-muted">
+        All systems nominal
+    </div>
+
     <div
         *ngFor="let alert of alerts; trackBy: trackByAlertId"
         class="card m-2 border-1 shadow-sm"
         [ngClass]="{
-            'border-start border-4 border-danger': alert.severity === 'Critical',
-            'border-start border-4 border-warning': alert.severity === 'Warning',
+            'border-start border-4 border-danger': alert.severity === alertSeverity.Critical,
+            'border-start border-4 border-warning': alert.severity === alertSeverity.Warning,
             'opacity-75': alert.acknowledged
         }">
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-4">
-                <span class="badge me-2"
-                    [ngClass]="{
-                        'text-bg-danger': alert.severity === 'Critical',
-                        'text-bg-warning': alert.severity === 'Warning',
-                        'text-bg-secondary': alert.severity !== 'Critical' && alert.severity !== 'Warning'
-                    }">
-                    {{ alert.severity }}
-                </span>
-                <span class="text-muted">{{ alert.createdUtc | date:'short' }}</span>
-                <div class="mb-3">
-                    {{ alert.message }}
+            <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+                <div class="d-flex flex-column gap-2 flex-grow-1">
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <span
+                            class="badge"
+                            [ngClass]="{
+                                'text-bg-danger': alert.severity === alertSeverity.Critical,
+                                'text-bg-warning': alert.severity === alertSeverity.Warning,
+                                'text-bg-secondary': alert.severity !== alertSeverity.Critical && alert.severity !== alertSeverity.Warning
+                            }">
+                            {{ alert.severity }}
+                        </span>
+
+                        <span class="text-muted small">
+                            {{ alert.createdUtc | date:'short' }}
+                        </span>
+                    </div>
+
+                    <div>
+                        {{ alert.message }}
+                    </div>
                 </div>
-                <div class="d-flex gap-2" *ngIf="!alert.acknowledged">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="acknowledgeAlert(alert.id)">
+
+                <div class="d-flex gap-2 flex-wrap" *ngIf="!alert.acknowledged">
+                    <button
+                        type="button"
+                        class="btn btn-outline-secondary btn-sm"
+                        (click)="acknowledgeAlert(alert.id)">
                         Acknowledge
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" (click)="openCreateTask(alert)">
+                    <button
+                        type="button"
+                        class="btn btn-primary btn-sm"
+                        (click)="openCreateTask(alert)">
                         Create Task
                     </button>
                 </div>
+
                 <div class="text-success fw-semibold" *ngIf="alert.acknowledged">
                     Acknowledged
                 </div>
             </div>
-            
         </div>
     </div>
+
     <div
         #createTaskModal
         class="modal fade"
@@ -58,7 +79,10 @@
                         (click)="closeCreateTask()"></button>
                 </div>
                 <div class="modal-body">
-                    <app-tasks-form *ngIf="selectedAlert" [alert]="selectedAlert" (taskCreated)="taskCreated($event)"></app-tasks-form>
+                    <app-tasks-form
+                        *ngIf="selectedAlert"
+                        [alert]="selectedAlert"
+                        (taskCreated)="taskCreated($event)"></app-tasks-form>
                 </div>
                 <div class="modal-footer border-secondary">
                     <button
@@ -72,4 +96,3 @@
         </div>
     </div>
 </div>
-

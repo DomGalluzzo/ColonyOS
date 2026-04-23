@@ -1,18 +1,61 @@
-
 <div class="card h-100 shadow-sm mb-4">
     <div class="card-header">
         <div class="d-flex justify-content-between align-items-center mb-1">
             <h2 class="h4 mb-0">Resource State</h2>
         </div>
     </div>
+
     <div class="card-body mt-0 pt-2">
         <div class="row g-3 w-100 h-100">
             <ng-container *ngFor="let resource of colonyState.resources">
                 <div class="col-lg-4 col-md-6">
                     <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ resource.title }}</h5>
-                            <p class="display-6 mb-0">{{ resource.percentage }}%</p>
+                        <div
+                            class="card-body"
+                            [ngClass]="{
+                                'border border-1 border-danger resource-critical':
+                                    getResourceStatus(resource) === 'critical-low' || getResourceStatus(resource) === 'critical-high',
+                                'border border-1 border-warning':
+                                    getResourceStatus(resource) === 'warning-low' || getResourceStatus(resource) === 'warning-high'
+                            }">
+
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <h5 class="card-title mb-0">{{ resource.title }}</h5>
+
+                                <span
+                                    class="badge"
+                                    *ngIf="getResourceStatus(resource) !== 'normal'"
+                                    [ngClass]="{
+                                        'text-bg-danger':
+                                            getResourceStatus(resource) === 'critical-low' || getResourceStatus(resource) === 'critical-high',
+                                        'text-bg-warning':
+                                            getResourceStatus(resource) === 'warning-low' || getResourceStatus(resource) === 'warning-high'
+                                    }">
+                                    <ng-container *ngIf="getResourceStatus(resource) === 'critical-low'">
+                                        ↓ LOW
+                                    </ng-container>
+                                    <ng-container *ngIf="getResourceStatus(resource) === 'warning-low'">
+                                        ↓ NEAR LOW
+                                    </ng-container>
+                                    <ng-container *ngIf="getResourceStatus(resource) === 'critical-high'">
+                                        ↑ HIGH
+                                    </ng-container>
+                                    <ng-container *ngIf="getResourceStatus(resource) === 'warning-high'">
+                                        ↑ NEAR HIGH
+                                    </ng-container>
+                                </span>
+                            </div>
+
+                            <p
+                                class="display-6 mb-0"
+                                [ngClass]="{
+                                    'text-danger':
+                                        getResourceStatus(resource) === 'critical-low' || getResourceStatus(resource) === 'critical-high',
+                                    'text-warning':
+                                        getResourceStatus(resource) === 'warning-low' || getResourceStatus(resource) === 'warning-high'
+                                }">
+                                {{ resource.percentage }}%
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -20,4 +63,3 @@
         </div>
     </div>
 </div>
-

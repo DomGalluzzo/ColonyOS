@@ -1,30 +1,30 @@
 export enum TaskType {
   Maintenance = 1,
-  Investigation = 2,
-  EmergencyResponse = 3
+  Investigation,
+  EmergencyResponse
 }
 
 export enum TaskPriority {
   Low = 1,
-  Medium = 2,
-  High = 3,
-  Critical = 4
+  Medium,
+  High,
+  Critical
 }
 
 export enum TaskStatus {
   Pending = 1,
-  InProgress = 2,
-  Completed = 3,
-  Cancelled = 4
+  InProgress,
+  Completed,
+  Cancelled
 }
 
 export enum TargetSystem {
   Oxygen = 1,
-  Water = 2,
-  Power = 3,
-  Food = 4,
-  Habitat = 5,
-  Communications = 6
+  Water,
+  Power,
+  Food,
+  Habitat,
+  Communications
 }
 
 export interface TaskModel {

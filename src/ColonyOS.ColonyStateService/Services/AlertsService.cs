@@ -18,7 +18,8 @@ namespace ColonyOS.ColonyStateService.Services
             new(ColonyResourceTypeEnum.Power, AlertTypeEnum.PowerCritical, AlertSeverityEnum.Critical),
             new(ColonyResourceTypeEnum.StructuralIntegrity, AlertTypeEnum.StructuralDamage, AlertSeverityEnum.Critical),
             new(ColonyResourceTypeEnum.Food, AlertTypeEnum.FoodLow, AlertSeverityEnum.Critical),
-            new(ColonyResourceTypeEnum.Water, AlertTypeEnum.WaterCritical, AlertSeverityEnum.Critical)
+            new(ColonyResourceTypeEnum.Water, AlertTypeEnum.WaterCritical, AlertSeverityEnum.Critical),
+            new(ColonyResourceTypeEnum.Radiation, AlertTypeEnum.RadiationCritical, AlertSeverityEnum.Critical)
         ];
 
         public IReadOnlyCollection<Alert> GetAll()

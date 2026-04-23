@@ -6,6 +6,7 @@
         WaterCritical,
         PowerCritical,
         FoodLow,
-        StructuralDamage
+        StructuralDamage,
+        RadiationCritical
     }
 }

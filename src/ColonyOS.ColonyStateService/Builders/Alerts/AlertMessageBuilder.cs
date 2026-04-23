@@ -13,6 +13,7 @@ namespace ColonyOS.ColonyStateService.Builders.Alerts
                 AlertTypeEnum.PowerCritical => "Power levels unstable",
                 AlertTypeEnum.FoodLow => "Food supplies running low",
                 AlertTypeEnum.StructuralDamage => "Structural integrity compromised",
+                AlertTypeEnum.RadiationCritical => "Radiation levels are critical. Seek shelter Immediately",
                 _ => "Unknown alert"
             };
         }

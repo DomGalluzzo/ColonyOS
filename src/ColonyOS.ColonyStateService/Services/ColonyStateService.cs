@@ -62,7 +62,7 @@ namespace ColonyOS.ColonyStateService.Services
                     new ColonyResource()
                     {
                         Title = "Morale",
-                        Percentage = 88,
+                        Percentage = 55,
                         MinThreshold = 50,
                         ResourceType = ColonyResourceTypeEnum.Morale
                     },
@@ -76,7 +76,7 @@ namespace ColonyOS.ColonyStateService.Services
                     new ColonyResource()
                     {
                         Title = "Radiation",
-                        Percentage = 15,
+                        Percentage = 56,
                         MaxThreshold = 55,
                         ResourceType = ColonyResourceTypeEnum.Radiation
                     }

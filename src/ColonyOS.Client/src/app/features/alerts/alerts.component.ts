@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { Alert } from '../../shared/models/alert.model';
+import { Alert, AlertSeverityEnum } from '../../shared/models/alert.model';
 import { Modal } from 'bootstrap';
 import { TaskModel } from '../../shared/models/task-item.model';
 
@@ -15,6 +15,8 @@ export class AlertsComponent implements AfterViewInit {
   @ViewChild('createTaskModal') createTaskModalElement: ElementRef<HTMLDivElement>;
 
   public selectedAlert: Alert | null;
+  public alertSeverity = AlertSeverityEnum;
+
   private createTaskModal: Modal;
 
   public ngAfterViewInit(): void {

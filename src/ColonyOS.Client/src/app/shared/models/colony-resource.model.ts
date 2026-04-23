@@ -3,10 +3,11 @@ export interface ColonyResource {
     title: string;
     percentage: number,
     minThreshold: number;
+    maxThreshold: number;
 }
 
 export enum ColonyResourceType {
-    Oxygen,
+    Oxygen = 1,
     Water,
     Power,
     Food,
