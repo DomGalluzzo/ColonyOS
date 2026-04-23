@@ -1,19 +1,25 @@
 ﻿using ColonyOS.ColonyStateService.Builders.Alerts;
+using ColonyOS.ColonyStateService.Models.ColonyState;
+using ColonyOS.ColonyStateService.Models.ColonyState.Resources;
 using ColonyOS.ColonyStateService.Services.Interfaces;
 using ColonyOS.Contracts.Enums.Alerts;
-using ColonyOS.ColonyStateService.Models;
+using ColonyOS.Contracts.Enums.ColonyResources;
 using ColonyOS.Contracts.Models.Alerts;
 
 namespace ColonyOS.ColonyStateService.Services
 {
     public class AlertsService : IAlertsService
     {
-        private readonly List<Alert> _alerts = new List<Alert>();
-        private const double _oxygenUpperThreshold = 25;
-        private const double _powerUpperThreshold = 20;
-        private const double _structuralIntegrityUpperThreshold = 30;
-        private const double _foodUpperThreshold = 40;
-        private const double _waterUpperThreshold = 40;
+        private readonly List<Alert> _alerts = new();
+
+        private static readonly IReadOnlyCollection<ResourceAlertRule> _resourceAlertRules =
+        [
+            new(ColonyResourceTypeEnum.Oxygen, AlertTypeEnum.OxygenCritical, AlertSeverityEnum.Critical),
+            new(ColonyResourceTypeEnum.Power, AlertTypeEnum.PowerCritical, AlertSeverityEnum.Critical),
+            new(ColonyResourceTypeEnum.StructuralIntegrity, AlertTypeEnum.StructuralDamage, AlertSeverityEnum.Critical),
+            new(ColonyResourceTypeEnum.Food, AlertTypeEnum.FoodLow, AlertSeverityEnum.Critical),
+            new(ColonyResourceTypeEnum.Water, AlertTypeEnum.WaterCritical, AlertSeverityEnum.Critical)
+        ];
 
         public IReadOnlyCollection<Alert> GetAll()
         {
@@ -26,52 +32,52 @@ namespace ColonyOS.ColonyStateService.Services
 
         public void EvaluateAlerts(ColonyState colonyState)
         {
-            CreateIfNeeded(
-                colonyState.OxygenPercentage < _oxygenUpperThreshold,
-                AlertTypeEnum.OxygenCritical,
-                AlertSeverityEnum.Critical);
+            if (colonyState?.Resources == null || colonyState.Resources.Count == 0)
+                return;
 
-            CreateIfNeeded(
-                colonyState.PowerPercentage < _powerUpperThreshold,
-                AlertTypeEnum.PowerCritical,
-                AlertSeverityEnum.Critical);
+            foreach (var rule in _resourceAlertRules)
+            {
+                var colonyStateResource = colonyState.Resources
+                    .FirstOrDefault(r => r.ResourceType == rule.ResourceType);
 
-            CreateIfNeeded(
-                colonyState.StructuralIntegrityPercentage < _structuralIntegrityUpperThreshold,
-                AlertTypeEnum.StructuralDamage,
-                AlertSeverityEnum.Critical);
+                if (colonyStateResource == null) continue;
 
-            CreateIfNeeded(
-                colonyState.FoodPercentage < _foodUpperThreshold,
-                AlertTypeEnum.FoodLow,
-                AlertSeverityEnum.Critical);
 
-            CreateIfNeeded(
-                colonyState.WaterPercentage < _waterUpperThreshold,
-                AlertTypeEnum.WaterCritical,
-                AlertSeverityEnum.Critical);
+                CreateIfNeeded(
+                    ShouldTriggerAlert(colonyStateResource),
+                    rule.AlertType,
+                    rule.AlertSeverity);
+            }
         }
 
         public bool Acknowledge(Guid alertId)
         {
             var alert = _alerts.FirstOrDefault(a => a.Id == alertId);
-            if (alert == null)
-                return false;
+            if (alert == null) return false;
 
             alert.Acknowledged = true;
             return true;
         }
 
+        private bool ShouldTriggerAlert(ColonyResource resource)
+        {
+            if (resource.MinThreshold.HasValue)
+                return resource.Percentage < resource.MinThreshold.Value;
+
+            if (resource.MaxThreshold.HasValue)
+                return resource.Percentage > resource.MaxThreshold.Value;
+
+            return false;
+        }
+
         private void CreateIfNeeded(bool condition, AlertTypeEnum alertType, AlertSeverityEnum alertSeverity)
         {
-            if (!condition)
-                return;
+            if (!condition) return;
 
             var existingActiveAlert = _alerts.Any(a => a.Type == alertType);
-            if (existingActiveAlert)
-                return;
+            if (existingActiveAlert) return;
 
-            _alerts.Add(new Alert()
+            _alerts.Add(new Alert
             {
                 Id = Guid.NewGuid(),
                 Type = alertType,
@@ -81,5 +87,10 @@ namespace ColonyOS.ColonyStateService.Services
                 Acknowledged = false
             });
         }
+
+        private sealed record ResourceAlertRule(
+            ColonyResourceTypeEnum ResourceType,
+            AlertTypeEnum AlertType,
+            AlertSeverityEnum AlertSeverity);
     }
 }

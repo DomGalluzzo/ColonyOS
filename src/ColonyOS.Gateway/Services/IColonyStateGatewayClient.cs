@@ -1,4 +1,4 @@
-﻿using ColonyOS.ColonyStateService.Models;
+﻿using ColonyOS.ColonyStateService.Models.ColonyState;
 using ColonyOS.Contracts.Models.Alerts;
 using ColonyOS.Contracts.Models.Tasks;
 

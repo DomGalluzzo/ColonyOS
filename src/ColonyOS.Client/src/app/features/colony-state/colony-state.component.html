@@ -7,54 +7,16 @@
     </div>
     <div class="card-body mt-0 pt-2">
         <div class="row g-3 w-100 h-100">
-            <div class="col-lg-4 col-md-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Oxygen</h5>
-                        <p class="display-6 mb-0">{{ colonyState.oxygenPercentage }}%</p>
+            <ng-container *ngFor="let resource of colonyState.resources">
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ resource.title }}</h5>
+                            <p class="display-6 mb-0">{{ resource.percentage }}%</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Water</h5>
-                        <p class="display-6 mb-0">{{ colonyState.waterPercentage}}%</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Power</h5>
-                        <p class="display-6 mb-0">{{ colonyState.powerPercentage }}%</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Food</h5>
-                        <p class="display-6 mb-0">{{ colonyState.foodPercentage }}%</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Morale</h5>
-                        <p class="display-6 mb-0">{{ colonyState.moralePercentage }}%</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Structural Integrity</h5>
-                        <p class="display-6 mb-0">{{ colonyState.structuralIntegrityPercentage }}%</p>
-                    </div>
-                </div>
-            </div>
+            </ng-container>
         </div>
     </div>
 </div>
