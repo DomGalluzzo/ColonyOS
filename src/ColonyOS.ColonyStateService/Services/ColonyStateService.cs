@@ -19,7 +19,7 @@ namespace ColonyOS.ColonyStateService.Services
             var colonyState = new ColonyState()
             {
                 OxygenPercentage = 22,
-                WaterPercentage = 82,
+                WaterPercentage = 15,
                 PowerPercentage = 74,
                 FoodPercentage = 91,
                 MoralePercentage = 88,

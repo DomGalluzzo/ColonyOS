@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -20,6 +20,8 @@ import { TasksService } from '../../shared/services/tasks.service';
 })
 export class TasksComponent implements OnInit {
   @Input() alert: Alert | null = null;
+  @Output() taskCreated = new EventEmitter<boolean>();
+
   public form!: FormGroup<TaskFormModel>;
   public tasks: TaskModel[] = [];
 
@@ -103,9 +105,11 @@ export class TasksComponent implements OnInit {
       next: createdTask => {
         this.tasks.push(createdTask);
         this.form.reset();
+        this.taskCreated.emit(true);
       },
       error: error => {
         console.error('Failed to create task', error);
+        this.taskCreated.emit(false);
       }
     });
   }

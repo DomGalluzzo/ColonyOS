@@ -12,6 +12,8 @@ namespace ColonyOS.ColonyStateService.Services
         private const double _oxygenUpperThreshold = 25;
         private const double _powerUpperThreshold = 20;
         private const double _structuralIntegrityUpperThreshold = 30;
+        private const double _foodUpperThreshold = 40;
+        private const double _waterUpperThreshold = 40;
 
         public IReadOnlyCollection<Alert> GetAll()
         {
@@ -37,6 +39,16 @@ namespace ColonyOS.ColonyStateService.Services
             CreateIfNeeded(
                 colonyState.StructuralIntegrityPercentage < _structuralIntegrityUpperThreshold,
                 AlertTypeEnum.StructuralDamage,
+                AlertSeverityEnum.Critical);
+
+            CreateIfNeeded(
+                colonyState.FoodPercentage < _foodUpperThreshold,
+                AlertTypeEnum.FoodLow,
+                AlertSeverityEnum.Critical);
+
+            CreateIfNeeded(
+                colonyState.WaterPercentage < _waterUpperThreshold,
+                AlertTypeEnum.WaterCritical,
                 AlertSeverityEnum.Critical);
         }
 

@@ -46,4 +46,9 @@ export class AlertsComponent implements AfterViewInit {
     this.selectedAlert = null;
     this.createTaskModal?.hide();
   }
+
+  public taskCreated(isSuccessful: boolean): boolean {
+    if (isSuccessful) this.closeCreateTask();
+    return isSuccessful;
+  }
 }
