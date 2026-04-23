@@ -1,0 +1,35 @@
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  font-weight: 600;
+}
+
+input,
+textarea,
+select {
+  padding: 10px 12px;
+  border: 1px solid #3a4454;
+  border-radius: 8px;
+  background: #151a22;
+  color: #f5f5f5;
+}
+
+.error-message {
+  font-size: 12px;
+  color: #ff7b7b;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+}

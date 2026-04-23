@@ -3,9 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36717.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ColonyOS.Client", "colonyos.client\ColonyOS.Client.esproj", "{3B22BD3C-7DAF-5633-E76D-ADA00005C98F}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ColonyOS.Client", "src\ColonyOS.Client\ColonyOS.Client.esproj", "{3B22BD3C-7DAF-5633-E76D-ADA00005C98F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColonyOS.Gateway", "ColonyOS.Gateway\ColonyOS.Gateway.csproj", "{B080F9DC-B6FD-FAB0-E978-791BA80EBEE0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColonyOS.Gateway", "src\ColonyOS.Gateway\ColonyOS.Gateway.csproj", "{B080F9DC-B6FD-FAB0-E978-791BA80EBEE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColonyOS.ColonyStateService", "src\ColonyOS.ColonyStateService\ColonyOS.ColonyStateService.csproj", "{C92AA552-0102-48DB-8095-85B2FF5DE354}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contracts", "contracts", "{4A313B9F-5214-4517-964B-D7AE5190B5F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColonyOS.Contracts", "ColonyOS.Contracts\ColonyOS.Contracts.csproj", "{2AD6525F-5B1A-4B7B-AF4D-B9D9C46BFE48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,9 +31,23 @@ Global
 		{B080F9DC-B6FD-FAB0-E978-791BA80EBEE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B080F9DC-B6FD-FAB0-E978-791BA80EBEE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B080F9DC-B6FD-FAB0-E978-791BA80EBEE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C92AA552-0102-48DB-8095-85B2FF5DE354}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C92AA552-0102-48DB-8095-85B2FF5DE354}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C92AA552-0102-48DB-8095-85B2FF5DE354}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C92AA552-0102-48DB-8095-85B2FF5DE354}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AD6525F-5B1A-4B7B-AF4D-B9D9C46BFE48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AD6525F-5B1A-4B7B-AF4D-B9D9C46BFE48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AD6525F-5B1A-4B7B-AF4D-B9D9C46BFE48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AD6525F-5B1A-4B7B-AF4D-B9D9C46BFE48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3B22BD3C-7DAF-5633-E76D-ADA00005C98F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B080F9DC-B6FD-FAB0-E978-791BA80EBEE0} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{C92AA552-0102-48DB-8095-85B2FF5DE354} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{2AD6525F-5B1A-4B7B-AF4D-B9D9C46BFE48} = {4A313B9F-5214-4517-964B-D7AE5190B5F4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {03C1EBF5-8F0D-496F-BC44-22702E5519B2}

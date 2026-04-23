@@ -1,0 +1,97 @@
+<section *ngIf="tasks" class="tasks-list">
+  <ng-container *ngFor="let task of tasks">
+    <div class="task">
+      {{ task.title }}
+    </div>
+  </ng-container>
+</section>
+
+<form
+  class="task-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()">
+  <div class="form-row">
+    <label for="title">Title</label>
+    <input
+      id="title"
+      type="text"
+      formControlName="title" />
+
+    <div *ngIf="title.touched && title.hasError('required')" class="error-message">Title is required.</div>
+    <div *ngIf="title.touched && title.hasError('maxlength')" class="error-message">Title cannot exceed 120 characters.</div>
+  </div>
+
+  <div class="form-row">
+    <label for="description">Description</label>
+    <textarea
+      id="description"
+      rows="4"
+      formControlName="description"></textarea>
+  </div>
+
+  <div class="form-row">
+    <label for="taskType">Task Type</label>
+    <select
+      id="taskType"
+      formControlName="taskType">
+      <ng-container *ngFor="let option of taskTypeOptions">
+        <option [ngValue]="option.value">{{ option.label }}</option>
+      </ng-container>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="targetSubsystem">Target Subsystem</label>
+    <select
+      id="targetSubsystem"
+      formControlName="targetSubsystem">
+      <option [ngValue]="null">Select subsystem</option>
+      <ng-container *ngFor="let option of subsystemOptions">
+        <option [ngValue]="option.value">{{ option.label }}</option>
+      </ng-container>
+    </select>
+
+    <div *ngIf="form.touched && form.hasError('subsystemRequiredForMaintenance')" class="error-message">
+      Subsystem is required for maintenance tasks.
+    </div>
+  </div>
+
+  <div class="form-row">
+    <label for="priority">Priority</label>
+    <select
+      id="priority"
+      formControlName="priority">
+      <ng-container *ngFor="let option of priorityOptions">
+        <option [ngValue]="option.value">{{ option.label }}</option>
+      </ng-container>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="estimatedDurationMinutes">Estimated Duration (minutes)</label>
+    <input
+      id="estimatedDurationMinutes"
+      type="number"
+      formControlName="estimatedDurationMinutes" />
+
+    <div *ngIf="estimatedDurationMinutes.touched && estimatedDurationMinutes.hasError('required')" class="error-message">Estimated duration is required.</div>
+    <div *ngIf="estimatedDurationMinutes.touched && estimatedDurationMinutes.hasError('min')" class="error-message">Estimated duration must be at least 1 minute.</div>
+  </div>
+
+  <div class="form-row">
+    <label for="sourceAlertId">Source Alert Id</label>
+    <input
+      id="sourceAlertId"
+      type="text"
+      formControlName="sourceAlertId" />
+  </div>
+
+  <div class="form-actions">
+    <button
+      type="submit"
+      class="btn btn-success btn-sm"
+      [disabled]="form.invalid">
+      Create Task
+    </button>
+  </div>
+</form>
