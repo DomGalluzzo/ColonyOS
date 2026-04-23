@@ -12,11 +12,11 @@ export class TasksComponent {
   public taskPriority = TaskPriority;
   public taskStatus = TaskStatus;
 
-  public readonly taskStatusMap: Record<TaskStatus, string> = {
-    [TaskStatus.Cancelled]: 'Cancelled',
-    [TaskStatus.Completed]: 'Completed',
-    [TaskStatus.InProgress]: 'In Progress',
-    [TaskStatus.Pending]: 'Pending'
+  public readonly taskStatusMeta: Record<TaskStatus, { label: string; class: string }> = {
+    [TaskStatus.Pending]: { label: 'Pending', class: 'text-light' },
+    [TaskStatus.InProgress]: { label: 'In Progress', class: 'text-info' },
+    [TaskStatus.Completed]: { label: 'Completed', class: 'text-success' },
+    [TaskStatus.Cancelled]: { label: 'Cancelled', class: 'text-danger' }
   };
 
   trackByTaskId(index: number, task: TaskModel) {

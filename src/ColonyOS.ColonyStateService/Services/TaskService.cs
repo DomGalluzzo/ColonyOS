@@ -16,7 +16,7 @@ namespace ColonyOS.ColonyStateService.Services
         public async Task<IReadOnlyList<TaskItem>> GetActiveTasksAsync(CancellationToken cancellationToken = default)
         {
             return _tasks
-                .OrderBy(t => t.TaskPriority)
+                .OrderByDescending(t => t.TaskPriority)
                 .ThenBy(t => t.CompletedAtUtc)
                 .ToList();
         }

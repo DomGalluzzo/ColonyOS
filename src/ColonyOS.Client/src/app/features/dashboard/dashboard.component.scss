@@ -1,0 +1,10 @@
+.dashboard-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-row {
+  flex: 1;
+  align-content: stretch;
+}
