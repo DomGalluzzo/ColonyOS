@@ -1,7 +1,7 @@
-using System.Text.Json.Serialization;
-using ColonyOS.Gateway.Configuration;
+using ColonyOS.Gateway.Hubs;
 using ColonyOS.Gateway.Constants;
 using ColonyOS.Gateway.Services;
+using ColonyOS.Gateway.Workers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +14,8 @@ builder.Services.AddCors(options =>
         policy
             .WithOrigins("http://localhost:64030")
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
@@ -28,11 +29,9 @@ builder.Services.AddHttpClient<IColonyStateGatewayClient, ColonyStateGatewayClie
     client.BaseAddress = new Uri(colonyStateBaseUrl);
 });
 
+builder.Services.AddHostedService<ColonyDashboardBroadcastWorker>();
 builder.Services.AddControllers();
-    //.AddJsonOptions(options =>
-    //{
-    //    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    //});
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -44,10 +43,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowAngular");
+
 app.UseAuthorization();
 
-app.UseCors("AllowAngular");
+
 app.MapControllers();
+app.MapHub<ColonyDashboardHub>("/hubs/colony-dashboard");
 
 app.Run();
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
 
 import { DashboardApiService } from '../../core/services/dashboard-api.service';
 import { ColonyState } from '../../shared/models/colony-state.model';
@@ -7,6 +7,8 @@ import { Alert } from '../../shared/models/alert.model';
 import { TaskModel } from '../../shared/models/task-item.model';
 import { TasksService } from '../../shared/services/tasks.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ColonyDashboardRealtimeService } from '../../shared/services/colony-dashboard-realtime.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,14 +27,35 @@ export class DashboardComponent implements OnInit {
   constructor(
     private readonly dashboardApiService: DashboardApiService,
     private readonly alertService: AlertService,
-    private readonly tasksService: TasksService
+    private readonly tasksService: TasksService,
+    private readonly realtimeDashboardService: ColonyDashboardRealtimeService,
+    private readonly destroyRef: DestroyRef
   ) {}
 
   ngOnInit(): void {
-    this.loadState();
+    this.loadInitialDashboard();
+    this.realtimeDashboardService.startConnection();
+    this.realtimeDashboardService.colonyState$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(state => {
+        if (!state) return;
+
+        this.colonyState = state;
+      })
   }
 
-  public loadState(): void {
+  public acknowledgeAlertClicked(alert: Alert): void {
+    var existingAlert = this.alerts.find(a => a.id === alert.id);
+    if (!existingAlert) return;
+
+    existingAlert.acknowledged = true;
+  }
+
+  public newTaskCreated(isNewTaskCreated: boolean): void {
+    if (isNewTaskCreated) this.loadTasks();
+  }
+
+  private loadInitialDashboard(): void {
     this.isLoading = true;
     this.errorMessage = null;
 
@@ -48,7 +71,7 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  public loadAlerts(): void {
+  private loadAlerts(): void {
     this.isLoading = true;
     this.errorMessage = null;
 
@@ -64,7 +87,7 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  public loadTasks(): void {
+  private loadTasks(): void {
     this.isLoading = true;
     this.errorMessage = null;
 
@@ -78,16 +101,5 @@ export class DashboardComponent implements OnInit {
         this.isLoading = false;
       }
     })
-  }
-
-  public acknowledgeAlertClicked(alert: Alert): void {
-    var existingAlert = this.alerts.find(a => a.id === alert.id);
-    if (!existingAlert) return;
-
-    existingAlert.acknowledged = true;
-  }
-
-  public newTaskCreated(isNewTaskCreated: boolean): void {
-    if (isNewTaskCreated) this.loadTasks();
   }
 }
