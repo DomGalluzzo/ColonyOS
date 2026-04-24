@@ -82,7 +82,8 @@ Single entry point for the frontend.
 ### Backend
 - .NET 8  
 - ASP.NET Core Web API  
-- BackgroundService (simulation loops)  
+- BackgroundService (simulation loops)
+- SignalR (real-time updates)
 - Entity Framework Core  
 - SQL Server / PostgreSQL  
 
@@ -134,7 +135,7 @@ ColonyOS uses asynchronous messaging between services.
 1. Colony State detects low oxygen  
 2. Emits `ResourceThresholdBreached` event  
 3. Alert Service creates a critical alert  
-4. Gateway pushes update
+4. Gateway pushes update via SignalR
 5. Task Scheduler creates a repair task  
 6. Crew Service updates availability  
 
