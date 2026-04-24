@@ -7,7 +7,8 @@ namespace ColonyOS.ColonyStateService.Workers
         private readonly IColonyStateService _colonyStateService;
         private readonly ILogger<ColonySimulationWorker> _logger;
 
-        public ColonySimulationWorker(IColonyStateService colonyStateService,
+        public ColonySimulationWorker(
+            IColonyStateService colonyStateService,
             ILogger<ColonySimulationWorker> logger)
         {
             _colonyStateService = colonyStateService;
@@ -16,9 +17,9 @@ namespace ColonyOS.ColonyStateService.Workers
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            using var timer = new PeriodicTimer(TimeSpan.FromSeconds(5));
+            using var simulationTimer = new PeriodicTimer(TimeSpan.FromSeconds(5));
 
-            while (await timer.WaitForNextTickAsync(cancellationToken))
+            while (await simulationTimer.WaitForNextTickAsync(cancellationToken))
             {
                 try
                 {
@@ -26,7 +27,7 @@ namespace ColonyOS.ColonyStateService.Workers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error processing colony simulation tick");
+                    _logger.LogError(ex, "Error processing colony simulation tick.");
                 }
             }
         }

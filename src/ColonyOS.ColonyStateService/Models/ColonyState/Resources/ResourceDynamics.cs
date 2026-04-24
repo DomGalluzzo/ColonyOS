@@ -8,5 +8,7 @@ namespace ColonyOS.ColonyStateService.Models.ColonyState.Resources
         public ColonyResourceTrendEnum Trend { get; set; }
         public decimal Modifier { get; set; } = 1.0m;
         public bool IsPaused { get; set; }
+        public TimeSpan TickInterval { get; set; } = TimeSpan.FromSeconds(5);
+        public DateTime LastTickUtc { get; set; } = DateTime.UtcNow;
     }
 }

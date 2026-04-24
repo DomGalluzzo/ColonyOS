@@ -58,7 +58,8 @@ namespace ColonyOS.ColonyStateService.Services
                         ResourceDynamics = new ResourceDynamics()
                         {
                             BaseRatePerTick = 0.25m,
-                            Trend = ColonyResourceTrendEnum.Decreasing
+                            Trend = ColonyResourceTrendEnum.Decreasing,
+                            TickInterval = TimeSpan.FromSeconds(15)
                         }
                     },
                     new ColonyResource()
@@ -70,7 +71,8 @@ namespace ColonyOS.ColonyStateService.Services
                         ResourceDynamics = new ResourceDynamics()
                         {
                             BaseRatePerTick = 0.10m,
-                            Trend = ColonyResourceTrendEnum.Decreasing
+                            Trend = ColonyResourceTrendEnum.Decreasing,
+                            TickInterval = TimeSpan.FromSeconds(5)
                         }
                     },
                     new ColonyResource()
@@ -82,7 +84,8 @@ namespace ColonyOS.ColonyStateService.Services
                         ResourceDynamics = new ResourceDynamics()
                         {
                             BaseRatePerTick = 0.01m,
-                            Trend = ColonyResourceTrendEnum.Decreasing
+                            Trend = ColonyResourceTrendEnum.Decreasing,
+                            TickInterval = TimeSpan.FromSeconds(30)
                         }
                     },
                     new ColonyResource()
@@ -94,7 +97,8 @@ namespace ColonyOS.ColonyStateService.Services
                         ResourceDynamics = new ResourceDynamics()
                         {
                             BaseRatePerTick = 0.09m,
-                            Trend = ColonyResourceTrendEnum.Decreasing
+                            Trend = ColonyResourceTrendEnum.Decreasing,
+                            TickInterval = TimeSpan.FromSeconds(2)
                         }
                     },
                     new ColonyResource()
@@ -106,7 +110,8 @@ namespace ColonyOS.ColonyStateService.Services
                         ResourceDynamics = new ResourceDynamics()
                         {
                             BaseRatePerTick = 0.09m,
-                            Trend = ColonyResourceTrendEnum.Decreasing
+                            Trend = ColonyResourceTrendEnum.Decreasing,
+                            TickInterval = TimeSpan.FromSeconds(35)
                         }
                     },
                     new ColonyResource()
@@ -118,7 +123,8 @@ namespace ColonyOS.ColonyStateService.Services
                         ResourceDynamics = new ResourceDynamics()
                         {
                             BaseRatePerTick = 0.2m,
-                            Trend = ColonyResourceTrendEnum.Decreasing
+                            Trend = ColonyResourceTrendEnum.Decreasing,
+                            TickInterval = TimeSpan.FromSeconds(20)
                         }
                     },
                     new ColonyResource()
@@ -130,7 +136,8 @@ namespace ColonyOS.ColonyStateService.Services
                         ResourceDynamics = new ResourceDynamics()
                         {
                             BaseRatePerTick = 0.05m,
-                            Trend = ColonyResourceTrendEnum.Increasing
+                            Trend = ColonyResourceTrendEnum.Increasing,
+                            TickInterval = TimeSpan.FromMinutes(2)
                         }
                     }
                 ],

@@ -8,12 +8,22 @@ namespace ColonyOS.ColonyStateService.Services
     {
         public async Task ProcessSimulationTickAsync(ColonyState colonyState)
         {
+            var utcNow = DateTime.UtcNow;
+
             foreach (var resource in colonyState.Resources)
             {
                 var dynamics = resource.ResourceDynamics;
-                var delta = dynamics.Trend == ColonyResourceTrendEnum.Decreasing ? -dynamics.BaseRatePerTick : dynamics.BaseRatePerTick;
+                if (dynamics.IsPaused) continue;
 
-                resource.Percentage = Math.Clamp(resource.Percentage + delta, 0, 100);
+                var elapsed = utcNow - dynamics.LastTickUtc;
+                if (elapsed < dynamics.TickInterval) continue;
+
+                var effectiveRate = dynamics.BaseRatePerTick * dynamics.Modifier;
+                var delta = dynamics.Trend == ColonyResourceTrendEnum.Decreasing ? -effectiveRate : effectiveRate;
+
+                resource.Percentage = Math.Clamp(resource.Percentage + delta, 0m, 100m);
+
+                dynamics.LastTickUtc = utcNow;
             }
         }
     }
