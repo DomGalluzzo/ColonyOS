@@ -9,6 +9,7 @@ namespace ColonyOS.ColonyStateService.Models.ColonyState.Resources
         public decimal Percentage { get; set; }
         public decimal? MinThreshold { get; set; }
         public decimal? MaxThreshold { get; set; }
+        public bool IsBreached { get; set; }
         public ResourceDynamics ResourceDynamics { get; set; }
     }
 }

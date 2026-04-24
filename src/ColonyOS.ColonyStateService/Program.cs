@@ -13,8 +13,8 @@ builder.Services.AddSingleton<IColonyStateService, ColonyStateService>();
 builder.Services.AddSingleton<IColonySimulationService, ColonySimulationService>();
 builder.Services.AddHostedService<ColonySimulationWorker>();
 builder.Services.AddSingleton<ITaskService, TaskService>();
-
-builder.Services.AddControllers();
+builder.Services.AddSingleton<IResourceThresholdBreachTaskHandler, ResourceThresholdBreachTaskHandler>();
+builder.Services.AddSingleton<IEventPublisherService, EventPublisherService>();
 
 var app = builder.Build();
 
