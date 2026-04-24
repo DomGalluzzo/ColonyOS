@@ -1,6 +1,6 @@
-using System.Text.Json.Serialization;
 using ColonyOS.ColonyStateService.Services;
 using ColonyOS.ColonyStateService.Services.Interfaces;
+using ColonyOS.ColonyStateService.Workers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,12 +10,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IAlertsService, AlertsService>();
 builder.Services.AddSingleton<IColonyStateService, ColonyStateService>();
+builder.Services.AddSingleton<IColonySimulationService, ColonySimulationService>();
+builder.Services.AddHostedService<ColonySimulationWorker>();
 builder.Services.AddSingleton<ITaskService, TaskService>();
+
 builder.Services.AddControllers();
-    //.AddJsonOptions(options =>
-    //{
-    //    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    //});
 
 var app = builder.Build();
 
