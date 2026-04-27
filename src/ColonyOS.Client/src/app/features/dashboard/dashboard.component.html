@@ -17,12 +17,12 @@
         <div class="col-12 col-xl-6 d-flex">
             <app-alerts
                 class="w-100"
-                [alerts]="alerts"
+                [alerts]="colonyState.alerts"
                 (alertAcknowledged)="acknowledgeAlertClicked($event)"
                 (newTaskCreated)="newTaskCreated($event)"></app-alerts>
         </div>
         <div class="col-12 col-xl-6 d-flex">
-            <app-tasks class="w-100" [tasks]="tasks"></app-tasks>
+            <app-tasks class="w-100" [tasks]="colonyState.tasks"></app-tasks>
         </div>
     </div>
 </div>

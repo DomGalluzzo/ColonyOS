@@ -15,7 +15,7 @@ namespace ColonyOS.ColonyStateService.Services
 
         }
 
-        public async Task<IReadOnlyList<TaskItem>> GetActiveTasksAsync(CancellationToken cancellationToken = default)
+        public List<TaskItem> GetActiveTasks(CancellationToken cancellationToken = default)
         {
             return _tasks
                 .OrderByDescending(t => t.TaskPriority)
@@ -25,7 +25,7 @@ namespace ColonyOS.ColonyStateService.Services
 
         public async Task<bool> TaskExistsForSystemAsync(TargetSystemEnum targetSystem)
         {
-            var activeTasks = await GetActiveTasksAsync();
+            var activeTasks = GetActiveTasks();
 
             return activeTasks.Any(t => t.TargetSystem == targetSystem &&
                 (t.Status != TaskStatusEnum.InProgress || t.Status != TaskStatusEnum.InProgress));

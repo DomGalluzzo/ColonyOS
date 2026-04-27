@@ -10,6 +10,7 @@ namespace ColonyOS.ColonyStateService.Services
     public class ColonyStateService : IColonyStateService
     {
         private readonly IAlertsService _alertsService;
+        private readonly ITaskService _taskService;
         private readonly IColonySimulationService _colonySimulationService;
         private readonly IEventPublisherService _eventPublisher;
         private readonly object _lock = new();
@@ -17,10 +18,12 @@ namespace ColonyOS.ColonyStateService.Services
         private ColonyState _colonyState;
 
         public ColonyStateService(IAlertsService alertsService,
+            ITaskService taskService,
             IColonySimulationService colonySimulationService,
             IEventPublisherService eventPublisher)
         {
             _alertsService = alertsService;
+            _taskService = taskService;
             _colonySimulationService = colonySimulationService;
             _eventPublisher = eventPublisher;
 
@@ -34,7 +37,7 @@ namespace ColonyOS.ColonyStateService.Services
 
             lock (_lock)
             {
-                _alertsService.EvaluateAlerts(_colonyState);
+                HydrateState();
                 return _colonyState;
             }
         }
@@ -47,12 +50,21 @@ namespace ColonyOS.ColonyStateService.Services
             {
                 _colonySimulationService.ProcessSimulationTickAsync(_colonyState).GetAwaiter().GetResult();
                 _colonyState.LastUpdatedUtc = DateTime.UtcNow;
+
+                HydrateState();
+
                 colonyStateSnaphot = _colonyState;
             }
 
             await HandleResourceTransitionsAsync(colonyStateSnaphot);
 
             _alertsService.EvaluateAlerts(colonyStateSnaphot);
+        }
+
+        private void HydrateState()
+        {
+            _colonyState.Alerts = _alertsService.GetAll().ToList();
+            _colonyState.Tasks = _taskService.GetActiveTasks();
         }
 
         private async Task HandleResourceTransitionsAsync(ColonyState colonyState)
