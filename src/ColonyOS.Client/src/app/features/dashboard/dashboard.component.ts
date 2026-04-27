@@ -62,23 +62,7 @@ export class DashboardComponent implements OnInit {
     this.dashboardApiService.getColonyState().subscribe({
       next: (state: ColonyState) => {
         this.colonyState = state;
-        this.loadAlerts();
-      },
-      error: (error) => {
-        this.errorMessage = error;
         this.isLoading = false;
-      }
-    })
-  }
-
-  private loadAlerts(): void {
-    this.isLoading = true;
-    this.errorMessage = null;
-
-    this.alertService.getAlerts().subscribe({
-      next: (alerts) => {
-        this.alerts = alerts;
-        this.loadTasks();
       },
       error: (error) => {
         this.errorMessage = error;

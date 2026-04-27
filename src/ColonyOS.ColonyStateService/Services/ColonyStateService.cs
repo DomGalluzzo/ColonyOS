@@ -1,23 +1,32 @@
-﻿using ColonyOS.ColonyStateService.Services.Interfaces;
-using ColonyOS.ColonyStateService.Models.ColonyState;
+﻿using ColonyOS.ColonyStateService.Models.ColonyState;
 using ColonyOS.ColonyStateService.Models.ColonyState.Resources;
+using ColonyOS.ColonyStateService.Services.Interfaces;
 using ColonyOS.Contracts.Enums.ColonyResources;
+using ColonyOS.Contracts.Mappers;
+using ColonyOS.Contracts.Models.Events;
 
 namespace ColonyOS.ColonyStateService.Services
 {
     public class ColonyStateService : IColonyStateService
     {
         private readonly IAlertsService _alertsService;
+        private readonly ITaskService _taskService;
         private readonly IColonySimulationService _colonySimulationService;
+        private readonly IEventPublisherService _eventPublisher;
         private readonly object _lock = new();
 
         private ColonyState _colonyState;
 
         public ColonyStateService(IAlertsService alertsService,
-            IColonySimulationService colonySimulationService)
+            ITaskService taskService,
+            IColonySimulationService colonySimulationService,
+            IEventPublisherService eventPublisher)
         {
             _alertsService = alertsService;
+            _taskService = taskService;
             _colonySimulationService = colonySimulationService;
+            _eventPublisher = eventPublisher;
+
             _colonyState = GetHardcodedColonyState();
         }
 
@@ -28,18 +37,79 @@ namespace ColonyOS.ColonyStateService.Services
 
             lock (_lock)
             {
-                _alertsService.EvaluateAlerts(_colonyState);
+                HydrateState();
                 return _colonyState;
             }
         }
 
         public async Task ProcessSimulationTick()
         {
+            ColonyState colonyStateSnaphot;
+
             lock (_lock)
             {
                 _colonySimulationService.ProcessSimulationTickAsync(_colonyState).GetAwaiter().GetResult();
                 _colonyState.LastUpdatedUtc = DateTime.UtcNow;
-                _alertsService.EvaluateAlerts(_colonyState);
+
+                HydrateState();
+
+                colonyStateSnaphot = _colonyState;
+            }
+
+            await HandleResourceTransitionsAsync(colonyStateSnaphot);
+
+            _alertsService.EvaluateAlerts(colonyStateSnaphot);
+        }
+
+        private void HydrateState()
+        {
+            _colonyState.Alerts = _alertsService.GetAll().ToList();
+            _colonyState.Tasks = _taskService.GetActiveTasks();
+        }
+
+        private async Task HandleResourceTransitionsAsync(ColonyState colonyState)
+        {
+            foreach (var resource in _colonyState.Resources)
+            {
+                var wasBreached = resource.IsBreached;
+
+                var isBelowMin = resource.MinThreshold.HasValue && resource.Percentage < resource.MinThreshold;
+                var isAboveMax = resource.MaxThreshold.HasValue && resource.Percentage > resource.MaxThreshold;
+
+                var isNowBreached = isBelowMin || isAboveMax;
+
+                if (!wasBreached && isNowBreached)
+                {
+                    resource.IsBreached = true;
+
+                    await _eventPublisher.PublishAsync(new ResourceThresholdBreachedEvent
+                    {
+                        ColonyResourceType = resource.ResourceType,
+                        TargetSystem = ResourceToSystemMapper.Map(resource.ResourceType),
+                        CurrentPercentage = resource.Percentage,
+                        MinThreshold = resource.MinThreshold,
+                        MaxThreshold = resource.MaxThreshold,
+                        BreachDirection = isBelowMin
+                            ? ColonyResourceBreachDirectionEnum.BelowMinimum
+                            : ColonyResourceBreachDirectionEnum.AboveMaximum,
+                        OccurredAtUtc = DateTime.UtcNow
+                    });
+                }
+                else if (wasBreached && !isNowBreached)
+                {
+                    resource.IsBreached = false;
+
+                    await _eventPublisher.PublishAsync(new ResourceThresholdBreachedEvent
+                    {
+                        ColonyResourceType = resource.ResourceType,
+                        TargetSystem = ResourceToSystemMapper.Map(resource.ResourceType),
+                        CurrentPercentage = resource.Percentage,
+                        MinThreshold = resource.MinThreshold,
+                        MaxThreshold = resource.MaxThreshold,
+                        BreachDirection = ColonyResourceBreachDirectionEnum.Normal,
+                        OccurredAtUtc = DateTime.UtcNow
+                    });
+                }
             }
         }
 
@@ -52,7 +122,7 @@ namespace ColonyOS.ColonyStateService.Services
                     new ColonyResource()
                     {
                         Title = "Oxygen",
-                        Percentage = 100,
+                        Percentage = 31,
                         MinThreshold = 30,
                         ResourceType = ColonyResourceTypeEnum.Oxygen,
                         ResourceDynamics = new ResourceDynamics()
@@ -65,7 +135,7 @@ namespace ColonyOS.ColonyStateService.Services
                     new ColonyResource()
                     {
                         Title = "Water",
-                        Percentage = 100,
+                        Percentage = 42,
                         MinThreshold = 40,
                         ResourceType = ColonyResourceTypeEnum.Water,
                         ResourceDynamics = new ResourceDynamics()
@@ -78,7 +148,7 @@ namespace ColonyOS.ColonyStateService.Services
                     new ColonyResource()
                     {
                         Title = "Power",
-                        Percentage = 100,
+                        Percentage = 20,
                         MinThreshold = 20,
                         ResourceType = ColonyResourceTypeEnum.Power,
                         ResourceDynamics = new ResourceDynamics()

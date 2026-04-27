@@ -1,5 +1,7 @@
-﻿using ColonyOS.ColonyStateService.Models.Requests;
+﻿using System.Threading.Tasks;
+using ColonyOS.ColonyStateService.Models.Requests;
 using ColonyOS.ColonyStateService.Services.Interfaces;
+using ColonyOS.Contracts.Enums.Target;
 using ColonyOS.Contracts.Enums.Tasks;
 using ColonyOS.Contracts.Models.Tasks;
 
@@ -13,14 +15,23 @@ namespace ColonyOS.ColonyStateService.Services
 
         }
 
-        public async Task<IReadOnlyList<TaskItem>> GetActiveTasksAsync(CancellationToken cancellationToken = default)
+        public List<TaskItem> GetActiveTasks(CancellationToken cancellationToken = default)
         {
             return _tasks
                 .OrderByDescending(t => t.TaskPriority)
                 .ThenBy(t => t.CompletedAtUtc)
                 .ToList();
         }
-        public async  Task<TaskItem> CreateTaskAsync(CreateTaskRequest request, CancellationToken cancellationToken = default)
+
+        public async Task<bool> TaskExistsForSystemAsync(TargetSystemEnum targetSystem)
+        {
+            var activeTasks = GetActiveTasks();
+
+            return activeTasks.Any(t => t.TargetSystem == targetSystem &&
+                (t.Status != TaskStatusEnum.InProgress || t.Status != TaskStatusEnum.InProgress));
+        }
+
+        public async Task<TaskItem> CreateTaskAsync(CreateTaskRequest request, CancellationToken cancellationToken = default)
         {
             var newTask = new TaskItem()
             {
