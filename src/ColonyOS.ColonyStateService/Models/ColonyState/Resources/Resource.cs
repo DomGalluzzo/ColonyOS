@@ -6,8 +6,10 @@ namespace ColonyOS.ColonyStateService.Models.ColonyState.Resources
     {
         public ColonyResourceTypeEnum ResourceType { get; set; }
         public string Title { get; set; }
-        public double Percentage { get; set; }
-        public double? MinThreshold { get; set; }
-        public double? MaxThreshold { get; set; }
+        public decimal Percentage { get; set; }
+        public decimal? MinThreshold { get; set; }
+        public decimal? MaxThreshold { get; set; }
+        public bool IsBreached { get; set; }
+        public ResourceDynamics ResourceDynamics { get; set; }
     }
 }

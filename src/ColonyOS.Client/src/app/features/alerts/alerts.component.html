@@ -1,67 +1,70 @@
-<div class="card h-100 shadow-sm mb-4">
-    <div class="card-header">
-        <div class="d-flex justify-content-between align-items-center mb-1">
-            <h2 class="h4 mb-0">Active Alerts</h2>
-            <span class="badge rounded-pill text-bg-danger">{{ alerts.length }}</span>
+<section class="alerts-panel">
+    <header class="alerts-panel__header">
+        <div>
+            <p class="eyebrow">INCIDENT MONITOR</p>
+            <h2>Active Alerts</h2>
+        </div>
+
+        <div class="alert-count" [class.alert-count--active]="alerts.length">
+            {{ alerts.length }}
+        </div>
+    </header>
+
+    <div *ngIf="!alerts.length" class="empty-state">
+        <span class="empty-state__icon">✓</span>
+        <div>
+            <p>All systems nominal</p>
+            <small>No active incident signals detected.</small>
         </div>
     </div>
 
-    <div *ngIf="!alerts.length" class="card-body text-muted">
-        All systems nominal
-    </div>
+    <div class="alert-feed" *ngIf="alerts.length">
+        <article
+            *ngFor="let alert of alerts; trackBy: trackByAlertId"
+            class="alert-item"
+            [ngClass]="{
+                'alert-item--critical': alert.severity === alertSeverity.Critical,
+                'alert-item--warning': alert.severity === alertSeverity.Warning,
+                'alert-item--acknowledged': alert.acknowledged
+            }">
 
-    <div
-        *ngFor="let alert of alerts; trackBy: trackByAlertId"
-        class="card m-2 border-1 shadow-sm"
-        [ngClass]="{
-            'border-start border-4 border-danger': alert.severity === alertSeverity.Critical,
-            'border-start border-4 border-warning': alert.severity === alertSeverity.Warning,
-            'opacity-75': alert.acknowledged
-        }">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
-                <div class="d-flex flex-column gap-2 flex-grow-1">
-                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <span
-                            class="badge"
-                            [ngClass]="{
-                                'text-bg-danger': alert.severity === alertSeverity.Critical,
-                                'text-bg-warning': alert.severity === alertSeverity.Warning,
-                                'text-bg-secondary': alert.severity !== alertSeverity.Critical && alert.severity !== alertSeverity.Warning
-                            }">
-                            {{ alert.severity }}
-                        </span>
+            <div class="alert-item__signal">
+                <span></span>
+            </div>
 
-                        <span class="text-muted small">
-                            {{ alert.createdUtc | date:'short' }}
-                        </span>
-                    </div>
+            <div class="alert-item__content">
+                <div class="alert-item__meta">
 
-                    <div>
-                        {{ alert.message }}
-                    </div>
+                    <span class="alert-time">
+                        {{ alert.createdUtc | date:'HH:mm:ss' }}
+                    </span>
                 </div>
 
-                <div class="d-flex gap-2 flex-wrap" *ngIf="!alert.acknowledged">
+                <p class="alert-message">
+                    {{ alert.message }}
+                </p>
+
+                <div class="alert-actions" *ngIf="!alert.acknowledged">
                     <button
                         type="button"
-                        class="btn btn-outline-secondary btn-sm"
+                        class="command-button command-button--secondary"
                         (click)="acknowledgeAlert(alert.id)">
                         Acknowledge
                     </button>
+
                     <button
                         type="button"
-                        class="btn btn-primary btn-sm"
+                        class="command-button command-button--primary"
                         (click)="openCreateTask(alert)">
-                        Create Task
+                        Dispatch Task
                     </button>
                 </div>
 
-                <div class="text-success fw-semibold" *ngIf="alert.acknowledged">
-                    Acknowledged
+                <div class="acknowledged-status" *ngIf="alert.acknowledged">
+                    ACKNOWLEDGED
                 </div>
             </div>
-        </div>
+        </article>
     </div>
 
     <div
@@ -70,29 +73,32 @@
         id="createTaskModal"
         tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content bg-dark text-light border-secondary">
-                <div class="modal-header border-secondary">
-                    <h2 class="modal-title fs-5" id="createTaskModalLabel">Create Task</h2>
+            <div class="modal-content mission-modal">
+                <div class="modal-header mission-modal__header">
+                    <div>
+                        <p class="eyebrow">TASK AUTHORIZATION</p>
+                        <h2 class="modal-title fs-5" id="createTaskModalLabel">
+                            Dispatch Response Task
+                        </h2>
+                    </div>
+
                     <button
                         type="button"
-                        class="btn-close btn-close-white"
-                        (click)="closeCreateTask()"></button>
+                        class="mission-modal__close"
+                        (click)="closeCreateTask()">
+                        ×
+                    </button>
                 </div>
-                <div class="modal-body">
+
+                <div class="modal-body mission-modal__body">
                     <app-tasks-form
                         *ngIf="selectedAlert"
                         [alert]="selectedAlert"
-                        (taskCreated)="taskCreated($event)"></app-tasks-form>
-                </div>
-                <div class="modal-footer border-secondary">
-                    <button
-                        type="button"
-                        class="btn btn-outline-light"
-                        (click)="closeCreateTask()">
-                        Close
-                    </button>
+                        (taskCreated)="taskCreated($event)"
+                        (closeTaskModel)="closeCreateTask()">
+                    </app-tasks-form>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>

@@ -19,7 +19,7 @@ namespace ColonyOS.ColonyStateService.Controllers
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<TaskItem>>> GetActiveTasks(CancellationToken cancellationToken)
         {
-            var tasks = await _taskService.GetActiveTasksAsync(cancellationToken);
+            var tasks = _taskService.GetActiveTasks(cancellationToken);
             return Ok(tasks);
         }
 

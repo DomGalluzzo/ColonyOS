@@ -1,28 +1,46 @@
-<div class="container-fluid py-4 dashboard-page">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">ColonyOS Mission Control</h1>
-    </div>
-    <div *ngIf="isLoading" class="alert alert-info mb-4">
-        Loading colony state...
-    </div>
-    <div *ngIf="errorMessage" class="alert alert-danger mb-4">
-        {{ errorMessage.message }}
-    </div>
+<div class="dashboard-page">
+    <header class="dashboard-header">
+        <div>
+            <p class="dashboard-kicker">LUNAR OPERATIONS COMMAND</p>
+            <h1>ColonyOS Mission Control</h1>
+        </div>
 
-    <div *ngIf="colonyState" class="row g-4 dashboard-row">
-        <p>Last updated: {{ colonyState.lastUpdatedUtc | date:'short' }}</p>
-        <div class="col-12 col-xl-6 d-flex">
-            <app-colony-state class="w-100" [colonyState]="colonyState"></app-colony-state>
+        <div class="dashboard-status">
+            <div class="status-pill">
+                <span class="status-dot"></span>
+                LIVE TELEMETRY
+            </div>
+
+            <div class="timestamp" *ngIf="colonyState">
+                LAST SYNC {{ colonyState.lastUpdatedUtc | date:'HH:mm:ss' }}
+            </div>
         </div>
-        <div class="col-12 col-xl-6 d-flex">
-            <app-alerts
-                class="w-100"
-                [alerts]="alerts"
-                (alertAcknowledged)="acknowledgeAlertClicked($event)"
-                (newTaskCreated)="newTaskCreated($event)"></app-alerts>
-        </div>
-        <div class="col-12 col-xl-6 d-flex">
-            <app-tasks class="w-100" [tasks]="tasks"></app-tasks>
-        </div>
-    </div>
+    </header>
+
+    <section *ngIf="isLoading" class="system-message system-message--info">
+        Establishing colony telemetry link...
+    </section>
+
+    <section *ngIf="errorMessage" class="system-message system-message--danger">
+        {{ errorMessage.message }}
+    </section>
+
+    <main *ngIf="colonyState" class="command-grid">
+        <app-colony-state
+            class="command-grid__main"
+            [colonyState]="colonyState">
+        </app-colony-state>
+
+        <app-alerts
+            class="command-grid__side"
+            [alerts]="colonyState.alerts"
+            (alertAcknowledged)="acknowledgeAlertClicked($event)"
+            (newTaskCreated)="newTaskCreated($event)">
+        </app-alerts>
+
+        <app-tasks
+            class="command-grid__bottom"
+            [tasks]="colonyState.tasks">
+        </app-tasks>
+    </main>
 </div>
