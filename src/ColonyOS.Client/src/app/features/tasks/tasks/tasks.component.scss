@@ -1,0 +1,220 @@
+.tasks-panel {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    padding: 18px;
+    border: 1px solid rgba(98, 179, 255, 0.24);
+    border-radius: 14px;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+        radial-gradient(circle at top left, rgba(0, 255, 166, 0.1), transparent 34%),
+        #08111f;
+    background-size:
+        28px 28px,
+        28px 28px,
+        auto,
+        auto;
+}
+
+.tasks-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+
+    h2 {
+        margin: 0;
+        color: #e6f3ff;
+        font-size: 1.1rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+}
+
+.eyebrow {
+    margin: 0 0 4px;
+    color: #62b3ff;
+    font-family: monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+}
+
+.task-count {
+    display: grid;
+    place-items: center;
+    min-width: 38px;
+    height: 38px;
+    padding: 0 10px;
+    border: 1px solid rgba(0, 255, 166, 0.45);
+    border-radius: 999px;
+    color: #00ffa6;
+    font-family: monospace;
+    font-weight: 700;
+    background: rgba(0, 255, 166, 0.07);
+    box-shadow: 0 0 12px rgba(0, 255, 166, 0.14);
+}
+
+.empty-state {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 120px;
+    padding: 16px;
+    border: 1px dashed rgba(0, 255, 166, 0.3);
+    border-radius: 12px;
+    color: #c7d7e8;
+    background: rgba(0, 255, 166, 0.04);
+
+    p {
+        margin: 0;
+        color: #00ffa6;
+        font-family: monospace;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    small {
+        color: #8fa6bc;
+    }
+}
+
+.empty-state__icon {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(0, 255, 166, 0.45);
+    border-radius: 999px;
+    color: #00ffa6;
+    box-shadow: 0 0 10px rgba(0, 255, 166, 0.22);
+}
+
+.task-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.task-item {
+    position: relative;
+    overflow: hidden;
+    padding: 14px;
+    border: 1px solid rgba(139, 214, 255, 0.18);
+    border-radius: 12px;
+    background: rgba(7, 16, 31, 0.84);
+}
+
+.task-item::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    background: #8fd6ff;
+    box-shadow: 0 0 8px rgba(143, 214, 255, 0.45);
+}
+
+.task-item__header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+
+    h3 {
+        margin: 0;
+        color: #f2f8ff;
+        font-size: 1rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+}
+
+.task-priority {
+    margin: 0 0 4px;
+    color: #8fa6bc;
+    font-family: monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.task-status {
+    flex-shrink: 0;
+    padding: 4px 8px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-family: monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.task-description {
+    position: relative;
+    z-index: 1;
+    margin: 12px 0 0;
+    color: #c7d7e8;
+    line-height: 1.45;
+}
+
+.task-item__footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+    color: #8796aa;
+    font-family: monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+}
+
+.task-item--high {
+    border-color: rgba(255, 193, 7, 0.75);
+
+    &::before {
+        background: #ffc107;
+        box-shadow: 0 0 10px rgba(255, 193, 7, 0.55);
+    }
+
+    .task-priority,
+    .task-status {
+        color: #ffc107;
+    }
+}
+
+.task-item--critical {
+    border-color: rgba(255, 77, 79, 0.9);
+    background:
+        radial-gradient(circle at top right, rgba(255, 77, 79, 0.15), transparent 38%),
+        rgba(7, 16, 31, 0.9);
+    animation: task-critical-pulse 1.8s infinite;
+
+    &::before {
+        background: #ff4d4f;
+        box-shadow: 0 0 10px rgba(255, 77, 79, 0.75);
+    }
+
+    .task-priority,
+    .task-status {
+        color: #ff4d4f;
+    }
+}
+
+@keyframes task-critical-pulse {
+    0% {
+        box-shadow: 0 0 0 rgba(255, 77, 79, 0);
+    }
+
+    50% {
+        box-shadow: 0 0 18px rgba(255, 77, 79, 0.35);
+    }
+
+    100% {
+        box-shadow: 0 0 0 rgba(255, 77, 79, 0);
+    }
+}

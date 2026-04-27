@@ -21,6 +21,7 @@ import { TasksService } from '../../../shared/services/tasks.service';
 export class TasksFormComponent implements OnInit {
   @Input() alert: Alert | null = null;
   @Output() taskCreated = new EventEmitter<boolean>();
+  @Output() closeTaskModel = new EventEmitter<null>();
 
   public form!: FormGroup<TaskFormModel>;
   public tasks: TaskModel[] = [];
@@ -112,6 +113,10 @@ export class TasksFormComponent implements OnInit {
         this.taskCreated.emit(false);
       }
     });
+  }
+
+  public closeCreateTask(): void {
+    this.closeTaskModel.emit();
   }
 
   private initializeForm(): void {
