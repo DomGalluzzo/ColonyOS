@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit {
     var existingAlert = this.alerts.find(a => a.id === alert.id);
     if (!existingAlert) return;
 
-    existingAlert.acknowledged = true;
+    this.alertService.acknowledgeAlert(existingAlert.id);
   }
 
   public newTaskCreated(isNewTaskCreated: boolean): void {
