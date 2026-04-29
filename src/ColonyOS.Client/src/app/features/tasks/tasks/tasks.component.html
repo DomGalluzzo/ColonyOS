@@ -52,6 +52,29 @@
             <footer class="task-item__footer">
                 <span>CREATED</span>
                 <time>{{ task.createdAtUtc | date:'HH:mm:ss' }}</time>
+                <button
+                    *ngIf="task.status === taskStatus.Pending"
+                    type="button"
+                    class="btn btn-success"
+                    (click)="beginTask(task)">
+                    Begin Task
+                </button>
+
+                <button
+                    *ngIf="task.status === taskStatus.InProgress"
+                    type="button"
+                    class="btn btn-outline-warning"
+                    disabled>
+                    In Progress
+                </button>
+
+                <button
+                    *ngIf="task.status === taskStatus.Completed"
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    disabled>
+                    Completed
+                </button>
             </footer>
         </article>
     </div>

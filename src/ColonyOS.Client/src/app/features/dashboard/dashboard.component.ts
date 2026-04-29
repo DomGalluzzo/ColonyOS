@@ -4,7 +4,7 @@ import { DashboardApiService } from '../../core/services/dashboard-api.service';
 import { ColonyState } from '../../shared/models/colony-state.model';
 import { AlertService } from '../../shared/services/alert.services';
 import { Alert } from '../../shared/models/alert.model';
-import { TaskModel } from '../../shared/models/task-item.model';
+import { TaskModel, TaskStatus, UpdateTaskStatusRequest } from '../../shared/models/task-item.model';
 import { TasksService } from '../../shared/services/tasks.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ColonyDashboardRealtimeService } from '../../shared/services/colony-dashboard-realtime.service';
@@ -53,6 +53,25 @@ export class DashboardComponent implements OnInit {
 
   public newTaskCreated(isNewTaskCreated: boolean): void {
     if (isNewTaskCreated) this.loadTasks();
+  }
+
+  public beginTask(task: TaskModel): void {
+    var updateTaskStatusRequest = {
+      taskId: task.id,
+      status: TaskStatus.InProgress
+    } as UpdateTaskStatusRequest;
+    this.tasksService.updateTaskStatus(updateTaskStatusRequest).subscribe({
+      next: (updatedTask: TaskModel) => {
+        this.colonyState.tasks = this.colonyState.tasks.map(existingTask => 
+          existingTask.id === updatedTask.id
+            ? updatedTask
+            : existingTask
+        );
+      },
+      error: (error) => {
+        this.errorMessage = error;
+      }
+    })
   }
 
   private loadInitialDashboard(): void {

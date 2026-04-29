@@ -6,6 +6,7 @@
         WaterRecycler,
         SolarArray,
         FoodProduction,
-        HabitatStructure
+        HabitatStructure,
+        Radiation
     }
 }

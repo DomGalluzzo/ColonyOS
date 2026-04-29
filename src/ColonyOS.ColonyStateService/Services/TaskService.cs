@@ -3,6 +3,7 @@ using ColonyOS.ColonyStateService.Models.Requests;
 using ColonyOS.ColonyStateService.Services.Interfaces;
 using ColonyOS.Contracts.Enums.Target;
 using ColonyOS.Contracts.Enums.Tasks;
+using ColonyOS.Contracts.Mappers;
 using ColonyOS.Contracts.Models.Tasks;
 
 namespace ColonyOS.ColonyStateService.Services
@@ -41,6 +42,8 @@ namespace ColonyOS.ColonyStateService.Services
                 TargetSystem = request.TargetSubsystem,
                 TaskPriority = request.TaskPriority,
                 TaskType = request.TaskType,
+                ResourceType = SystemToResourceMapper.Map(request.TargetSubsystem.Value),
+                ResourceDeltaPerTick = 2m,
                 Status = TaskStatusEnum.Pending,
                 EstimatedDurationMinutes = request.EstimatedDurationMinutes,
                 CreatedAtUtc = DateTime.UtcNow
@@ -51,14 +54,14 @@ namespace ColonyOS.ColonyStateService.Services
             return newTask;
         }
 
-        public async Task<TaskItem?> UpdateTaskStatusAsync(Guid taskId, TaskStatusEnum status, CancellationToken cancellationToken = default)
+        public async Task<TaskItem?> UpdateTaskStatusAsync(UpdateTaskStatusRequest taskStatusRequest, CancellationToken cancellationToken = default)
         {
             var existingTaskIds = _tasks.Select(t => t.Id);
-            if (!existingTaskIds.Contains(taskId))
+            if (!existingTaskIds.Contains(taskStatusRequest.TaskId))
                 return null;
 
-            var existingTask = _tasks.First(t => t.Id == taskId);
-            existingTask.Status = status;
+            var existingTask = _tasks.First(t => t.Id == taskStatusRequest.TaskId);
+            existingTask.Status = taskStatusRequest.Status;
 
             return existingTask;
         }

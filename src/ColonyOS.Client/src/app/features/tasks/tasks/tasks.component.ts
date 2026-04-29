@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TaskModel, TaskPriority, TaskStatus } from '../../../shared/models/task-item.model';
 
 @Component({
@@ -8,6 +8,7 @@ import { TaskModel, TaskPriority, TaskStatus } from '../../../shared/models/task
 })
 export class TasksComponent {
   @Input() tasks: TaskModel[];
+  @Output() taskBeginClicked = new EventEmitter<TaskModel>();
 
   public taskPriority = TaskPriority;
   public taskStatus = TaskStatus;
@@ -34,5 +35,9 @@ export class TasksComponent {
       case TaskStatus.Pending:
         return 'Pending';
     }
+  }
+
+  public beginTask(task: TaskModel): void {
+    this.taskBeginClicked.emit(task);
   }
 }

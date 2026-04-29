@@ -1,4 +1,5 @@
 ﻿using ColonyOS.ColonyStateService.Models.ColonyState;
+using ColonyOS.ColonyStateService.Models.Requests;
 using ColonyOS.Contracts.Models.Alerts;
 using ColonyOS.Contracts.Models.Tasks;
 
@@ -11,5 +12,6 @@ namespace ColonyOS.Gateway.Services
         Task<bool> AcknowledgeAlertAsync(Guid alertId, CancellationToken cancellationToken = default);
         Task<TaskItem> CreateTaskAsync(TaskItem taskItem, CancellationToken cancellationToken = default);
         Task<List<TaskItem>> GetActiveTasksAsync(CancellationToken cancellationToken = default);
+        Task<TaskItem> UpdateTaskStatusAsync(UpdateTaskStatusRequest taskStatusRequest, CancellationToken cancellationToken = default);
     }
 }
