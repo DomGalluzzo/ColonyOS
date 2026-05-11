@@ -21,5 +21,7 @@ namespace ColonyOS.Contracts.Models.Tasks
         public DateTime? StartedAtUtc { get; set; }
         public DateTime? CompletedAtUtc { get; set; }
         public Guid? SourceAlertId { get; set; }
+        public Guid? AssignedCrewMemberId { get; set; }
+        public decimal ProgressPercentage { get; set; }
     }
 }
