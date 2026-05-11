@@ -1,6 +1,6 @@
 ﻿using ColonyOS.ColonyStateService.Models.ColonyState;
-using ColonyOS.ColonyStateService.Models.Requests;
 using ColonyOS.Contracts.Models.Alerts;
+using ColonyOS.Contracts.Models.Requests;
 using ColonyOS.Contracts.Models.Tasks;
 using ColonyOS.Gateway.Services;
 using Microsoft.AspNetCore.Mvc;

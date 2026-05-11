@@ -1,6 +1,6 @@
 ﻿using ColonyOS.Contracts.Enums.Tasks;
 
-namespace ColonyOS.ColonyStateService.Models.Requests
+namespace ColonyOS.Contracts.Models.Requests
 {
     public class UpdateTaskStatusRequest
     {

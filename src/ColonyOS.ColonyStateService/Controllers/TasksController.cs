@@ -1,4 +1,4 @@
-﻿using ColonyOS.ColonyStateService.Models.Requests;
+﻿using ColonyOS.Contracts.Models.Requests;
 using ColonyOS.ColonyStateService.Services.Interfaces;
 using ColonyOS.Contracts.Models.Tasks;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,4 @@
-﻿using ColonyOS.ColonyStateService.Models.Requests;
+﻿using ColonyOS.Contracts.Models.Requests;
 using ColonyOS.ColonyStateService.Services.Interfaces;
 using ColonyOS.Contracts.Enums.Task;
 using ColonyOS.Contracts.Enums.Tasks;

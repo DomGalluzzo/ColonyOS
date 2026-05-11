@@ -1,6 +1,5 @@
-﻿using ColonyOS.ColonyStateService.Models.Requests;
+﻿using ColonyOS.Contracts.Models.Requests;
 using ColonyOS.Contracts.Enums.Target;
-using ColonyOS.Contracts.Enums.Tasks;
 using ColonyOS.Contracts.Models.Tasks;
 
 namespace ColonyOS.ColonyStateService.Services.Interfaces
