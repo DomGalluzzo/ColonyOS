@@ -40,7 +40,8 @@
 
         <app-tasks
             class="command-grid__bottom"
-            [tasks]="colonyState.tasks">
+            [tasks]="colonyState.tasks"
+            (taskBeginClicked)="beginTask($event)">
         </app-tasks>
     </main>
 </div>

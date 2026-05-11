@@ -10,6 +10,6 @@ namespace ColonyOS.ColonyStateService.Services.Interfaces
         List<TaskItem> GetActiveTasks(CancellationToken cancellationToken = default);
         Task<bool> TaskExistsForSystemAsync(TargetSystemEnum targetSystem);
         Task<TaskItem> CreateTaskAsync(CreateTaskRequest request, CancellationToken cancellationToken = default);
-        Task<TaskItem?> UpdateTaskStatusAsync(Guid taskId, TaskStatusEnum status, CancellationToken cancellationToken = default);
+        Task<TaskItem?> UpdateTaskStatusAsync(UpdateTaskStatusRequest taskStatusRequest, CancellationToken cancellationToken = default);
     }
 }

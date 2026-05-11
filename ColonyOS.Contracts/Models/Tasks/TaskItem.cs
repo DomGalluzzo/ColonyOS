@@ -1,4 +1,5 @@
-﻿using ColonyOS.Contracts.Enums.Target;
+﻿using ColonyOS.Contracts.Enums.ColonyResources;
+using ColonyOS.Contracts.Enums.Target;
 using ColonyOS.Contracts.Enums.Task;
 using ColonyOS.Contracts.Enums.Tasks;
 
@@ -11,6 +12,8 @@ namespace ColonyOS.Contracts.Models.Tasks
         public string Description { get; set; }
         public TaskTypeEnum TaskType { get; set; }
         public TargetSystemEnum? TargetSystem { get; set; }
+        public ColonyResourceTypeEnum ResourceType { get; set; }
+        public decimal? ResourceDeltaPerTick { get; set; }
         public TaskPriorityEnum TaskPriority { get; set; }
         public TaskStatusEnum Status { get; set; }
         public int EstimatedDurationMinutes { get; set; }

@@ -30,12 +30,10 @@ namespace ColonyOS.ColonyStateService.Controllers
             return CreatedAtAction(nameof(GetActiveTasks), new { id = createdTask.Id }, createdTask);
         }
 
-        [HttpPatch("{taskId:guid}/status")]
-        public async Task<ActionResult<TaskItem>> UpdateTaskStatus(Guid taskId,
-            [FromBody] UpdateTaskStatusRequest updateTaskStatusRequest,
-            CancellationToken cancellationToken)
+        [HttpPatch("status")]
+        public async Task<ActionResult<TaskItem>> UpdateTaskStatus([FromBody] UpdateTaskStatusRequest updateTaskStatusRequest, CancellationToken cancellationToken)
         {
-            var updatedTask = await _taskService.UpdateTaskStatusAsync(taskId, updateTaskStatusRequest.Status, cancellationToken);
+            var updatedTask = await _taskService.UpdateTaskStatusAsync(updateTaskStatusRequest, cancellationToken);
 
             if (updatedTask is null)
                 return NotFound();

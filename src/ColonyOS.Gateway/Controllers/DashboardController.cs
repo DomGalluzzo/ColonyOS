@@ -1,4 +1,5 @@
 ﻿using ColonyOS.ColonyStateService.Models.ColonyState;
+using ColonyOS.ColonyStateService.Models.Requests;
 using ColonyOS.Contracts.Models.Alerts;
 using ColonyOS.Contracts.Models.Tasks;
 using ColonyOS.Gateway.Services;
@@ -59,6 +60,14 @@ namespace ColonyOS.Gateway.Controllers
             var createdTask = await _colonyStateGatewayClient.CreateTaskAsync(taskItem, cancellationToken);
 
             return Ok(createdTask);
+        }
+
+        [HttpPatch("tasks/status")]
+        public async Task<ActionResult<TaskItem>> UpdateTaskStatusAsync(UpdateTaskStatusRequest taskStatusRequest, CancellationToken cancellationToken)
+        {
+            var updatedTask = await _colonyStateGatewayClient.UpdateTaskStatusAsync(taskStatusRequest, cancellationToken);
+
+            return Ok(updatedTask);
         }
     }
 }

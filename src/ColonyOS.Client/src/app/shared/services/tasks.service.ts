@@ -18,7 +18,7 @@ export class TasksService {
         return this.http.post<TaskModel>(`${this.baseUrl}`, request);
     }
 
-    public updateTaskStatus(taskId: string, request: UpdateTaskStatusRequest): Observable<TaskModel> {
-        return this.http.patch<TaskModel>(`${this.baseUrl}/${taskId}/status`, request);
+    public updateTaskStatus(request: UpdateTaskStatusRequest): Observable<TaskModel> {
+        return this.http.patch<TaskModel>(`${this.baseUrl}/status`, request);
     }
 }

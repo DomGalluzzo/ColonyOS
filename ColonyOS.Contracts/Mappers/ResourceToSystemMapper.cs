@@ -14,6 +14,7 @@ namespace ColonyOS.Contracts.Mappers
                 ColonyResourceTypeEnum.Power => TargetSystemEnum.SolarArray,
                 ColonyResourceTypeEnum.Food => TargetSystemEnum.FoodProduction,
                 ColonyResourceTypeEnum.StructuralIntegrity => TargetSystemEnum.HabitatStructure,
+                ColonyResourceTypeEnum.Radiation => TargetSystemEnum.Radiation,
                 _ => throw new NotImplementedException($"No system mapping for {resource}")
             };
         }

@@ -85,5 +85,15 @@ namespace ColonyOS.Gateway.Services
             var content = await response.Content.ReadFromJsonAsync<TaskItem>(cancellationToken);
             return content;
         }
+
+        public async Task<TaskItem> UpdateTaskStatusAsync(UpdateTaskStatusRequest taskStatusRequest, CancellationToken cancellationToken)
+        {
+            var response = await _httpClient.PatchAsJsonAsync($"{MicroserviceConstants.Routes.Tasks}/status", taskStatusRequest, cancellationToken);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadFromJsonAsync<TaskItem>(cancellationToken);
+
+            return content;
+        }
     }
 }
