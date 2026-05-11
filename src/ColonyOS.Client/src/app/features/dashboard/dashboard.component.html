@@ -26,22 +26,26 @@
     </section>
 
     <main *ngIf="colonyState" class="command-grid">
-        <app-colony-state
-            class="command-grid__main"
-            [colonyState]="colonyState">
-        </app-colony-state>
+        <section class="command-grid__main">
+            <app-colony-state
+                [colonyState]="colonyState">
+            </app-colony-state>
+            <app-crew
+                [crewMembers]="colonyState.crewMembers">
+            </app-crew>
+        </section>
 
-        <app-alerts
-            class="command-grid__side"
-            [alerts]="colonyState.alerts"
-            (alertAcknowledged)="acknowledgeAlertClicked($event)"
-            (newTaskCreated)="newTaskCreated($event)">
-        </app-alerts>
-
-        <app-tasks
-            class="command-grid__bottom"
-            [tasks]="colonyState.tasks"
-            (taskBeginClicked)="beginTask($event)">
-        </app-tasks>
+        <section class="command-grid__side">
+            <app-alerts
+                [alerts]="colonyState.alerts"
+                (alertAcknowledged)="acknowledgeAlertClicked($event)"
+                (newTaskCreated)="newTaskCreated($event)">
+            </app-alerts>
+            <app-tasks
+                [tasks]="colonyState.tasks"
+                (taskBeginClicked)="beginTask($event)">
+            </app-tasks>
+            
+        </section>
     </main>
 </div>

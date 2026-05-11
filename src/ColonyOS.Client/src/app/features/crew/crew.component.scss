@@ -1,0 +1,214 @@
+.crew-panel {
+    position: relative;
+    overflow: hidden;
+    padding: 18px;
+    border: 1px solid rgba(98, 179, 255, 0.24);
+    border-radius: 14px;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+        radial-gradient(circle at top right, rgba(0, 255, 166, 0.1), transparent 36%),
+        #08111f;
+    background-size:
+        28px 28px,
+        28px 28px,
+        auto,
+        auto;
+}
+
+.crew-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+
+    h2 {
+        margin: 0;
+        color: #e6f3ff;
+        font-size: 1.1rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+}
+
+.eyebrow {
+    margin: 0 0 4px;
+    color: #62b3ff;
+    font-family: monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+}
+
+.crew-count {
+    display: grid;
+    place-items: center;
+    min-width: 38px;
+    height: 38px;
+    padding: 0 10px;
+    border: 1px solid rgba(98, 179, 255, 0.32);
+    border-radius: 999px;
+    color: #8fd6ff;
+    font-family: monospace;
+    font-weight: 700;
+    background: rgba(98, 179, 255, 0.08);
+}
+
+.crew-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.crew-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 14px minmax(0, 1fr);
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid rgba(139, 214, 255, 0.18);
+    border-radius: 12px;
+    background: rgba(7, 16, 31, 0.84);
+}
+
+.crew-item__signal {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+
+    span {
+        width: 2px;
+        border-radius: 2px;
+        background: #00ffa6;
+        box-shadow: 0 0 8px rgba(0, 255, 166, 0.45);
+    }
+}
+
+.crew-item__meta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+
+    h3 {
+        margin: 0;
+        color: #e6f3ff;
+        font-size: 0.95rem;
+    }
+
+    p {
+        margin: 3px 0 0;
+        color: #8fa6bc;
+        font-family: monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+}
+
+.status-chip,
+.skill-chip {
+    border-radius: 999px;
+    font-family: monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.status-chip {
+    padding: 4px 8px;
+    border: 1px solid currentColor;
+    white-space: nowrap;
+}
+
+.status-chip--available {
+    color: #00ffa6;
+    background: rgba(0, 255, 166, 0.08);
+}
+
+.status-chip--assigned {
+    color: #ffc107;
+    background: rgba(255, 193, 7, 0.08);
+}
+
+.fatigue-readout {
+    margin-bottom: 12px;
+}
+
+.fatigue-readout__label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    color: #c7d7e8;
+    font-family: monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    strong {
+        color: #8fd6ff;
+    }
+}
+
+.fatigue-bar {
+    overflow: hidden;
+    height: 7px;
+    border-radius: 999px;
+    background: rgba(143, 214, 255, 0.12);
+}
+
+.fatigue-bar__fill {
+    height: 100%;
+    border-radius: inherit;
+    background: #00ffa6;
+    box-shadow: 0 0 10px rgba(0, 255, 166, 0.35);
+}
+
+.skill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.skill-chip {
+    padding: 4px 7px;
+    border: 1px solid rgba(143, 214, 255, 0.24);
+    color: #8fd6ff;
+    background: rgba(143, 214, 255, 0.06);
+}
+
+.crew-item--assigned {
+    border-color: rgba(255, 193, 7, 0.5);
+
+    .crew-item__signal span,
+    .fatigue-bar__fill {
+        background: #ffc107;
+        box-shadow: 0 0 8px rgba(255, 193, 7, 0.45);
+    }
+}
+
+.crew-item--fatigued {
+    border-color: rgba(255, 193, 7, 0.65);
+
+    .fatigue-readout__label strong {
+        color: #ffc107;
+    }
+}
+
+.crew-item--critical {
+    border-color: rgba(255, 77, 79, 0.85);
+    background:
+        radial-gradient(circle at top right, rgba(255, 77, 79, 0.12), transparent 38%),
+        rgba(7, 16, 31, 0.9);
+
+    .crew-item__signal span,
+    .fatigue-bar__fill {
+        background: #ff4d4f;
+        box-shadow: 0 0 10px rgba(255, 77, 79, 0.65);
+    }
+
+    .fatigue-readout__label strong {
+        color: #ff4d4f;
+    }
+}

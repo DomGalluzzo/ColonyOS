@@ -1,0 +1,65 @@
+import { Component, Input } from '@angular/core';
+import { CrewMember, CrewRoleEnum, CrewSkillEnum } from '../../shared/models/crew-member.model';
+
+@Component({
+  selector: 'app-crew',
+  templateUrl: './crew.component.html',
+  styleUrls: ['./crew.component.scss']
+})
+export class CrewComponent {
+  @Input() crewMembers: CrewMember[];
+
+  public readonly crewSkillNames = [
+    { label: 'Electrical Repair', value: CrewSkillEnum.ElectricalRepair },
+    { label: 'Mechanical Repair', value: CrewSkillEnum.MechanicalRepair },
+    { label: 'Life Support Systems', value: CrewSkillEnum.LifeSupportSystems },
+    { label: 'Medical Treatment', value: CrewSkillEnum.MedicalTreatment },
+    { label: 'EVA Operations', value: CrewSkillEnum.EVAOperations },
+    { label: 'Research Analysis', value: CrewSkillEnum.ResearchAnalysis },
+    { label: 'Agriculture', value: CrewSkillEnum.Agriculture },
+    { label: 'Robotics', value: CrewSkillEnum.Robotics },
+    { label: 'Structural Engineering', value: CrewSkillEnum.StructuralEngineering },
+    { label: 'Radiation Mitigation', value: CrewSkillEnum.RadiationMitigation },
+    { label: 'Communications', value: CrewSkillEnum.Communications },
+    { label: 'Navigation', value: CrewSkillEnum.Navigation },
+    { label: 'Resource Optimization', value: CrewSkillEnum.ResourceOptimization },
+    { label: 'Emergency Response', value: CrewSkillEnum.EmergencyResponse },
+    { label: 'Software Systems', value: CrewSkillEnum.SoftwareSystems }
+  ];
+
+  public readonly crewRoleNames = [
+    { label: 'Commander', value: CrewRoleEnum.Commander },
+    { label: 'Engineer', value: CrewRoleEnum.Engineer },
+    { label: 'Scientist', value: CrewRoleEnum.Scientist },
+    { label: 'Medic', value: CrewRoleEnum.Medic },
+    { label: 'Technician', value: CrewRoleEnum.Technician },
+    { label: 'Pilot', value: CrewRoleEnum.Pilot },
+    { label: 'Security Officer', value: CrewRoleEnum.SecurityOfficer },
+    { label: 'Botanist', value: CrewRoleEnum.Botanist },
+    { label: 'Operations Specialist', value: CrewRoleEnum.OperationsSpecialist }
+  ];
+
+  public trackByCrewMemberId(index: number, crewMember: CrewMember): string {
+    return crewMember.id;
+  }
+
+  public getFatigueClass(fatigue: number): string {
+    if (fatigue >= 75) {
+        return 'text-danger';
+    }
+
+    if (fatigue >= 50) {
+        return 'text-warning';
+    }
+
+    return 'text-success';
+  }
+
+  public getCrewSkillName(skill: CrewSkillEnum): string {
+    return this.crewSkillNames.find(x => x.value === skill)?.label ?? 'Unknown';
+  }
+
+  public getCrewRoleName(role: CrewRoleEnum): string {
+    return this.crewRoleNames.find(x => x.value === role)?.label ?? 'Unknown';
+  }
+}

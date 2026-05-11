@@ -1,0 +1,73 @@
+<section class="crew-panel">
+    <header class="crew-panel__header">
+        <div>
+            <p class="eyebrow">CREW STATUS</p>
+            <h2>Personnel</h2>
+        </div>
+
+        <div class="crew-count">
+            {{ crewMembers.length }}
+        </div>
+    </header>
+
+    <div *ngIf="!crewMembers.length" class="empty-state">
+        <div class="empty-state__icon">✓</div>
+
+        <div>
+            <p>No crew detected</p>
+            <small>Personnel registry is currently empty.</small>
+        </div>
+    </div>
+
+    <div *ngIf="crewMembers.length" class="crew-feed">
+        <article
+            *ngFor="let crewMember of crewMembers; trackBy: trackByCrewMemberId"
+            class="crew-item"
+            [ngClass]="{
+                'crew-item--assigned': !crewMember.isAvailable,
+                'crew-item--fatigued': crewMember.fatigue >= 50,
+                'crew-item--critical': crewMember.fatigue >= 75
+            }">
+            <div class="crew-item__signal">
+                <span></span>
+            </div>
+
+            <div class="crew-item__content">
+                <div class="crew-item__meta">
+                    <div>
+                        <h3>{{ crewMember.name }}</h3>
+                        <p>{{ getCrewRoleName(crewMember.role) }}</p>
+                    </div>
+
+                    <span
+                        class="status-chip"
+                        [ngClass]="crewMember.isAvailable ? 'status-chip--available' : 'status-chip--assigned'">
+                        {{ crewMember.isAvailable ? 'Available' : 'Assigned' }}
+                    </span>
+                </div>
+
+                <div class="fatigue-readout">
+                    <div class="fatigue-readout__label">
+                        <span>Fatigue</span>
+                        <strong>{{ crewMember.fatigue }}%</strong>
+                    </div>
+
+                    <div class="fatigue-bar">
+                        <div
+                            class="fatigue-bar__fill"
+                            [style.width.%]="crewMember.fatigue">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-list">
+                    <span
+                        *ngFor="let skill of crewMember.skills"
+                        class="skill-chip">
+                        {{ getCrewSkillName(skill) }}
+                    </span>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>

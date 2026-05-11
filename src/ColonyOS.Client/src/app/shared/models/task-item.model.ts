@@ -15,7 +15,9 @@ export enum TaskStatus {
   Pending = 1,
   InProgress,
   Completed,
-  Cancelled
+  Cancelled,
+  Failed,
+  Assigned
 }
 
 export enum TargetSystem {

@@ -17,7 +17,9 @@ export class TasksComponent {
     [TaskStatus.Pending]: { label: 'Pending', class: 'text-light' },
     [TaskStatus.InProgress]: { label: 'In Progress', class: 'text-info' },
     [TaskStatus.Completed]: { label: 'Completed', class: 'text-success' },
-    [TaskStatus.Cancelled]: { label: 'Cancelled', class: 'text-danger' }
+    [TaskStatus.Cancelled]: { label: 'Cancelled', class: 'text-danger' },
+    [TaskStatus.Failed]: { label: 'Failed', class: 'text-danger' },
+    [TaskStatus.Assigned]: { label: 'Assigned', class: 'text-info' }
   };
 
   trackByTaskId(index: number, task: TaskModel) {
@@ -34,6 +36,10 @@ export class TasksComponent {
         return 'In Progress';
       case TaskStatus.Pending:
         return 'Pending';
+      case TaskStatus.Failed:
+        return 'Failed';
+      case TaskStatus.Assigned:
+        return 'Assigned';
     }
   }
 
