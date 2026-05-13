@@ -10,10 +10,12 @@ namespace ColonyOS.ColonyStateService.Controllers
     public class TasksController : ControllerBase
     {
         private readonly ITaskService _taskService;
+        private readonly IColonyStateService _colonyStateService;
 
-        public TasksController(ITaskService taskService)
+        public TasksController(ITaskService taskService, IColonyStateService colonyStateService)
         {
             _taskService = taskService;
+            _colonyStateService = colonyStateService;
         }
 
         [HttpGet]
@@ -28,6 +30,19 @@ namespace ColonyOS.ColonyStateService.Controllers
         {
             var createdTask = await _taskService.CreateTaskAsync(createTaskRequest, cancellationToken);
             return CreatedAtAction(nameof(GetActiveTasks), new { id = createdTask.Id }, createdTask);
+        }
+
+        [HttpPost("{taskId:guid}/assign-crew")]
+        public async Task<ActionResult<TaskItem>> AssignCrewToTask(Guid taskId, [FromBody] AssignCrewToTaskRequest request, CancellationToken cancellationToken)
+        {
+            request.TaskId = taskId;
+
+            var task = await _colonyStateService.AssignCrewToTaskAsync(request, cancellationToken);
+
+            if (task == null)
+                return BadRequest("Unable to assign crew member to task.");
+
+            return Ok(task);
         }
 
         [HttpPatch("status")]

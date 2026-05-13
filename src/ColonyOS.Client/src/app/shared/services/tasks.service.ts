@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { CreateTaskRequest, TaskModel, UpdateTaskStatusRequest } from "../models/task-item.model";
+import { AssignCrewToTaskRequest, CreateTaskRequest, TaskModel, UpdateTaskStatusRequest } from "../models/task-item.model";
 
 @Injectable({
     providedIn: 'root'
@@ -20,5 +20,9 @@ export class TasksService {
 
     public updateTaskStatus(request: UpdateTaskStatusRequest): Observable<TaskModel> {
         return this.http.patch<TaskModel>(`${this.baseUrl}/status`, request);
+    }
+
+    public assignCrewToTask(request: AssignCrewToTaskRequest): Observable<TaskModel> {
+        return this.http.post<TaskModel>(`${this.baseUrl}/${request.taskId}/assign-crew`, request);
     }
 }

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CrewMember, CrewRoleEnum, CrewSkillEnum } from '../../shared/models/crew-member.model';
 
 @Component({
@@ -8,6 +8,8 @@ import { CrewMember, CrewRoleEnum, CrewSkillEnum } from '../../shared/models/cre
 })
 export class CrewComponent {
   @Input() crewMembers: CrewMember[];
+  @Input() selectedTaskId: string | null;
+  @Output() crewAssignedToTask = new EventEmitter<string>();
 
   public readonly crewSkillNames = [
     { label: 'Electrical Repair', value: CrewSkillEnum.ElectricalRepair },
@@ -61,5 +63,11 @@ export class CrewComponent {
 
   public getCrewRoleName(role: CrewRoleEnum): string {
     return this.crewRoleNames.find(x => x.value === role)?.label ?? 'Unknown';
+  }
+
+  public assignCrewToTask(crewMember: CrewMember): void {
+    if (!this.selectedTaskId || !crewMember.isAvailable) return;
+
+    this.crewAssignedToTask.emit(crewMember.id);
   }
 }

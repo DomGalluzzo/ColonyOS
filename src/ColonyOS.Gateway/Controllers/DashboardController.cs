@@ -69,5 +69,14 @@ namespace ColonyOS.Gateway.Controllers
 
             return Ok(updatedTask);
         }
+
+        [HttpPost("tasks/{taskId:guid}/assign-crew")]
+        public async Task<ActionResult<TaskItem>> AssignCrewToTaskAsync(Guid taskId, [FromBody] AssignCrewToTaskRequest request, CancellationToken cancellationToken)
+        {
+            request.TaskId = taskId;
+            var assignedTask = await _colonyStateGatewayClient.AssignCrewToTaskAsync(request, cancellationToken);
+
+            return Ok(assignedTask);
+        }
     }
 }

@@ -95,5 +95,15 @@ namespace ColonyOS.Gateway.Services
 
             return content;
         }
+
+        public async Task<TaskItem> AssignCrewToTaskAsync(AssignCrewToTaskRequest request, CancellationToken cancellationToken)
+        {
+            var response = await _httpClient.PostAsJsonAsync($"{MicroserviceConstants.Routes.Tasks}/{request.TaskId}/assign-crew", request, cancellationToken);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadFromJsonAsync<TaskItem>(cancellationToken);
+
+            return content;
+        }
     }
 }

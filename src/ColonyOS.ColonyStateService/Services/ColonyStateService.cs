@@ -6,6 +6,8 @@ using ColonyOS.Contracts.Enums.Crew;
 using ColonyOS.Contracts.Mappers;
 using ColonyOS.Contracts.Models.Crew;
 using ColonyOS.Contracts.Models.Events;
+using ColonyOS.Contracts.Models.Requests;
+using ColonyOS.Contracts.Models.Tasks;
 
 namespace ColonyOS.ColonyStateService.Services
 {
@@ -61,6 +63,20 @@ namespace ColonyOS.ColonyStateService.Services
             await HandleResourceTransitionsAsync(colonyStateSnaphot);
 
             _alertsService.EvaluateAlerts(colonyStateSnaphot);
+        }
+
+        public async Task<TaskItem?> AssignCrewToTaskAsync(AssignCrewToTaskRequest request, CancellationToken cancellationToken = default)
+        {
+            lock (_lock)
+            {
+                var assignedTask = _taskService.AssignCrewToTaskAsync(request, _colonyState.CrewMembers, cancellationToken)
+                    .GetAwaiter()
+                    .GetResult();
+
+                HydrateState();
+
+                return assignedTask;
+            }
         }
 
         private void HydrateState()

@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
   public alerts: Alert[] = [];
   public selectedAlert: Alert | null = null;
   public tasks: TaskModel[];
+  public selectedTaskId: string | null = null;
 
   constructor(
     private readonly dashboardApiService: DashboardApiService,
@@ -72,6 +73,27 @@ export class DashboardComponent implements OnInit {
         this.errorMessage = error;
       }
     })
+  }
+
+  public selectTaskForAssignment(taskId: string): void {
+    this.selectedTaskId = taskId;
+  }
+
+  public assignCrewToTask(crewMemberId: string): void {
+    if (!this.selectedTaskId) return;
+
+    this.tasksService.assignCrewToTask({
+      taskId: this.selectedTaskId,
+      crewMemberId
+    }).subscribe({
+      next: () => {
+        this.selectedTaskId = null;
+        this.loadInitialDashboard();
+      },
+      error: error => {
+        this.errorMessage = error;
+      }
+    });
   }
 
   private loadInitialDashboard(): void {

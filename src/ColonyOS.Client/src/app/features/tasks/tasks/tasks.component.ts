@@ -9,6 +9,7 @@ import { TaskModel, TaskPriority, TaskStatus } from '../../../shared/models/task
 export class TasksComponent {
   @Input() tasks: TaskModel[];
   @Output() taskBeginClicked = new EventEmitter<TaskModel>();
+  @Output() taskAssignClicked = new EventEmitter<string>();
 
   public taskPriority = TaskPriority;
   public taskStatus = TaskStatus;
@@ -45,5 +46,9 @@ export class TasksComponent {
 
   public beginTask(task: TaskModel): void {
     this.taskBeginClicked.emit(task);
+  }
+
+  public assignTaskClicked(task: TaskModel): void {
+    this.taskAssignClicked.emit(task.id);
   }
 }

@@ -55,6 +55,13 @@
                 <button
                     *ngIf="task.status === taskStatus.Pending"
                     type="button"
+                    class="btn btn-primary"
+                    (click)="assignTaskClicked(task)">
+                    Assign Crew
+                </button>
+                <button
+                    *ngIf="task.status === taskStatus.Assigned"
+                    type="button"
                     class="btn btn-success"
                     (click)="beginTask(task)">
                     Begin Task

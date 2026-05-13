@@ -58,3 +58,8 @@ export interface UpdateTaskStatusRequest {
   taskId: string;
   status: TaskStatus;
 }
+
+export interface AssignCrewToTaskRequest {
+  taskId: string;
+  crewMemberId: string;
+}

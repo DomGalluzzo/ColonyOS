@@ -31,7 +31,9 @@
                 [colonyState]="colonyState">
             </app-colony-state>
             <app-crew
-                [crewMembers]="colonyState.crewMembers">
+                [crewMembers]="colonyState.crewMembers"
+                [selectedTaskId]="selectedTaskId"
+                (crewAssignedToTask)="assignCrewToTask($event)">
             </app-crew>
         </section>
 
@@ -43,7 +45,8 @@
             </app-alerts>
             <app-tasks
                 [tasks]="colonyState.tasks"
-                (taskBeginClicked)="beginTask($event)">
+                (taskBeginClicked)="beginTask($event)"
+                (taskAssignClicked)="selectTaskForAssignment($event)">
             </app-tasks>
             
         </section>
