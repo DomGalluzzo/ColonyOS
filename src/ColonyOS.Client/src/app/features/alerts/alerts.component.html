@@ -33,72 +33,48 @@
             </div>
 
             <div class="alert-item__content">
-                <div class="alert-item__meta">
+                <div class="alert-item__header">
+                    <div>
+                        <p class="alert-severity">
+                            {{ alert.severity === alertSeverity.Critical ? 'Critical Incident' : 'Warning Incident' }}
+                        </p>
 
-                    <span class="alert-time">
-                        {{ alert.createdUtc | date:'HH:mm:ss' }}
+                        <h3 class="alert-title">
+                            {{ alert.message }}
+                        </h3>
+                    </div>
+
+                    <span
+                        class="incident-state__chip"
+                        [ngClass]="alert.acknowledged ? 'incident-state__chip--reviewed' : 'incident-state__chip--open'">
+                        {{ alert.acknowledged ? 'Reviewed' : 'Open' }}
                     </span>
                 </div>
 
-                <p class="alert-message">
-                    {{ alert.message }}
-                </p>
+                <footer class="alert-item__footer">
+                    <div class="alert-timestamps">
+                        <span>CREATED</span>
+                        <time>{{ alert.createdUtc | date:'HH:mm:ss' }}</time>
 
-                <div class="alert-actions" *ngIf="!alert.acknowledged">
-                    <button
-                        type="button"
-                        class="command-button command-button--secondary"
-                        (click)="acknowledgeAlert(alert.id)">
-                        Acknowledge
-                    </button>
-
-                    <button
-                        type="button"
-                        class="command-button command-button--primary"
-                        (click)="openCreateTask(alert)">
-                        Dispatch Follow-Up Task
-                    </button>
-                </div>
-
-                <div class="acknowledged-status" *ngIf="alert.acknowledged">
-                    ACKNOWLEDGED
-                </div>
-            </div>
-        </article>
-    </div>
-
-    <div
-        #createTaskModal
-        class="modal fade"
-        id="createTaskModal"
-        tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content mission-modal">
-                <div class="modal-header mission-modal__header">
-                    <div>
-                        <p class="eyebrow">TASK AUTHORIZATION</p>
-                        <h2 class="modal-title fs-5" id="createTaskModalLabel">
-                            Dispatch Response Task
-                        </h2>
+                        <ng-container *ngIf="alert.acknowledgedAtUtc">
+                            <span>|</span>
+                            <span class="alert-reviewed-text">
+                                REVIEWED <time>{{ alert.acknowledgedAtUtc | date:'HH:mm:ss' }}</time>
+                            </span>
+                        </ng-container>
                     </div>
 
-                    <button
-                        type="button"
-                        class="mission-modal__close"
-                        (click)="closeCreateTask()">
-                        ×
-                    </button>
-                </div>
-
-                <div class="modal-body mission-modal__body">
-                    <app-tasks-form
-                        *ngIf="selectedAlert"
-                        [alert]="selectedAlert"
-                        (taskCreated)="taskCreated($event)"
-                        (closeTaskModel)="closeCreateTask()">
-                    </app-tasks-form>
-                </div>
+                    <div class="alert-actions">
+                        <button
+                            *ngIf="!alert.acknowledged"
+                            type="button"
+                            class="command-button command-button--secondary"
+                            (click)="acknowledgeAlert(alert.id)">
+                            Mark Reviewed
+                        </button>
+                    </div>
+                </footer>
             </div>
-        </div>
+        </article>
     </div>
 </section>

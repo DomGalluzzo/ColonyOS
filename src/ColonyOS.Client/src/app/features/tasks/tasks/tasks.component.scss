@@ -164,14 +164,29 @@
     position: relative;
     z-index: 1;
     display: flex;
-    justify-content: flex-end;
-    align-items: baseline;
-    gap: 8px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
     margin-top: 12px;
     color: #8796aa;
     font-family: monospace;
     font-size: 0.7rem;
     letter-spacing: 0.1em;
+}
+
+.task-timestamps,
+.task-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.task-completed-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #00ffa6;
 }
 
 .task-item--high {
@@ -208,6 +223,76 @@
 
 .task-completed-text {
     color: #00ffa6;
+}
+
+.command-button--start {
+    border: 1px solid rgba(0, 255, 166, 0.8);
+    color: #00ffa6;
+    background: rgba(0, 255, 166, 0.08);
+    box-shadow: 0 0 10px rgba(0, 255, 166, 0.14);
+
+    &:hover {
+        background: rgba(0, 255, 166, 0.16);
+        box-shadow: 0 0 14px rgba(0, 255, 166, 0.24);
+    }
+}
+
+.task-state-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border: 1px solid currentColor;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.task-state-pill--active {
+    color: #ffc107;
+    background: rgba(255, 193, 7, 0.08);
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.14);
+
+    &::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: #ffc107;
+        box-shadow: 0 0 8px rgba(255, 193, 7, 0.75);
+        animation: task-active-blink 1.4s infinite;
+    }
+}
+
+.task-state-pill--complete {
+    color: #00ffa6;
+    background: rgba(0, 255, 166, 0.08);
+    box-shadow: 0 0 10px rgba(0, 255, 166, 0.12);
+
+    &::before {
+        content: "✓";
+        font-weight: 700;
+    }
+}
+
+.task-completed-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #00ffa6;
+}
+
+@keyframes task-active-blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.35;
+    }
 }
 
 @keyframes task-critical-pulse {

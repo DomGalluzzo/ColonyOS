@@ -40,8 +40,7 @@
         <section class="command-grid__side">
             <app-alerts
                 [alerts]="colonyState.alerts"
-                (alertAcknowledged)="acknowledgeAlertClicked($event)"
-                (newTaskCreated)="newTaskCreated($event)">
+                (alertAcknowledged)="acknowledgeAlertClicked($event)">
             </app-alerts>
             <app-tasks
                 [tasks]="colonyState.tasks"

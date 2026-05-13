@@ -2,7 +2,7 @@ import { Component, DestroyRef, OnInit } from '@angular/core';
 
 import { DashboardApiService } from '../../core/services/dashboard-api.service';
 import { ColonyState } from '../../shared/models/colony-state.model';
-import { AlertService } from '../../shared/services/alert.services';
+import { AlertService } from '../../shared/services/alert.service';
 import { Alert } from '../../shared/models/alert.model';
 import { TaskModel, TaskStatus, UpdateTaskStatusRequest } from '../../shared/models/task-item.model';
 import { TasksService } from '../../shared/services/tasks.service';
@@ -20,7 +20,6 @@ export class DashboardComponent implements OnInit {
   public colonyState: ColonyState;
   public isLoading = false;
   public errorMessage: HttpErrorResponse | null = null;
-  public alerts: Alert[] = [];
   public selectedAlert: Alert | null = null;
   public tasks: TaskModel[];
   public selectedTaskId: string | null = null;
@@ -46,14 +45,17 @@ export class DashboardComponent implements OnInit {
   }
 
   public acknowledgeAlertClicked(alert: Alert): void {
-    var existingAlert = this.alerts.find(a => a.id === alert.id);
+    var existingAlert = this.colonyState.alerts.find(a => a.id === alert.id);
     if (!existingAlert) return;
 
-    this.alertService.acknowledgeAlert(existingAlert.id);
-  }
-
-  public newTaskCreated(isNewTaskCreated: boolean): void {
-    if (isNewTaskCreated) this.loadTasks();
+    this.alertService.acknowledgeAlert(existingAlert.id).subscribe({
+      next: () => {
+        existingAlert!.acknowledged = true;
+      },
+      error: error => {
+        this.errorMessage = error;
+      }
+    })
   }
 
   public beginTask(task: TaskModel): void {

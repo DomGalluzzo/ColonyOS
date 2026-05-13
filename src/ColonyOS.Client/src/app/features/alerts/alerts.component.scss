@@ -129,7 +129,7 @@
 .alert-item__meta {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: 12px;
     margin-bottom: 8px;
 }
@@ -157,11 +157,33 @@
     line-height: 1.45;
 }
 
-.alert-actions {
+.alert-item__footer {
+    position: relative;
+    z-index: 1;
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
     margin-top: 12px;
+    color: #8796aa;
+    font-family: monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+}
+
+.alert-timestamps,
+.alert-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.alert-reviewed-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #00ffa6;
 }
 
 .command-button {
@@ -199,12 +221,28 @@
     }
 }
 
-.acknowledged-status {
-    margin-top: 12px;
-    color: #00ffa6;
+.alert-item__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.alert-severity {
+    margin: 0 0 4px;
+    color: #8fa6bc;
     font-family: monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.alert-title {
+    margin: 0;
+    color: #f2f8ff;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    line-height: 1.35;
 }
 
 .alert-item--warning {
@@ -232,7 +270,6 @@
 }
 
 .alert-item--acknowledged {
-    opacity: 0.62;
     animation: none;
 
     .alert-item__signal span {
@@ -272,6 +309,26 @@
         color: #ffffff;
         background: rgba(143, 214, 255, 0.1);
     }
+}
+
+.incident-state__chip {
+    padding: 4px 8px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-family: monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.incident-state__chip--open {
+    color: #ff4d4f;
+    background: rgba(255, 77, 79, 0.08);
+}
+
+.incident-state__chip--reviewed {
+    color: #00ffa6;
+    background: rgba(0, 255, 166, 0.08);
 }
 
 @keyframes alert-critical-pulse {
