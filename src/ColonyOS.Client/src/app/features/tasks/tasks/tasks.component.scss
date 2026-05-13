@@ -206,6 +206,10 @@
     }
 }
 
+.task-completed-text {
+    color: #00ffa6;
+}
+
 @keyframes task-critical-pulse {
     0% {
         box-shadow: 0 0 0 rgba(255, 77, 79, 0);

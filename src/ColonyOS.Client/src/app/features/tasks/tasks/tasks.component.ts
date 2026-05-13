@@ -4,7 +4,7 @@ import { TaskModel, TaskPriority, TaskStatus } from '../../../shared/models/task
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
-  styleUrls: ['./tasks.component.scss']
+  styleUrls: ['./tasks.component.scss', '../../alerts/alerts.component.scss']
 })
 export class TasksComponent {
   @Input() tasks: TaskModel[];

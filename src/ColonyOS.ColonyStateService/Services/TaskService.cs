@@ -72,31 +72,21 @@ namespace ColonyOS.ColonyStateService.Services
             var task = _tasks.FirstOrDefault(t => t.Id == request.TaskId);
 
             if (task == null)
-            {
                 return null;
-            }
 
             if (task.Status is TaskStatusEnum.Completed or TaskStatusEnum.Failed)
-            {
                 return null;
-            }
 
             if (task.AssignedCrewMemberId.HasValue)
-            {
                 return null;
-            }
 
             var crewMember = crewMembers.FirstOrDefault(c => c.Id == request.CrewMemberId);
 
             if (crewMember == null)
-            {
                 return null;
-            }
 
             if (!crewMember.IsAvailable || crewMember.CurrentTaskId.HasValue)
-            {
                 return null;
-            }
 
             task.AssignedCrewMemberId = crewMember.Id;
             task.AssignedAtUtc = DateTime.UtcNow;
@@ -104,6 +94,29 @@ namespace ColonyOS.ColonyStateService.Services
 
             crewMember.IsAvailable = false;
             crewMember.CurrentTaskId = task.Id;
+
+            return task;
+        }
+
+        public TaskItem? CompleteTask(Guid taskId, List<CrewMember> crewMembers)
+        {
+            var task = _tasks.FirstOrDefault(task => task.Id == taskId);
+            if (task == null) return null;
+
+            task.Status = TaskStatusEnum.Completed;
+            task.CompletedAtUtc = DateTime.UtcNow;
+
+            if (task.AssignedCrewMemberId.HasValue)
+            {
+                var crewMember = crewMembers.FirstOrDefault(crew => crew.Id == task.AssignedCrewMemberId.Value);
+
+                if (crewMember != null)
+                {
+                    crewMember.IsAvailable = true;
+                    crewMember.CurrentTaskId = null;
+                    crewMember.Fatigue = Math.Min(100, crewMember.Fatigue + 8);
+                }
+            }
 
             return task;
         }

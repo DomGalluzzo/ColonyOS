@@ -4,7 +4,7 @@ import { CrewMember, CrewRoleEnum, CrewSkillEnum } from '../../shared/models/cre
 @Component({
   selector: 'app-crew',
   templateUrl: './crew.component.html',
-  styleUrls: ['./crew.component.scss']
+  styleUrls: ['./crew.component.scss', '../alerts/alerts.component.scss']
 })
 export class CrewComponent {
   @Input() crewMembers: CrewMember[];
@@ -63,6 +63,30 @@ export class CrewComponent {
 
   public getCrewRoleName(role: CrewRoleEnum): string {
     return this.crewRoleNames.find(x => x.value === role)?.label ?? 'Unknown';
+  }
+
+  public getCrewStatus(crewMember: CrewMember): string {
+    if (crewMember.currentTaskId) {
+        return 'Working';
+    }
+
+    if (!crewMember.isAvailable) {
+        return 'Unavailable';
+    }
+
+    return 'Available';
+  }
+
+  public getCrewStatusClass(crewMember: CrewMember): string {
+    if (crewMember.currentTaskId) {
+        return 'status-chip--working';
+    }
+
+    if (!crewMember.isAvailable) {
+        return 'status-chip--unavailable';
+    }
+
+    return 'status-chip--available';
   }
 
   public assignCrewToTask(crewMember: CrewMember): void {

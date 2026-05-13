@@ -45,13 +45,8 @@
 
                     <span
                         class="status-chip"
-                        [ngClass]="crewMember.isAvailable ? 'status-chip--available' : 'status-chip--assigned'">
-                        {{ crewMember.isAvailable ? 'Available' : 'Assigned' }}
-                    </span>
-                    <span
-                        class="status-chip"
-                        [ngClass]="crewMember.currentTaskId !== null ? 'status-chip--working' : 'status-chip--available'">
-                        {{ crewMember.currentTaskId !== null ? 'Working' : 'Available' }}
+                        [ngClass]="getCrewStatusClass(crewMember)">
+                        {{ getCrewStatus(crewMember) }}
                     </span>
                 </div>
 
@@ -80,7 +75,7 @@
                 <div *ngIf="selectedTaskId" class="crew-assignment-actions">
                     <button
                         type="button"
-                        class="btn btn-success"
+                        class="command-button command-button--primary"
                         *ngIf="crewMember.isAvailable"
                         (click)="assignCrewToTask(crewMember)">
                         Assign To Selected Task
@@ -88,7 +83,7 @@
 
                     <button
                         type="button"
-                        class="btn btn-disabled"
+                        class="command-button command-button--secondary"
                         *ngIf="!crewMember.isAvailable"
                         disabled>
                         Crew Unavailable

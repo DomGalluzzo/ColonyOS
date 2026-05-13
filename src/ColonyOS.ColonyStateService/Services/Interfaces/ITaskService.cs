@@ -12,5 +12,6 @@ namespace ColonyOS.ColonyStateService.Services.Interfaces
         Task<TaskItem> CreateTaskAsync(CreateTaskRequest request, CancellationToken cancellationToken = default);
         Task<TaskItem?> UpdateTaskStatusAsync(UpdateTaskStatusRequest taskStatusRequest, CancellationToken cancellationToken = default);
         Task<TaskItem?> AssignCrewToTaskAsync(AssignCrewToTaskRequest request, List<CrewMember> crewMembers, CancellationToken cancellationToken = default);
+        TaskItem? CompleteTask(Guid taskId, List<CrewMember> crewMembers);
     }
 }

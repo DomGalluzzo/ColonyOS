@@ -52,17 +52,22 @@
             <footer class="task-item__footer">
                 <span>CREATED</span>
                 <time>{{ task.createdAtUtc | date:'HH:mm:ss' }}</time>
+                <span *ngIf="task.completedAtUtc"> | </span>
+                <div *ngIf="task.completedAtUtc" class="task-completed-text">
+                    <span>COMPLETED </span>
+                    <time>{{ task.completedAtUtc | date:'HH:mm:ss' }}</time>
+                </div>
                 <button
                     *ngIf="task.status === taskStatus.Pending"
                     type="button"
-                    class="btn btn-primary"
+                    class="command-button command-button--primary"
                     (click)="assignTaskClicked(task)">
                     Assign Crew
                 </button>
                 <button
                     *ngIf="task.status === taskStatus.Assigned"
                     type="button"
-                    class="btn btn-success"
+                    class="command-button command-button--secondary"
                     (click)="beginTask(task)">
                     Begin Task
                 </button>

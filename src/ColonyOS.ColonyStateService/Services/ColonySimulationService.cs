@@ -24,7 +24,7 @@ namespace ColonyOS.ColonyStateService.Services
                 var didResourceTick = ApplyResourceDynamics(resource, utcNow);
 
                 if (didResourceTick)
-                    ApplyActiveTaskEffects(resource);
+                    ApplyActiveTaskEffects(resource, colonyState);
             }
 
             await Task.CompletedTask;
@@ -54,7 +54,7 @@ namespace ColonyOS.ColonyStateService.Services
             return true;
         }
 
-        private void ApplyActiveTaskEffects(ColonyResource resource)
+        private void ApplyActiveTaskEffects(ColonyResource resource, ColonyState colonyState)
         {
             var activeTasks = _taskService.GetActiveTasks()
                 .Where(task =>
@@ -64,11 +64,35 @@ namespace ColonyOS.ColonyStateService.Services
 
             foreach (var task in activeTasks)
             {
+                var taskDelta = resource.ResourceType == ColonyResourceTypeEnum.Radiation
+                    ? -task.ResourceDeltaPerTick.Value
+                    : task.ResourceDeltaPerTick.Value;
+
+
                 resource.Percentage = Math.Clamp(
-                    resource.Percentage + task.ResourceDeltaPerTick.Value,
+                    resource.Percentage + taskDelta,
                     0m,
                     100m);
+
+                if (!IsResourceFullyRepaired(resource)) continue;
+
+                resource.Percentage = GetFullyRepairedPercentage(resource);
+                _taskService.CompleteTask(task.Id, colonyState.CrewMembers);
             }
+        }
+
+        private static bool IsResourceFullyRepaired(ColonyResource resource)
+        {
+            return resource.ResourceType == ColonyResourceTypeEnum.Radiation
+                ? resource.Percentage <= 0m
+                : resource.Percentage >= 100m;
+        }
+
+        private static decimal GetFullyRepairedPercentage(ColonyResource resource)
+        {
+            return resource.ResourceType == ColonyResourceTypeEnum.Radiation
+                ? 0m
+                : 100m;
         }
     }
 }
