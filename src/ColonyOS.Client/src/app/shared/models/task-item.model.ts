@@ -1,3 +1,5 @@
+import { ColonyResourceType } from "./colony-resource.model";
+
 export enum TaskType {
   Maintenance = 1,
   Investigation,
@@ -35,6 +37,7 @@ export interface TaskModel {
   description?: string | null;
   taskType: TaskType;
   targetSystem?: TargetSystem | null;
+  resourceType: ColonyResourceType;
   taskPriority: TaskPriority;
   status: TaskStatus;
   estimatedDurationMinutes: number;
@@ -42,6 +45,7 @@ export interface TaskModel {
   startedAtUtc?: string | null;
   completedAtUtc?: string | null;
   sourceAlertId?: string | null;
+  assignedCrewMemberId?: string | null;
 }
 
 export interface CreateTaskRequest {

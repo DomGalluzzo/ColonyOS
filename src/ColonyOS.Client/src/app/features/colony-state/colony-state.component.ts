@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ColonyState } from '../../shared/models/colony-state.model';
 import { ColonyResource } from '../../shared/models/colony-resource.model';
+import { TaskStatus } from '../../shared/models/task-item.model';
 
 @Component({
   selector: 'app-colony-state',
@@ -10,6 +11,8 @@ import { ColonyResource } from '../../shared/models/colony-resource.model';
 export class ColonyStateComponent {
   @Input() colonyState: ColonyState;
 
+  public readonly taskStatusEnum = TaskStatus;
+
   public isBelowMin(resource: ColonyResource): boolean {
     return resource.minThreshold !== null && resource.percentage < resource.minThreshold;
   }
@@ -18,7 +21,7 @@ export class ColonyStateComponent {
     return resource.maxThreshold !== null && resource.percentage > resource.maxThreshold;
   }
 
-  getResourceStatus(resource: ColonyResource): 'critical-low' | 'warning-low' | 'normal' | 'warning-high' | 'critical-high' {
+  public getResourceStatus(resource: ColonyResource): 'critical-low' | 'warning-low' | 'normal' | 'warning-high' | 'critical-high' {
     const thresholdBuffer = 10;
 
     if (resource.minThreshold !== null) {
@@ -42,5 +45,13 @@ export class ColonyStateComponent {
     }
 
     return 'normal';
+  }
+
+  public isResourceBeingRepaired(resource: any): boolean {
+    return this.colonyState.tasks?.some(task => 
+      task.resourceType === resource.resourceType &&
+      task.status === this.taskStatusEnum.InProgress &&
+      task.assignedCrewMemberId
+    ) ?? false;
   }
 }
