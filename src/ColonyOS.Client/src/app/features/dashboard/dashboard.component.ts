@@ -9,6 +9,7 @@ import { TasksService } from '../../shared/services/tasks.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ColonyDashboardRealtimeService } from '../../shared/services/colony-dashboard-realtime.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CrewMemberService } from '../../shared/services/crew-member.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,6 +29,7 @@ export class DashboardComponent implements OnInit {
     private readonly dashboardApiService: DashboardApiService,
     private readonly alertService: AlertService,
     private readonly tasksService: TasksService,
+    private readonly crewMemberService: CrewMemberService,
     private readonly realtimeDashboardService: ColonyDashboardRealtimeService,
     private readonly destroyRef: DestroyRef
   ) {}
@@ -96,6 +98,17 @@ export class DashboardComponent implements OnInit {
         this.errorMessage = error;
       }
     });
+  }
+
+  public startCrewRecovery(crewMemberId: string): void {
+    this.crewMemberService.beginCrewRecovery(crewMemberId).subscribe({
+      next: () => {
+        this.loadInitialDashboard();
+      },
+      error: error => {
+        this.errorMessage = error;
+      }
+    })
   }
 
   private loadInitialDashboard(): void {

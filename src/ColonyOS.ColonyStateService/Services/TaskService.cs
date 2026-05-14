@@ -90,7 +90,7 @@ namespace ColonyOS.ColonyStateService.Services
 
             task.AssignedCrewMemberId = crewMember.Id;
             task.AssignedAtUtc = DateTime.UtcNow;
-            task.Status = TaskStatusEnum.Assigned;
+            task.Status = TaskStatusEnum.InProgress;
 
             crewMember.IsAvailable = false;
             crewMember.CurrentTaskId = task.Id;

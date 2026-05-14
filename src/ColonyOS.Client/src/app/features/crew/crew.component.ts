@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CrewMember, CrewRoleEnum, CrewSkillEnum } from '../../shared/models/crew-member.model';
+import { CrewMember, CrewRecoveryStateEnum, CrewRoleEnum, CrewSkillEnum } from '../../shared/models/crew-member.model';
 
 @Component({
   selector: 'app-crew',
@@ -10,6 +10,9 @@ export class CrewComponent {
   @Input() crewMembers: CrewMember[];
   @Input() selectedTaskId: string | null;
   @Output() crewAssignedToTask = new EventEmitter<string>();
+  @Output() crewRecoveryStarted = new EventEmitter<string>();
+
+  public recoveryStateEnum = CrewRecoveryStateEnum;
 
   public readonly crewSkillNames = [
     { label: 'Electrical Repair', value: CrewSkillEnum.ElectricalRepair },
@@ -70,6 +73,10 @@ export class CrewComponent {
         return 'Working';
     }
 
+    if (crewMember.recoveryState == this.recoveryStateEnum.Recovering) {
+      return 'Recovering';
+    }
+
     if (!crewMember.isAvailable) {
         return 'Unavailable';
     }
@@ -80,6 +87,10 @@ export class CrewComponent {
   public getCrewStatusClass(crewMember: CrewMember): string {
     if (crewMember.currentTaskId) {
         return 'status-chip--working';
+    }
+
+    if (crewMember.recoveryState == this.recoveryStateEnum.Recovering) {
+      return 'status-chip--recovering';
     }
 
     if (!crewMember.isAvailable) {
@@ -93,5 +104,9 @@ export class CrewComponent {
     if (!this.selectedTaskId || !crewMember.isAvailable) return;
 
     this.crewAssignedToTask.emit(crewMember.id);
+  }
+
+  public beginCrewRecovery(crewId: string): void {
+    return this.crewRecoveryStarted.emit(crewId);
   }
 }

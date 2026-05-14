@@ -33,7 +33,8 @@
             <app-crew
                 [crewMembers]="colonyState.crewMembers"
                 [selectedTaskId]="selectedTaskId"
-                (crewAssignedToTask)="assignCrewToTask($event)">
+                (crewAssignedToTask)="assignCrewToTask($event)"
+                (crewRecoveryStarted)="startCrewRecovery($event)">
             </app-crew>
         </section>
 

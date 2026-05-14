@@ -30,7 +30,8 @@
                 'crew-item--assigned': !crewMember.isAvailable,
                 'crew-item--fatigued': crewMember.fatigue >= 50,
                 'crew-item--critical': crewMember.fatigue >= 75,
-                'crew-item--selectable': selectedTaskId && crewMember.isAvailable
+                'crew-item--selectable': selectedTaskId && crewMember.isAvailable,
+                'crew-item--recovering': crewMember.recoveryState === recoveryStateEnum.Recovering
             }">
             <div class="crew-item__signal">
                 <span></span>
@@ -56,7 +57,11 @@
                         <strong>{{ crewMember.fatigue }}%</strong>
                     </div>
 
-                    <div class="fatigue-bar">
+                    <div
+                        class="fatigue-bar"
+                        [ngClass]="{
+                            'fatigue-bar--recovering': crewMember.recoveryState === recoveryStateEnum.Recovering
+                        }">
                         <div
                             class="fatigue-bar__fill"
                             [style.width.%]="crewMember.fatigue">
@@ -72,22 +77,36 @@
                     </span>
                 </div>
 
-                <div *ngIf="selectedTaskId" class="crew-assignment-actions">
-                    <button
-                        type="button"
-                        class="command-button command-button--primary"
-                        *ngIf="crewMember.isAvailable"
-                        (click)="assignCrewToTask(crewMember)">
-                        Assign To Selected Task
-                    </button>
+                
 
-                    <button
-                        type="button"
-                        class="command-button command-button--secondary"
-                        *ngIf="!crewMember.isAvailable"
-                        disabled>
-                        Crew Unavailable
-                    </button>
+                <div class="crew-assignment-actions">
+                    <div class="crew-assignment-actions__left">
+                        <button
+                            *ngIf="crewMember.fatigue >= 1 && crewMember.currentTaskId == null && crewMember.recoveryState != recoveryStateEnum.Recovering"
+                            type="button"
+                            class="command-button command-button--primary command-button--recovery"
+                            (click)="beginCrewRecovery(crewMember.id)">
+                            Begin Recovery
+                        </button>
+                    </div>
+
+                    <div class="crew-assignment-actions__right" *ngIf="selectedTaskId">
+                        <button
+                            type="button"
+                            class="command-button command-button--primary"
+                            *ngIf="crewMember.isAvailable"
+                            (click)="assignCrewToTask(crewMember)">
+                            Assign To Selected Task
+                        </button>
+
+                        <button
+                            type="button"
+                            class="command-button command-button--secondary"
+                            *ngIf="!crewMember.isAvailable"
+                            disabled>
+                            Crew Unavailable
+                        </button>
+                    </div>
                 </div>
             </div>
         </article>

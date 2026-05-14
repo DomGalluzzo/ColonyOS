@@ -6,6 +6,7 @@ export interface CrewMember {
     isAvailable: boolean;
     currentTaskId?: string;
     skills: CrewSkillEnum[];
+    recoveryState: CrewRecoveryStateEnum;
 }
 
 export enum CrewRoleEnum {
@@ -36,4 +37,10 @@ export enum CrewSkillEnum {
     ResourceOptimization,
     EmergencyResponse,
     SoftwareSystems
+}
+
+export enum CrewRecoveryStateEnum
+{
+    None,
+    Recovering
 }
