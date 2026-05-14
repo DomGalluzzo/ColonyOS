@@ -105,5 +105,16 @@ namespace ColonyOS.Gateway.Services
 
             return content;
         }
+
+        public async Task<bool> BeginCrewRecoveryAsync(Guid crewId, CancellationToken cancellationToken)
+        {
+            var response = await _httpClient.PostAsync($"{MicroserviceConstants.Routes.CrewMembers}/{crewId}/begin-recovery", null, cancellationToken);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return false;
+
+            response.EnsureSuccessStatusCode();
+            return true;
+        }
     }
 }

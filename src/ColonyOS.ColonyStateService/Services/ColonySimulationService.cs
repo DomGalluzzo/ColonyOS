@@ -2,7 +2,9 @@
 using ColonyOS.ColonyStateService.Models.ColonyState.Resources;
 using ColonyOS.ColonyStateService.Services.Interfaces;
 using ColonyOS.Contracts.Enums.ColonyResources;
+using ColonyOS.Contracts.Enums.Crew;
 using ColonyOS.Contracts.Enums.Tasks;
+using ColonyOS.Contracts.Models.Crew;
 
 namespace ColonyOS.ColonyStateService.Services
 {
@@ -17,6 +19,14 @@ namespace ColonyOS.ColonyStateService.Services
 
         public async Task ProcessSimulationTickAsync(ColonyState colonyState)
         {
+            ProcessResourceTicks(colonyState);
+            ProcessCrewRecoveryTicks(colonyState);
+
+            await Task.CompletedTask;
+        }
+
+        private void ProcessResourceTicks(ColonyState colonyState)
+        {
             var utcNow = DateTime.UtcNow;
 
             foreach (var resource in colonyState.Resources)
@@ -26,8 +36,31 @@ namespace ColonyOS.ColonyStateService.Services
                 if (didResourceTick)
                     ApplyActiveTaskEffects(resource, colonyState);
             }
+        }
 
-            await Task.CompletedTask;
+        private void ProcessCrewRecoveryTicks(ColonyState colonyState)
+        {
+            var utcNow = DateTime.UtcNow;
+
+            foreach (var crewMember in colonyState.CrewMembers.Where(crew => crew.RecoveryState == CrewRecoveryStateEnum.Recovering))
+            {
+                var dynamics = crewMember.RecoveryDynamics;
+                if (dynamics == null) continue;
+
+                var nextTickUtc = dynamics.LastTickUtc + dynamics.TickInterval;
+
+                if (utcNow < nextTickUtc) continue;
+
+                crewMember.Fatigue = Math.Max(0, crewMember.Fatigue - dynamics.RecoveryRatePerTick);
+                dynamics.LastTickUtc = utcNow;
+
+                if (crewMember.Fatigue == 0)
+                {
+                    crewMember.IsAvailable = true;
+                    crewMember.RecoveryState = CrewRecoveryStateEnum.None;
+                    crewMember.RecoveryDynamics = null;
+                }
+            }
         }
 
         private static bool ApplyResourceDynamics(ColonyResource resource, DateTime utcNow)

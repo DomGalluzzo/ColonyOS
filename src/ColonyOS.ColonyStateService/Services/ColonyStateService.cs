@@ -2,9 +2,7 @@
 using ColonyOS.ColonyStateService.Models.ColonyState.Resources;
 using ColonyOS.ColonyStateService.Services.Interfaces;
 using ColonyOS.Contracts.Enums.ColonyResources;
-using ColonyOS.Contracts.Enums.Crew;
 using ColonyOS.Contracts.Mappers;
-using ColonyOS.Contracts.Models.Crew;
 using ColonyOS.Contracts.Models.Events;
 using ColonyOS.Contracts.Models.Requests;
 using ColonyOS.Contracts.Models.Tasks;
@@ -16,6 +14,7 @@ namespace ColonyOS.ColonyStateService.Services
         private readonly IAlertsService _alertsService;
         private readonly ITaskService _taskService;
         private readonly IColonySimulationService _colonySimulationService;
+        private readonly ICrewMemberService _crewMemberService;
         private readonly IEventPublisherService _eventPublisher;
         private readonly object _lock = new();
 
@@ -24,11 +23,13 @@ namespace ColonyOS.ColonyStateService.Services
         public ColonyStateService(IAlertsService alertsService,
             ITaskService taskService,
             IColonySimulationService colonySimulationService,
+            ICrewMemberService crewMemberService,
             IEventPublisherService eventPublisher)
         {
             _alertsService = alertsService;
             _taskService = taskService;
             _colonySimulationService = colonySimulationService;
+            _crewMemberService = crewMemberService;
             _eventPublisher = eventPublisher;
 
             _colonyState = GetHardcodedColonyState();
@@ -83,6 +84,7 @@ namespace ColonyOS.ColonyStateService.Services
         {
             _colonyState.Alerts = _alertsService.GetAll().ToList();
             _colonyState.Tasks = _taskService.GetActiveTasks();
+            _colonyState.CrewMembers = _crewMemberService.GetAll().ToList();
         }
 
         private async Task HandleResourceTransitionsAsync(ColonyState colonyState)
@@ -227,96 +229,6 @@ namespace ColonyOS.ColonyStateService.Services
                             Trend = ColonyResourceTrendEnum.Increasing,
                             TickInterval = TimeSpan.FromMinutes(2)
                         }
-                    }
-                ],
-                CrewMembers =
-                [
-                    new CrewMember
-                    {
-                        Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-                        Name = "Ava Singh",
-                        Role = CrewRoleEnum.Engineer,
-                        Fatigue = 12,
-                        IsAvailable = true,
-                        Skills =
-                        [
-                            CrewSkillEnum.ElectricalRepair,
-                            CrewSkillEnum.LifeSupportSystems,
-                            CrewSkillEnum.StructuralEngineering
-                        ]
-                    },
-
-                    new CrewMember
-                    {
-                        Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-                        Name = "Marcus Hale",
-                        Role = CrewRoleEnum.Technician,
-                        Fatigue = 28,
-                        IsAvailable = true,
-                        Skills =
-                        [
-                            CrewSkillEnum.MechanicalRepair,
-                            CrewSkillEnum.Robotics,
-                            CrewSkillEnum.EmergencyResponse
-                        ]
-                    },
-
-                    new CrewMember
-                    {
-                        Id = Guid.Parse("33333333-3333-3333-3333-333333333333"),
-                        Name = "Elena Petrov",
-                        Role = CrewRoleEnum.Scientist,
-                        Fatigue = 8,
-                        IsAvailable = true,
-                        Skills =
-                        [
-                            CrewSkillEnum.ResearchAnalysis,
-                            CrewSkillEnum.RadiationMitigation,
-                            CrewSkillEnum.SoftwareSystems
-                        ]
-                    },
-
-                    new CrewMember
-                    {
-                        Id = Guid.Parse("44444444-4444-4444-4444-444444444444"),
-                        Name = "Noah Brooks",
-                        Role = CrewRoleEnum.Medic,
-                        Fatigue = 18,
-                        IsAvailable = true,
-                        Skills =
-                        [
-                            CrewSkillEnum.MedicalTreatment,
-                            CrewSkillEnum.EmergencyResponse
-                        ]
-                    },
-
-                    new CrewMember
-                    {
-                        Id = Guid.Parse("55555555-5555-5555-5555-555555555555"),
-                        Name = "Sofia Alvarez",
-                        Role = CrewRoleEnum.Botanist,
-                        Fatigue = 5,
-                        IsAvailable = true,
-                        Skills =
-                        [
-                            CrewSkillEnum.Agriculture,
-                            CrewSkillEnum.ResourceOptimization
-                        ]
-                    },
-
-                    new CrewMember
-                    {
-                        Id = Guid.Parse("66666666-6666-6666-6666-666666666666"),
-                        Name = "Daniel Cho",
-                        Role = CrewRoleEnum.Commander,
-                        Fatigue = 22,
-                        IsAvailable = true,
-                        Skills =
-                        [
-                            CrewSkillEnum.EmergencyResponse,
-                            CrewSkillEnum.Communications,
-                            CrewSkillEnum.Navigation
-                        ]
                     }
                 ],
                 LastUpdatedUtc = DateTime.UtcNow

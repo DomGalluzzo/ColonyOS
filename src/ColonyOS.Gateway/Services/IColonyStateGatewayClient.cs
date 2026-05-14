@@ -14,5 +14,6 @@ namespace ColonyOS.Gateway.Services
         Task<List<TaskItem>> GetActiveTasksAsync(CancellationToken cancellationToken = default);
         Task<TaskItem> UpdateTaskStatusAsync(UpdateTaskStatusRequest taskStatusRequest, CancellationToken cancellationToken = default);
         Task<TaskItem> AssignCrewToTaskAsync(AssignCrewToTaskRequest request, CancellationToken cancellationToken = default);
+        Task<bool> BeginCrewRecoveryAsync(Guid crewId, CancellationToken cancellationToken = default);
     }
 }

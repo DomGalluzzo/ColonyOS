@@ -78,5 +78,16 @@ namespace ColonyOS.Gateway.Controllers
 
             return Ok(assignedTask);
         }
+
+        [HttpPost("crew/{crewId:guid}/begin-recovery")]
+        public async Task<ActionResult<bool>> BeginCrewRecoveryAsync(Guid crewId, CancellationToken cancellationToken)
+        {
+            var recoveryBegan = await _colonyStateGatewayClient.BeginCrewRecoveryAsync(crewId, cancellationToken);
+
+            if (!recoveryBegan)
+                return NotFound();
+
+            return NoContent();
+        }
     }
 }

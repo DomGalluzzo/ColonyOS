@@ -13,6 +13,7 @@ builder.Services.AddSingleton<IColonyStateService, ColonyStateService>();
 builder.Services.AddSingleton<IColonySimulationService, ColonySimulationService>();
 builder.Services.AddHostedService<ColonySimulationWorker>();
 builder.Services.AddSingleton<ITaskService, TaskService>();
+builder.Services.AddSingleton<ICrewMemberService, CrewMemberService>();
 builder.Services.AddSingleton<IResourceThresholdBreachTaskHandler, ResourceThresholdBreachTaskHandler>();
 builder.Services.AddSingleton<IEventPublisherService, EventPublisherService>();
 
