@@ -1,4 +1,4 @@
-﻿using ColonyOS.Contracts.Models.Requests;
+using ColonyOS.Contracts.Models.Requests;
 using ColonyOS.ColonyStateService.Services.Interfaces;
 using ColonyOS.Contracts.Enums.Task;
 using ColonyOS.Contracts.Enums.Tasks;
@@ -18,13 +18,13 @@ namespace ColonyOS.ColonyStateService.Services
 
         public async Task HandleAsync(ResourceThresholdBreachedEvent breachEvent)
         {
-            var existing = await _taskService.TaskExistsForSystemAsync(breachEvent.TargetSystem);
+            var existing = _taskService.TaskExistsForSystem(breachEvent.TargetSystem);
             var systemsReturningToNormal = breachEvent.BreachDirection == ColonyResourceBreachDirectionEnum.Normal;
 
             if (existing || systemsReturningToNormal)
                 return;
 
-            await _taskService.CreateTaskAsync(new CreateTaskRequest
+            _taskService.CreateTask(new CreateTaskRequest
             {
                 Title = $"Repair {breachEvent.TargetSystem}",
                 Description = $"{breachEvent.ColonyResourceType} at {breachEvent.CurrentPercentage}%",

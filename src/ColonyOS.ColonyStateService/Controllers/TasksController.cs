@@ -1,4 +1,4 @@
-﻿using ColonyOS.Contracts.Models.Requests;
+using ColonyOS.Contracts.Models.Requests;
 using ColonyOS.ColonyStateService.Services.Interfaces;
 using ColonyOS.Contracts.Models.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -19,16 +19,16 @@ namespace ColonyOS.ColonyStateService.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<TaskItem>>> GetActiveTasks(CancellationToken cancellationToken)
+        public ActionResult<IReadOnlyList<TaskItem>> GetActiveTasks(CancellationToken cancellationToken)
         {
             var tasks = _taskService.GetActiveTasks(cancellationToken);
             return Ok(tasks);
         }
 
         [HttpPost]
-        public async Task<ActionResult<TaskItem>> CreateTask([FromBody] CreateTaskRequest createTaskRequest, CancellationToken cancellationToken)
+        public ActionResult<TaskItem> CreateTask([FromBody] CreateTaskRequest createTaskRequest, CancellationToken cancellationToken)
         {
-            var createdTask = await _taskService.CreateTaskAsync(createTaskRequest, cancellationToken);
+            var createdTask = _taskService.CreateTask(createTaskRequest);
             return CreatedAtAction(nameof(GetActiveTasks), new { id = createdTask.Id }, createdTask);
         }
 
@@ -46,9 +46,9 @@ namespace ColonyOS.ColonyStateService.Controllers
         }
 
         [HttpPatch("status")]
-        public async Task<ActionResult<TaskItem>> UpdateTaskStatus([FromBody] UpdateTaskStatusRequest updateTaskStatusRequest, CancellationToken cancellationToken)
+        public ActionResult<TaskItem> UpdateTaskStatus([FromBody] UpdateTaskStatusRequest updateTaskStatusRequest, CancellationToken cancellationToken)
         {
-            var updatedTask = await _taskService.UpdateTaskStatusAsync(updateTaskStatusRequest, cancellationToken);
+            var updatedTask = _taskService.UpdateTaskStatus(updateTaskStatusRequest);
 
             if (updatedTask is null)
                 return NotFound();

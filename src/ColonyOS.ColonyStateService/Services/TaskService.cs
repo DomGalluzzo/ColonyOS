@@ -1,4 +1,3 @@
-﻿using System.Threading.Tasks;
 using ColonyOS.ColonyStateService.Services.Interfaces;
 using ColonyOS.Contracts.Enums.Target;
 using ColonyOS.Contracts.Enums.Tasks;
@@ -12,9 +11,9 @@ namespace ColonyOS.ColonyStateService.Services
     public class TaskService : ITaskService
     {
         private readonly List<TaskItem> _tasks = new List<TaskItem>();
+        
         public TaskService()
         {
-
         }
 
         public List<TaskItem> GetActiveTasks(CancellationToken cancellationToken = default)
@@ -25,7 +24,7 @@ namespace ColonyOS.ColonyStateService.Services
                 .ToList();
         }
 
-        public async Task<bool> TaskExistsForSystemAsync(TargetSystemEnum targetSystem)
+        public bool TaskExistsForSystem(TargetSystemEnum targetSystem)
         {
             var activeTasks = GetActiveTasks();
 
@@ -33,7 +32,7 @@ namespace ColonyOS.ColonyStateService.Services
                 (t.Status == TaskStatusEnum.InProgress || t.Status == TaskStatusEnum.Pending || t.Status == TaskStatusEnum.Assigned));
         }
 
-        public async Task<TaskItem> CreateTaskAsync(CreateTaskRequest request, CancellationToken cancellationToken = default)
+        public TaskItem CreateTask(CreateTaskRequest request)
         {
             var newTask = new TaskItem()
             {
@@ -55,7 +54,7 @@ namespace ColonyOS.ColonyStateService.Services
             return newTask;
         }
 
-        public async Task<TaskItem?> UpdateTaskStatusAsync(UpdateTaskStatusRequest taskStatusRequest, CancellationToken cancellationToken = default)
+        public TaskItem? UpdateTaskStatus(UpdateTaskStatusRequest taskStatusRequest)
         {
             var existingTaskIds = _tasks.Select(t => t.Id);
             if (!existingTaskIds.Contains(taskStatusRequest.TaskId))
@@ -67,7 +66,7 @@ namespace ColonyOS.ColonyStateService.Services
             return existingTask;
         }
 
-        public async Task<TaskItem?> AssignCrewToTaskAsync(AssignCrewToTaskRequest request, List<CrewMember> crewMembers, CancellationToken cancellationToken = default)
+        public TaskItem? AssignCrewToTask(AssignCrewToTaskRequest request, List<CrewMember> crewMembers)
         {
             var task = _tasks.FirstOrDefault(t => t.Id == request.TaskId);
 

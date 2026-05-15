@@ -1,4 +1,4 @@
-﻿using ColonyOS.ColonyStateService.Models.ColonyState;
+using ColonyOS.ColonyStateService.Models.ColonyState;
 using ColonyOS.ColonyStateService.Models.ColonyState.Resources;
 using ColonyOS.ColonyStateService.Services.Interfaces;
 using ColonyOS.Contracts.Enums.ColonyResources;
@@ -17,12 +17,10 @@ namespace ColonyOS.ColonyStateService.Services
             _taskService = taskService;
         }
 
-        public async Task ProcessSimulationTickAsync(ColonyState colonyState)
+        public void ProcessSimulationTick(ColonyState colonyState)
         {
             ProcessResourceTicks(colonyState);
             ProcessCrewRecoveryTicks(colonyState);
-
-            await Task.CompletedTask;
         }
 
         private void ProcessResourceTicks(ColonyState colonyState)
