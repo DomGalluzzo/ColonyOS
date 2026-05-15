@@ -90,7 +90,7 @@
                         </button>
                     </div>
 
-                    <div class="crew-assignment-actions__right" *ngIf="selectedTaskId">
+                    <div *ngIf="selectedTaskId" class="crew-assignment-actions__right">
                         <button
                             type="button"
                             class="command-button command-button--primary"
@@ -105,6 +105,39 @@
                             *ngIf="!crewMember.isAvailable"
                             disabled>
                             Crew Unavailable
+                        </button>
+                    </div>
+                    <div *ngIf="crewMember.currentTaskId"
+                        class="crew-assignment-actions__right">
+                        <ng-select
+                            class="crew-select"
+                            [items]="availableCrewMembers"
+                            bindLabel="name"
+                            [clearable]="false"
+                            [searchable]="false"
+                            appendTo="body"
+                            placeholder="Select replacement crew"
+                            [(ngModel)]="selectedCrewByTaskId[crewMember.id]">
+
+                            <ng-template ng-option-tmp let-item="item">
+                                {{ item.name }} — Fatigue {{ item.fatigue }}%
+                            </ng-template>
+                        </ng-select>
+
+                        <button
+                            type="button"
+                            class="command-button command-button--secondary"
+                            [disabled]="!selectedCrewByTaskId[crewMember.id]"
+                            (click)="reassignCrew(crewMember)">
+                            Reassign
+                        </button>
+
+                        <button
+                            type="button"
+                            class="command-button command-button--danger"
+                            *ngIf="crewMember.currentTaskId"
+                            (click)="releaseCrew(crewMember.currentTaskId)">
+                            Release
                         </button>
                     </div>
                 </div>

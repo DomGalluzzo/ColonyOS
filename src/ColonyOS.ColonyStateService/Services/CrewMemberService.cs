@@ -88,7 +88,7 @@ namespace ColonyOS.ColonyStateService.Services
                     Name = "Elena Petrov",
                     Role = CrewRoleEnum.Scientist,
                     Fatigue = 55,
-                    IsAvailable = false,
+                    IsAvailable = true,
                     Skills =
                     [
                         CrewSkillEnum.ResearchAnalysis,
@@ -103,7 +103,7 @@ namespace ColonyOS.ColonyStateService.Services
                     Name = "Noah Brooks",
                     Role = CrewRoleEnum.Medic,
                     Fatigue = 85,
-                    IsAvailable = false,
+                    IsAvailable = true,
                     Skills =
                     [
                         CrewSkillEnum.MedicalTreatment,

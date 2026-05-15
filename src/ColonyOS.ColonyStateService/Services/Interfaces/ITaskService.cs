@@ -13,5 +13,6 @@ namespace ColonyOS.ColonyStateService.Services.Interfaces
         TaskItem? UpdateTaskStatus(UpdateTaskStatusRequest taskStatusRequest);
         TaskItem? AssignCrewToTask(AssignCrewToTaskRequest request, List<CrewMember> crewMembers);
         TaskItem? CompleteTask(Guid taskId, List<CrewMember> crewMembers);
+        bool ReleaseCrewFromTask(Guid taskId, List<CrewMember> crewMembers);
     }
 }

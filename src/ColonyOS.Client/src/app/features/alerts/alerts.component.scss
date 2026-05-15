@@ -221,6 +221,17 @@
     }
 }
 
+.command-button--danger {
+    border: 1px solid rgba(255, 77, 79, 0.7);
+    color: #ff4d4f;
+    background: rgba(255, 77, 79, 0.08);
+
+    &:hover {
+        background: rgba(255, 77, 79, 0.16);
+        box-shadow: 0 0 14px rgba(255, 77, 79, 0.2);
+    }
+}
+
 .alert-item__header {
     display: flex;
     align-items: flex-start;

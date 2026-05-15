@@ -95,21 +95,58 @@ namespace ColonyOS.ColonyStateService.Services
 
             foreach (var task in activeTasks)
             {
-                var taskDelta = resource.ResourceType == ColonyResourceTypeEnum.Radiation
-                    ? -task.ResourceDeltaPerTick.Value
-                    : task.ResourceDeltaPerTick.Value;
+                var efficiency = GetAssignedCrewEfficiency(task.AssignedCrewMemberId, colonyState.CrewMembers);
+                var adjustedDelta = task.ResourceDeltaPerTick.Value * efficiency;
 
+                var taskDelta = resource.ResourceType == ColonyResourceTypeEnum.Radiation
+                    ? -adjustedDelta
+                    : adjustedDelta;
 
                 resource.Percentage = Math.Clamp(
                     resource.Percentage + taskDelta,
                     0m,
                     100m);
 
+                IncreaseAssigneCrewFatigue(task.AssignedCrewMemberId, task.Id, colonyState.CrewMembers);
+
                 if (!IsResourceFullyRepaired(resource)) continue;
 
                 resource.Percentage = GetFullyRepairedPercentage(resource);
                 _taskService.CompleteTask(task.Id, colonyState.CrewMembers);
             }
+        }
+
+        private static decimal GetAssignedCrewEfficiency(Guid? assignedCrewMemberId, List<CrewMember> crewMembers)
+        {
+            if (!assignedCrewMemberId.HasValue)
+                return 1.00m;
+
+            var crewMember = crewMembers.FirstOrDefault(crew => crew.Id == assignedCrewMemberId.Value);
+
+            if (crewMember == null)
+                return 1.00m;
+
+            return crewMember.Fatigue switch
+            {
+                >= 90 => 0.25m,
+                >= 75 => 0.5m,
+                >= 50 => 0.75m,
+                _ => 1.00m
+            };
+        }
+
+        private void IncreaseAssigneCrewFatigue(Guid? assignedCrewMemberId, Guid taskId, List<CrewMember> crewMembers)
+        {
+            if (!assignedCrewMemberId.HasValue) return;
+
+            var crewMember = crewMembers.FirstOrDefault(crew => crew.Id == assignedCrewMemberId.Value);
+
+            if (crewMember == null) return;
+
+            crewMember.Fatigue = Math.Min(100, crewMember.Fatigue + 2);
+
+            if (crewMember.Fatigue >= 100)
+                _taskService.ReleaseCrewFromTask(taskId, crewMembers);
         }
 
         private static bool IsResourceFullyRepaired(ColonyResource resource)

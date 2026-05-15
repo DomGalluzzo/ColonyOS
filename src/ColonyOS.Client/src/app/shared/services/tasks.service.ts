@@ -25,4 +25,11 @@ export class TasksService {
     public assignCrewToTask(request: AssignCrewToTaskRequest): Observable<TaskModel> {
         return this.http.post<TaskModel>(`${this.baseUrl}/${request.taskId}/assign-crew`, request);
     }
+
+    public releaseCrewFromTask(taskId: string): Observable<void> {
+        return this.http.post<void>(
+            `${this.baseUrl}/tasks/${taskId}/release-crew`,
+            {}
+        );
+    }
 }

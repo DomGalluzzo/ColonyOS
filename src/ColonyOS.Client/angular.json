@@ -40,7 +40,7 @@
             ],
             "styles": [
               "bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": [
               "bootstrap/dist/js/bootstrap.bundle.min.js"
@@ -104,7 +104,7 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": [],
             "karmaConfig": "karma.conf.js"

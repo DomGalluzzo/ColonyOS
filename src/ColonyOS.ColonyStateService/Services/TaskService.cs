@@ -77,7 +77,7 @@ namespace ColonyOS.ColonyStateService.Services
                 return null;
 
             if (task.AssignedCrewMemberId.HasValue)
-                return null;
+                ReleaseCrewFromTask(request.TaskId, crewMembers);
 
             var crewMember = crewMembers.FirstOrDefault(c => c.Id == request.CrewMemberId);
 
@@ -113,11 +113,27 @@ namespace ColonyOS.ColonyStateService.Services
                 {
                     crewMember.IsAvailable = true;
                     crewMember.CurrentTaskId = null;
-                    crewMember.Fatigue = Math.Min(100, crewMember.Fatigue + 8);
                 }
             }
 
             return task;
+        }
+
+        public bool ReleaseCrewFromTask(Guid taskId, List<CrewMember> crewMembers)
+        {
+            var task = _tasks.FirstOrDefault(task => task.Id == taskId);
+
+            if (task == null) return false;
+            if (!task.AssignedCrewMemberId.HasValue) return false;
+
+            var crewMember = crewMembers.FirstOrDefault(crew => crew.Id == task.AssignedCrewMemberId.Value);
+
+            if (crewMember != null)
+                crewMember.IsAvailable = true;
+
+            task.AssignedCrewMemberId = null;
+
+            return true;
         }
     }
 }

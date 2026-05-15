@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CrewMember, CrewRecoveryStateEnum, CrewRoleEnum, CrewSkillEnum } from '../../shared/models/crew-member.model';
+import { TaskModel } from '../../shared/models/task-item.model';
 
 @Component({
   selector: 'app-crew',
@@ -9,10 +10,14 @@ import { CrewMember, CrewRecoveryStateEnum, CrewRoleEnum, CrewSkillEnum } from '
 export class CrewComponent {
   @Input() crewMembers: CrewMember[];
   @Input() selectedTaskId: string | null;
+  @Input() tasks: TaskModel[];
   @Output() crewAssignedToTask = new EventEmitter<string>();
   @Output() crewRecoveryStarted = new EventEmitter<string>();
+  @Output() releaseCrewMemberClicked = new EventEmitter<string>();
+  @Output() crewReassignedToTask = new EventEmitter<{ taskId: string; crewMemberId: string; }>();
 
   public recoveryStateEnum = CrewRecoveryStateEnum;
+  public selectedCrewByTaskId: Record<string, CrewMember | null> = {};
 
   public readonly crewSkillNames = [
     { label: 'Electrical Repair', value: CrewSkillEnum.ElectricalRepair },
@@ -43,6 +48,14 @@ export class CrewComponent {
     { label: 'Botanist', value: CrewRoleEnum.Botanist },
     { label: 'Operations Specialist', value: CrewRoleEnum.OperationsSpecialist }
   ];
+
+  get availableCrewMembers(): CrewMember[] {
+    return this.crewMembers.filter(crew =>
+      crew.isAvailable &&
+      crew.fatigue < 100 &&
+      crew.recoveryState !== CrewRecoveryStateEnum.Recovering
+    ) ?? [];
+  }
 
   public trackByCrewMemberId(index: number, crewMember: CrewMember): string {
     return crewMember.id;
@@ -108,5 +121,25 @@ export class CrewComponent {
 
   public beginCrewRecovery(crewId: string): void {
     return this.crewRecoveryStarted.emit(crewId);
+  }
+
+  
+  public reassignCrew(currentCrewMember: CrewMember): void {
+    if (!currentCrewMember.currentTaskId) return;
+
+    const replacementCrewMember = this.selectedCrewByTaskId[currentCrewMember.id];
+
+    if (!replacementCrewMember) return;
+
+    this.crewReassignedToTask.emit({
+      taskId: currentCrewMember.currentTaskId,
+      crewMemberId: replacementCrewMember.id
+    });
+
+    this.selectedCrewByTaskId[currentCrewMember.id] = null;
+  }
+
+  public releaseCrew(taskId: string): void {
+    this.releaseCrewMemberClicked.emit(taskId);
   }
 }

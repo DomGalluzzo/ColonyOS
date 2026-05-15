@@ -10,6 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ColonyDashboardRealtimeService } from '../../shared/services/colony-dashboard-realtime.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CrewMemberService } from '../../shared/services/crew-member.service';
+import { CrewMember, CrewRecoveryStateEnum } from '../../shared/models/crew-member.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -109,6 +110,14 @@ export class DashboardComponent implements OnInit {
         this.errorMessage = error;
       }
     })
+  }
+
+  public releaseCrewMemberFromTask(taskId: string): void {
+    this.tasksService.releaseCrewFromTask(taskId)
+      .subscribe(() => {
+        this.selectedTaskId = null;
+        this.loadInitialDashboard();
+      });
   }
 
   private loadInitialDashboard(): void {
